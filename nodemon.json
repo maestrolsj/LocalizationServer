@@ -1,0 +1,10 @@
+{
+  "ext": ".js,.md,.graphql,.ts,.gql,.graphql",
+  "watch": "./src/",
+  "ignore": ["node_modules"],
+  "exec": "ts-node src/index.ts",
+  "env": {
+    "NODE_ENV": "development",
+    "BABEL_DISABLE_CACHE": 1
+  }
+}
