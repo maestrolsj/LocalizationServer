@@ -1,0 +1,18 @@
+overwrite: true
+schema: "http://localhost:4001"
+documents:
+  - "./src/**/gql.js"
+  - "./src/**/gql.ts"
+  - "./src/apollo/fragments.ts"
+generates:
+  src/generated/graphql.tsx:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+    config:
+      withHOC: false
+      withHooks: true
+      reactApolloVersion: 3
+  src/generated/graphql.schema.json:
+    plugins:
+      - "introspection"
