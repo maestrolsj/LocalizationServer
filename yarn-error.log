@@ -2,19 +2,19 @@ Arguments:
   C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js
 
 PATH: 
-  C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\yyhan\bin;C:\Program Files\AdoptOpenJDK\jdk-15.0.1.9-hotspot\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\WINDOWS\System32\OpenSSH;C:\Users\yyhan\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Program Files (x86)\Yarn\bin;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files\Git\cmd;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn;C:\Program Files (x86)\Microsoft SQL Server\150\Tools\Binn;C:\Program Files\Microsoft SQL Server\150\Tools\Binn;C:\Program Files\Microsoft SQL Server\150\DTS\Binn;C:\Program Files (x86)\Microsoft SQL Server\150\DTS\Binn;C:\Program Files\Azure Data Studio\bin;C:\Program Files\Docker\Docker\resources\bin;C:\ProgramData\DockerDesktop\version-bin;C:\Python39\Scripts;C:\Python39;C:\Users\yyhan\AppData\Local\Programs\AdoptOpenJDK\jdk-11.0.9.11-hotspot\bin;C:\Users\yyhan\AppData\Local\Microsoft\WindowsApps;C:\Users\yyhan\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\yyhan\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Users\yyhan\AppData\Local\Yarn\bin;C:\Program Files\Azure Data Studio\bin;C:\Program Files\heroku\bin
+  C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\yyhan\bin;C:\Program Files\AdoptOpenJDK\jdk-15.0.1.9-hotspot\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\WINDOWS\System32\OpenSSH;C:\Users\yyhan\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Program Files (x86)\Yarn\bin;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files\Git\cmd;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn;C:\Program Files (x86)\Microsoft SQL Server\150\Tools\Binn;C:\Program Files\Microsoft SQL Server\150\Tools\Binn;C:\Program Files\Microsoft SQL Server\150\DTS\Binn;C:\Program Files (x86)\Microsoft SQL Server\150\DTS\Binn;C:\Program Files\Azure Data Studio\bin;C:\Program Files\Docker\Docker\resources\bin;C:\ProgramData\DockerDesktop\version-bin;C:\Program Files\dotnet;C:\Program Files\Microsoft SQL Server\130\Tools\Binn;C:\Users\yyhan\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Program Files\nodejs;C:\ProgramData\chocolatey\bin;C:\Python39\Scripts;C:\Python39;C:\Users\yyhan\AppData\Local\Programs\AdoptOpenJDK\jdk-11.0.9.11-hotspot\bin;C:\Users\yyhan\AppData\Local\Microsoft\WindowsApps;C:\Users\yyhan\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\yyhan\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Users\yyhan\AppData\Local\Yarn\bin;C:\Program Files\Azure Data Studio\bin;C:\Program Files\heroku\bin;C:\Program Files\PostgreSQL\13\bin;C:\Users\yyhan\.dotnet\tools;C:\Program Files\MySQL\MySQL Shell 8.0\bin;C:\Users\yyhan\AppData\Roaming\npm
 
 Yarn version: 
   1.22.5
 
 Node version: 
-  15.0.1
+  14.15.4
 
 Platform: 
   win32 x64
 
 Trace: 
-  Error: 8440:error:1408F119:SSL routines:ssl3_get_record:decryption failed or bad record mac:c:\ws\deps\openssl\openssl\ssl\record\ssl3_record.c:677:
+  Error: 23624:error:1408F119:SSL routines:ssl3_get_record:decryption failed or bad record mac:c:\ws\deps\openssl\openssl\ssl\record\ssl3_record.c:677:
 
 npm manifest: 
   {
@@ -35,8 +35,8 @@ npm manifest:
       "docker:dev:up": "docker-compose -f docker-compose.dev.yml up -d",
       "docker:dev:down": "docker-compose -f docker-compose.dev.yml down",
       "docker:dev:logs": "docker-compose -f docker-compose.dev.yml logs -f",
-      "docker:dev:bash": "docker-compose -f docker-compose.dev.yml exec translation-tool-app-dev bash",
-      "docker:db:bash": "docker-compose -f docker-compose.db.yml exec translation-tool-db-dev bash",
+      "docker:dev:bash": "docker-compose -f docker-compose.dev.yml exec translation-tool-app bash",
+      "docker:db:bash": "docker-compose -f docker-compose.db.yml exec translation-tool-db bash",
       "docker:containers:clean": "docker rm $(docker ps -a -q)",
       "docker:images:clean": "docker rmi $(docker images -q)",
       "docker:clean": "yarn docker:containers:clean && yarn docker:images:clean"
@@ -44,57 +44,58 @@ npm manifest:
     "author": "",
     "license": "ISC",
     "devDependencies": {
-      "@graphql-codegen/cli": "^1.15.0",
-      "@graphql-codegen/introspection": "^1.3.1",
-      "@graphql-codegen/typescript": "^1.3.1",
-      "@graphql-codegen/typescript-operations": "^1.3.1",
-      "@graphql-codegen/typescript-resolvers": "1.3.1",
+      "@graphql-codegen/cli": "^1.20.0",
+      "@graphql-codegen/introspection": "^1.18.1",
+      "@graphql-codegen/typescript": "^1.20.0",
+      "@graphql-codegen/typescript-operations": "^1.17.13",
+      "@graphql-codegen/typescript-resolvers": "1.18.1",
       "@types/bcrypt": "^3.0.0",
-      "@types/cors": "^2.8.6",
+      "@types/cors": "^2.8.9",
       "@types/dotenv": "^8.2.0",
-      "@types/express": "^4.17.6",
+      "@types/express": "^4.17.9",
       "@types/graphql": "^14.5.0",
-      "@types/graphql-iso-date": "^3.3.3",
+      "@types/graphql-iso-date": "^3.4.0",
       "@types/graphql-type-json": "^0.3.2",
-      "@types/jest": "^25.2.1",
+      "@types/jest": "^26.0.20",
       "@types/jsonwebtoken": "^8.5.0",
-      "@types/lodash": "^4.14.152",
-      "@types/md5": "^2.2.0",
-      "@types/node": "^13.13.5",
+      "@types/lodash": "^4.14.167",
+      "@types/md5": "^2.2.1",
+      "@types/node": "^14.14.20",
       "@types/nodemailer": "^6.4.0",
-      "@types/swagger-jsdoc": "^3.0.2",
+      "@types/swagger-jsdoc": "^6.0.0",
       "@types/swagger-ui-express": "^4.1.2",
-      "jest": "^25.5.4",
-      "nodemon": "^2.0.3",
+      "jest": "^26.6.3",
+      "nodemon": "^2.0.7",
       "rimraf": "^3.0.2",
-      "ts-node": "^8.10.1",
-      "typescript": "^3.8.3"
+      "ts-node": "^9.1.1",
+      "typescript": "^4.1.3"
     },
     "dependencies": {
-      "apollo-server": "^2.14.1",
-      "bcrypt": "^4.0.1",
+      "apollo-server": "^2.19.1",
+      "bcrypt": "^5.0.0",
       "body-parser": "^1.19.0",
       "cors": "^2.8.5",
       "dotenv": "^8.2.0",
       "express": "^4.17.1",
-      "graphql": "^15.0.0",
+      "graphql": "^15.4.0",
       "graphql-iso-date": "^3.6.1",
-      "graphql-middleware": "^4.0.2",
-      "graphql-shield": "^7.3.0",
-      "graphql-tag": "^2.10.3",
-      "graphql-tools": "^6.0.5",
-      "graphql-type-json": "^0.3.1",
-      "iso-639-1": "^2.1.3",
+      "graphql-middleware": "^6.0.0",
+      "graphql-shield": "^7.4.4",
+      "graphql-tag": "^2.11.0",
+      "graphql-tools": "^7.0.2",
+      "graphql-type-json": "^0.3.2",
+      "iso-639-1": "^2.1.5",
       "jsonwebtoken": "^8.5.1",
-      "lodash": "^4.17.15",
-      "md5": "^2.2.1",
+      "lodash": "^4.17.20",
+      "md5": "^2.3.0",
       "module-alias": "^2.2.2",
-      "mysql2": "^2.1.0",
-      "nodemailer": "^6.4.8",
+      "mysql2": "^2.2.5",
+      "nodemailer": "^6.4.17",
+      "pg": "^8.5.1",
       "reflect-metadata": "^0.1.13",
-      "swagger-jsdoc": "^4.0.0",
-      "swagger-ui-express": "^4.1.4",
-      "typeorm": "^0.2.24"
+      "swagger-jsdoc": "^6.0.1",
+      "swagger-ui-express": "^4.1.6",
+      "typeorm": "^0.2.29"
     },
     "jest": {
       "testPathIgnorePatterns": [

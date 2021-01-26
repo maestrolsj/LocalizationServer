@@ -1,4 +1,4 @@
-import React, { useContext, useCallback, useState } from "react";
+import React, { useContext, useCallback, useState, useEffect } from "react";
 import { TextField, Button, Typography, Theme } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core";
 import clsx from "clsx";
@@ -7,6 +7,8 @@ import { UserContext } from "../../../context/UserContext";
 import { useApolloClient } from "@apollo/react-hooks";
 import loginQuery from "./gql";
 import { useURLQuery } from "../../../hooks/useURLQuery";
+import gql from "graphql-tag";
+import { Alert } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -43,7 +45,13 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const Login: React.SFC<any> = (props) => {
+const TEST_QUERY = gql`
+  query LoginPage_test {
+    test
+  }
+`;
+
+const Login: React.FC<any> = (props) => {
   const classes = useStyles();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -89,6 +97,14 @@ const Login: React.SFC<any> = (props) => {
     },
     [history]
   );
+
+  useEffect(() => {
+    const startQuery = async () => {
+      const { data: data2 } = await client.query({ query: TEST_QUERY });
+      console.log(">>>>", data2);
+    };
+    startQuery();
+  }, []);
 
   return (
     <form onSubmit={login} className={classes.root}>

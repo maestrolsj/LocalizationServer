@@ -58,9 +58,10 @@ const Register: React.SFC<any> = (props) => {
   const [successText, setSuccessText] = useState("");
   const [errorText, setErrorText] = useState("");
   const history = useHistory();
-  const [upsertUser, { loading: upsertUserLoading }] = useMutation<
-    RegisterPage_UpsertUserMutation
-  >(upsertUserMutation);
+  const [
+    upsertUser,
+    { loading: upsertUserLoading },
+  ] = useMutation<RegisterPage_UpsertUserMutation>(upsertUserMutation);
 
   const login = useCallback(
     async (e) => {

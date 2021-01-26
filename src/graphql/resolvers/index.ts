@@ -13,6 +13,7 @@ import upsertUser from "./Mutation/upsertUser";
 import resetPassword from "./Mutation/resetPassword";
 import forgotPassword from "./Mutation/forgotPassword";
 
+import test from "./Query/test";
 import i18next from "./Query/i18next";
 import key from "./Query/key";
 import locale from "./Query/locale";
@@ -68,6 +69,7 @@ export default {
     forgotPassword,
   },
   Query: {
+    test,
     projects,
     project,
     login,
