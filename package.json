@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon --config \"./nodemon.json\"/",
     "client:build": "cd ./client && yarn && yarn build",
-    "start": "yarn client:build && yarn && ts-node src/index.ts",
+    "start": "ts-node src/index.ts",
     "test": "jest",
     "codegen": "graphql-codegen --config codegen.yml",
     "docker:build": "docker-compose -f docker-compose.yml build",
