@@ -25,8 +25,8 @@ services:
       - /app/src/db/seed/postgres
     environment:
       POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "gkseorb12"
-      POSTGRES_DB: "public"
+      POSTGRES_PASSWORD: "bluebird2011"
+      POSTGRES_DB: "LocalizationServer"
       PGDATA: "/app/src/db/seed/postgres"
     networks:
       - our_net
