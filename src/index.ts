@@ -60,7 +60,7 @@ createConnection()
       app.use("/", Express.static(path.join(__dirname, "../client/build")));
       apolloServer.applyMiddleware({ app });
 
-      const PORT = process.env.PORT || 4000;
+      const PORT = process.env.PORT;
 
       app.listen(PORT, () => console.log(`Server is running at ${PORT}`));
     } catch (error) {

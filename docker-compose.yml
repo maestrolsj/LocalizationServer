@@ -8,11 +8,11 @@ services:
     env_file:
       - ./.env
     ports:
-      - "4000:4000"
+      - "${PORT}:${PORT}"
     networks:
       - our_net
     expose:
-      - "4000"
+      - "${PORT}"
 
   translation-tool-db:
     image: postgres
