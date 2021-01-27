@@ -45,12 +45,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const TEST_QUERY = gql`
-  query LoginPage_test {
-    test
-  }
-`;
-
 const Login: React.FC<any> = (props) => {
   const classes = useStyles();
   const [email, setEmail] = useState("");
@@ -79,6 +73,7 @@ const Login: React.FC<any> = (props) => {
         }
       } catch (err) {
         setErrorText(err?.graphQLErrors[0]?.message ?? "");
+        console.log("Error>", err);
       }
     },
     [email, password, setUser, history, client, query]
@@ -90,14 +85,6 @@ const Login: React.FC<any> = (props) => {
     },
     [history]
   );
-
-  useEffect(() => {
-    const startQuery = async () => {
-      const { data: data2 } = await client.query({ query: TEST_QUERY });
-      console.log(">>>>", data2);
-    };
-    startQuery();
-  }, []);
 
   return (
     <form onSubmit={login} className={classes.root}>
