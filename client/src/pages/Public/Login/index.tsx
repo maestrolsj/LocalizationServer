@@ -65,24 +65,17 @@ const Login: React.FC<any> = (props) => {
     async (e) => {
       e.preventDefault();
       try {
-        if (
-          email.split("").reverse().slice(0, 14).reverse().join("") !==
-          "@softgarden.de"
-        ) {
-          setErrorText("Must be a softgarden email");
-        } else {
-          const { data } = await client.query({
-            query: loginQuery,
-            variables: { email, password },
-          });
+        const { data } = await client.query({
+          query: loginQuery,
+          variables: { email, password },
+        });
 
-          setUser({ ...data.login.user, accessToken: data.login.accessToken });
-          const redirectUrl = query.get("redirectUrl");
-          if (redirectUrl) {
-            history.push(redirectUrl);
-          } else {
-            history.push("/home");
-          }
+        setUser({ ...data.login.user, accessToken: data.login.accessToken });
+        const redirectUrl = query.get("redirectUrl");
+        if (redirectUrl) {
+          history.push(redirectUrl);
+        } else {
+          history.push("/home");
         }
       } catch (err) {
         setErrorText(err?.graphQLErrors[0]?.message ?? "");
@@ -112,7 +105,7 @@ const Login: React.FC<any> = (props) => {
       <TextField
         className={classes.input}
         label="Email"
-        placeholder="John.Doe@softgarden.de"
+        placeholder="John.Doe@gmail.com"
         variant="outlined"
         type="email"
         value={email}

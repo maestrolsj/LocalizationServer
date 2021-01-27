@@ -36,21 +36,14 @@ const ForgotPassword: React.SFC<any> = (props) => {
     async (e) => {
       e.preventDefault();
       try {
-        if (
-          email.split("").reverse().slice(0, 14).reverse().join("") !==
-          "@softgarden.de"
-        ) {
-          setErrorText("Must be a softgarden email");
-        } else {
-          await axios.post(
-            `${process.env.REACT_APP_API_BASE_URL}/forgotPassword`,
-            //??? 주소가 어떻게 되는건지 불확실
-            {
-              email,
-            }
-          );
-          setSuccessText("Check your email please!");
-        }
+        await axios.post(
+          `${process.env.REACT_APP_API_BASE_URL}/forgotPassword`,
+          //??? 주소가 어떻게 되는건지 불확실
+          {
+            email,
+          }
+        );
+        setSuccessText("Check your email please!");
       } catch (err) {
         setErrorText("Server error");
       }
@@ -72,7 +65,7 @@ const ForgotPassword: React.SFC<any> = (props) => {
       <TextField
         className={classes.input}
         label="Email"
-        placeholder="John.Doe@softgarden.de"
+        placeholder="John.Doe@gmail.de"
         variant="outlined"
         type="email"
         value={email}
