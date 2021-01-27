@@ -6,7 +6,7 @@
 FROM nginx:alpine
 
 # For staging and production this was overwritten by kubernetes e.g with https://headhunter.staging.softgarden.io/referral/api/v1
-ENV REACT_APP_API_BASE_URL=http://localhost:4001/graphql
+ENV REACT_APP_API_BASE_URL=http://18.193.202.36:4000/graphql
 
 # Make sure nginx html folder is clear
 RUN rm -rf /usr/share/nginx/html/*
