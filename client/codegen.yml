@@ -1,5 +1,5 @@
 overwrite: true
-schema: "http://localhost:4001"
+schema: "http://18.193.202.36:4000/graphql"
 documents:
   - "./src/**/gql.js"
   - "./src/**/gql.ts"

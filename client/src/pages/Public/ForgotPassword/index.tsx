@@ -42,9 +42,13 @@ const ForgotPassword: React.SFC<any> = (props) => {
         ) {
           setErrorText("Must be a softgarden email");
         } else {
-          await axios.post("http://localhost:4000/forgotPassword", {
-            email,
-          });
+          await axios.post(
+            `${process.env.REACT_APP_API_BASE_URL}/forgotPassword`,
+            //??? 주소가 어떻게 되는건지 불확실
+            {
+              email,
+            }
+          );
           setSuccessText("Check your email please!");
         }
       } catch (err) {
