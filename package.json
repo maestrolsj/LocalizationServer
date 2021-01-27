@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon --config \"./nodemon.json\"/",
     "client:build": "cd ./client && yarn && yarn build",
-    "start": "client:build && ts-node src/index.ts",
+    "start": "yarn && ts-node src/index.ts",
     "test": "jest",
     "codegen": "graphql-codegen --config codegen.yml",
     "heroku:login": "heroku container:login",
