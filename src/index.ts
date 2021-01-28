@@ -29,6 +29,7 @@ createConnection()
   .then(async (connection: Connection) => {
     try {
       const apolloServer = new ApolloServer({
+        cors: true,
         schema,
         context,
         debug: true,
@@ -59,8 +60,14 @@ createConnection()
       app.use(cors());
 
       // serving build file of client
-      // app.use("/", Express.static(path.join(__dirname, "../client/build")));
-      apolloServer.applyMiddleware({ app });
+      app.use("/", Express.static(path.join(__dirname, "../client/build")));
+      apolloServer.applyMiddleware({
+        app,
+        cors: {
+          credentials: true,
+          origin: new RegExp("/*/"),
+        },
+      });
 
       const PORT = process.env.PORT;
 
