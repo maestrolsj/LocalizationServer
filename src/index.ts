@@ -29,7 +29,6 @@ createConnection()
   .then(async (connection: Connection) => {
     try {
       const apolloServer = new ApolloServer({
-        cors: true,
         schema,
         context,
         debug: true,
