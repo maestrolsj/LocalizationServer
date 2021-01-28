@@ -12,6 +12,7 @@ import resolvers from "./graphql/resolvers";
 import context from "./graphql/resolvers/context";
 import typeDefs from "./graphql/typeDefs";
 import { seed } from "./seed";
+import cors from "cors";
 
 // Load config
 dotenv.config({ path: "./.env" });
@@ -30,7 +31,7 @@ createConnection()
       const apolloServer = new ApolloServer({
         schema,
         context,
-        debug: process.env.NODE_ENV === "development",
+        debug: true,
         plugins: [
           {
             requestDidStart: () => {
@@ -55,9 +56,10 @@ createConnection()
       // Body parser
       app.use(Express.urlencoded({ extended: false }));
       app.use(Express.json());
+      app.use(cors());
 
       // serving build file of client
-      app.use("/", Express.static(path.join(__dirname, "../client/build")));
+      // app.use("/", Express.static(path.join(__dirname, "../client/build")));
       apolloServer.applyMiddleware({ app });
 
       const PORT = process.env.PORT;

@@ -7,6 +7,10 @@ import { ApolloLink } from "apollo-link";
 
 const httpLink = createHttpLink({
   uri: process.env.REACT_APP_API_BASE_URL,
+  fetchOptions: {
+    mode: "no-cors",
+  },
+  credentials: "include",
 });
 
 const authLink = setContext((_, { headers }) => {
