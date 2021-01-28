@@ -45,12 +45,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const TEST_QUERY = gql`
-  query LoginPage_test {
-    test
-  }
-`;
-
 const Login: React.FC<any> = (props) => {
   const classes = useStyles();
   const [email, setEmail] = useState("");
@@ -65,27 +59,21 @@ const Login: React.FC<any> = (props) => {
     async (e) => {
       e.preventDefault();
       try {
-        if (
-          email.split("").reverse().slice(0, 14).reverse().join("") !==
-          "@softgarden.de"
-        ) {
-          setErrorText("Must be a softgarden email");
-        } else {
-          const { data } = await client.query({
-            query: loginQuery,
-            variables: { email, password },
-          });
+        const { data } = await client.query({
+          query: loginQuery,
+          variables: { email, password },
+        });
 
-          setUser({ ...data.login.user, accessToken: data.login.accessToken });
-          const redirectUrl = query.get("redirectUrl");
-          if (redirectUrl) {
-            history.push(redirectUrl);
-          } else {
-            history.push("/home");
-          }
+        setUser({ ...data.login.user, accessToken: data.login.accessToken });
+        const redirectUrl = query.get("redirectUrl");
+        if (redirectUrl) {
+          history.push(redirectUrl);
+        } else {
+          history.push("/home");
         }
       } catch (err) {
         setErrorText(err?.graphQLErrors[0]?.message ?? "");
+        console.log("Error>", err);
       }
     },
     [email, password, setUser, history, client, query]
@@ -98,21 +86,13 @@ const Login: React.FC<any> = (props) => {
     [history]
   );
 
-  useEffect(() => {
-    const startQuery = async () => {
-      const { data: data2 } = await client.query({ query: TEST_QUERY });
-      console.log(">>>>", data2);
-    };
-    startQuery();
-  }, []);
-
   return (
     <form onSubmit={login} className={classes.root}>
       <Typography className={classes.errorText}>{errorText}</Typography>
       <TextField
         className={classes.input}
         label="Email"
-        placeholder="John.Doe@softgarden.de"
+        placeholder="John.Doe@gmail.com"
         variant="outlined"
         type="email"
         value={email}
