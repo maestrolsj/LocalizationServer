@@ -9,9 +9,7 @@ export default async function (_: undefined, args: MutationForgotPasswordArgs) {
   try {
     const userRepository = getRepository(User);
     const user = await userRepository.findOne({ where: { email: args.email } });
-    if (!isEmail(args.email ?? "") || !isSoftgardenEmail(args.email ?? "")) {
-      return new UserInputError("Must be a softgarden email.");
-    }
+
     if (!user) {
       return new ApolloError("User not found");
     }

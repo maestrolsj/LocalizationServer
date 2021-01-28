@@ -17,13 +17,6 @@ export default async function (_: undefined, args: MutationUpsertUserArgs) {
     await userRepository.update(where, data);
     return await userRepository.findOne(where);
   } else {
-    if (
-      !isEmail(data.email ?? "") ||
-      data.email === "maestrolsj@gmail.com" ||
-      data.email === "yyhan2059@gmail.com"
-    ) {
-      return new UserInputError("Must be a softgarden email.");
-    }
     try {
       const user = await userRepository.save(data);
       const payload = {
