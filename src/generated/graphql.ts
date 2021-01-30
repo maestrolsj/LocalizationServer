@@ -1,7 +1,10 @@
 import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
 import { Context } from '../graphql/resolvers/context';
 export type Maybe<T> = T | null;
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+export type RequireFields<T, K extends keyof T> = { [X in Exclude<keyof T, K>]?: T[X] } & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -82,6 +85,7 @@ export type Mutation = {
   upsertLocale?: Maybe<Locale>;
   upsertUser?: Maybe<User>;
   upsertProject?: Maybe<Project>;
+  deleteProject?: Maybe<Project>;
   upsertScreen?: Maybe<Project>;
   resetPassword?: Maybe<AuthenticationPayload>;
   forgotPassword?: Maybe<Scalars['Boolean']>;
@@ -120,6 +124,11 @@ export type MutationUpsertUserArgs = {
 export type MutationUpsertProjectArgs = {
   data: UpsertProjectDataInput;
   where?: Maybe<UpsertProjectWhereInput>;
+};
+
+
+export type MutationDeleteProjectArgs = {
+  data: DeleteProjectDataInput;
 };
 
 
@@ -176,6 +185,10 @@ export type UpsertProjectDataInput = {
   key: Scalars['String'];
   name: Scalars['String'];
   description: Scalars['String'];
+};
+
+export type DeleteProjectDataInput = {
+  id: Scalars['ID'];
 };
 
 export type UpsertProjectWhereInput = {
@@ -312,22 +325,27 @@ export type ResolversObject<TObject> = WithIndex<TObject>;
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
 
+
+export type LegacyStitchingResolver<TResult, TParent, TContext, TArgs> = {
+  fragment: string;
+  resolve: ResolverFn<TResult, TParent, TContext, TArgs>;
+};
+
+export type NewStitchingResolver<TResult, TParent, TContext, TArgs> = {
+  selectionSet: string;
+  resolve: ResolverFn<TResult, TParent, TContext, TArgs>;
+};
+export type StitchingResolver<TResult, TParent, TContext, TArgs> = LegacyStitchingResolver<TResult, TParent, TContext, TArgs> | NewStitchingResolver<TResult, TParent, TContext, TArgs>;
+export type Resolver<TResult, TParent = {}, TContext = {}, TArgs = {}> =
+  | ResolverFn<TResult, TParent, TContext, TArgs>
+  | StitchingResolver<TResult, TParent, TContext, TArgs>;
+
 export type ResolverFn<TResult, TParent, TContext, TArgs> = (
   parent: TParent,
   args: TArgs,
   context: TContext,
   info: GraphQLResolveInfo
 ) => Promise<TResult> | TResult;
-
-
-export type StitchingResolver<TResult, TParent, TContext, TArgs> = {
-  fragment: string;
-  resolve: ResolverFn<TResult, TParent, TContext, TArgs>;
-};
-
-export type Resolver<TResult, TParent = {}, TContext = {}, TArgs = {}> =
-  | ResolverFn<TResult, TParent, TContext, TArgs>
-  | StitchingResolver<TResult, TParent, TContext, TArgs>;
 
 export type SubscriptionSubscribeFn<TResult, TParent, TContext, TArgs> = (
   parent: TParent,
@@ -343,20 +361,31 @@ export type SubscriptionResolveFn<TResult, TParent, TContext, TArgs> = (
   info: GraphQLResolveInfo
 ) => TResult | Promise<TResult>;
 
-export interface SubscriptionResolverObject<TResult, TParent, TContext, TArgs> {
-  subscribe: SubscriptionSubscribeFn<TResult, TParent, TContext, TArgs>;
-  resolve?: SubscriptionResolveFn<TResult, TParent, TContext, TArgs>;
+export interface SubscriptionSubscriberObject<TResult, TKey extends string, TParent, TContext, TArgs> {
+  subscribe: SubscriptionSubscribeFn<{ [key in TKey]: TResult }, TParent, TContext, TArgs>;
+  resolve?: SubscriptionResolveFn<TResult, { [key in TKey]: TResult }, TContext, TArgs>;
 }
 
-export type SubscriptionResolver<TResult, TParent = {}, TContext = {}, TArgs = {}> =
-  | ((...args: any[]) => SubscriptionResolverObject<TResult, TParent, TContext, TArgs>)
+export interface SubscriptionResolverObject<TResult, TParent, TContext, TArgs> {
+  subscribe: SubscriptionSubscribeFn<any, TParent, TContext, TArgs>;
+  resolve: SubscriptionResolveFn<TResult, any, TContext, TArgs>;
+}
+
+export type SubscriptionObject<TResult, TKey extends string, TParent, TContext, TArgs> =
+  | SubscriptionSubscriberObject<TResult, TKey, TParent, TContext, TArgs>
   | SubscriptionResolverObject<TResult, TParent, TContext, TArgs>;
+
+export type SubscriptionResolver<TResult, TKey extends string, TParent = {}, TContext = {}, TArgs = {}> =
+  | ((...args: any[]) => SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>)
+  | SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>;
 
 export type TypeResolveFn<TTypes, TParent = {}, TContext = {}> = (
   parent: TParent,
   context: TContext,
   info: GraphQLResolveInfo
-) => Maybe<TTypes>;
+) => Maybe<TTypes> | Promise<Maybe<TTypes>>;
+
+export type IsTypeOfResolverFn<T = {}, TContext = {}> = (obj: T, context: TContext, info: GraphQLResolveInfo) => boolean | Promise<boolean>;
 
 export type NextResolverFn<T> = () => Promise<T>;
 
@@ -370,195 +399,204 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
-  String: ResolverTypeWrapper<Scalars['String']>,
-  Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
-  DateTime: ResolverTypeWrapper<Scalars['DateTime']>,
-  JSON: ResolverTypeWrapper<Scalars['JSON']>,
-  Query: ResolverTypeWrapper<{}>,
-  Mutation: ResolverTypeWrapper<{}>,
-  ProjectsWhereInput: ProjectsWhereInput,
-  ID: ResolverTypeWrapper<Scalars['ID']>,
-  ProjectWhereInput: ProjectWhereInput,
-  KeyWhereInput: KeyWhereInput,
-  DeleteKeyWhereInput: DeleteKeyWhereInput,
-  TranslationWhereInput: TranslationWhereInput,
-  ScreensWhereInput: ScreensWhereInput,
-  ScreenWhereInput: ScreenWhereInput,
-  LocaleWhereInput: LocaleWhereInput,
-  UpsertProjectDataInput: UpsertProjectDataInput,
-  UpsertProjectWhereInput: UpsertProjectWhereInput,
-  UpsertTranslationDataInput: UpsertTranslationDataInput,
-  UpsertTranslationWhereInput: UpsertTranslationWhereInput,
-  UpsertKeyDataInput: UpsertKeyDataInput,
-  UpsertKeyWhereInput: UpsertKeyWhereInput,
-  UpsertLocaleDataInput: UpsertLocaleDataInput,
-  UpsertLocaleWhereInput: UpsertLocaleWhereInput,
-  UpsertScreenDataInput: UpsertScreenDataInput,
-  UpsertScreenWhereInput: UpsertScreenWhereInput,
-  UpsertUserDataInput: UpsertUserDataInput,
-  UpsertUserWhereInput: UpsertUserWhereInput,
-  AuthenticationPayload: ResolverTypeWrapper<AuthenticationPayload>,
-  Key: ResolverTypeWrapper<Key>,
-  Locale: ResolverTypeWrapper<Locale>,
-  Project: ResolverTypeWrapper<Project>,
-  Screen: ResolverTypeWrapper<Screen>,
-  Translation: ResolverTypeWrapper<Translation>,
-  User: ResolverTypeWrapper<User>,
+  DateTime: ResolverTypeWrapper<Scalars['DateTime']>;
+  JSON: ResolverTypeWrapper<Scalars['JSON']>;
+  Query: ResolverTypeWrapper<{}>;
+  String: ResolverTypeWrapper<Scalars['String']>;
+  Mutation: ResolverTypeWrapper<{}>;
+  Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  ProjectsWhereInput: ProjectsWhereInput;
+  ID: ResolverTypeWrapper<Scalars['ID']>;
+  ProjectWhereInput: ProjectWhereInput;
+  KeyWhereInput: KeyWhereInput;
+  DeleteKeyWhereInput: DeleteKeyWhereInput;
+  TranslationWhereInput: TranslationWhereInput;
+  ScreensWhereInput: ScreensWhereInput;
+  ScreenWhereInput: ScreenWhereInput;
+  LocaleWhereInput: LocaleWhereInput;
+  UpsertProjectDataInput: UpsertProjectDataInput;
+  DeleteProjectDataInput: DeleteProjectDataInput;
+  UpsertProjectWhereInput: UpsertProjectWhereInput;
+  UpsertTranslationDataInput: UpsertTranslationDataInput;
+  UpsertTranslationWhereInput: UpsertTranslationWhereInput;
+  UpsertKeyDataInput: UpsertKeyDataInput;
+  UpsertKeyWhereInput: UpsertKeyWhereInput;
+  UpsertLocaleDataInput: UpsertLocaleDataInput;
+  UpsertLocaleWhereInput: UpsertLocaleWhereInput;
+  UpsertScreenDataInput: UpsertScreenDataInput;
+  UpsertScreenWhereInput: UpsertScreenWhereInput;
+  UpsertUserDataInput: UpsertUserDataInput;
+  UpsertUserWhereInput: UpsertUserWhereInput;
+  AuthenticationPayload: ResolverTypeWrapper<AuthenticationPayload>;
+  Key: ResolverTypeWrapper<Key>;
+  Locale: ResolverTypeWrapper<Locale>;
+  Project: ResolverTypeWrapper<Project>;
+  Screen: ResolverTypeWrapper<Screen>;
+  Translation: ResolverTypeWrapper<Translation>;
+  User: ResolverTypeWrapper<User>;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
-  String: Scalars['String'],
-  Boolean: Scalars['Boolean'],
-  DateTime: Scalars['DateTime'],
-  JSON: Scalars['JSON'],
-  Query: {},
-  Mutation: {},
-  ProjectsWhereInput: ProjectsWhereInput,
-  ID: Scalars['ID'],
-  ProjectWhereInput: ProjectWhereInput,
-  KeyWhereInput: KeyWhereInput,
-  DeleteKeyWhereInput: DeleteKeyWhereInput,
-  TranslationWhereInput: TranslationWhereInput,
-  ScreensWhereInput: ScreensWhereInput,
-  ScreenWhereInput: ScreenWhereInput,
-  LocaleWhereInput: LocaleWhereInput,
-  UpsertProjectDataInput: UpsertProjectDataInput,
-  UpsertProjectWhereInput: UpsertProjectWhereInput,
-  UpsertTranslationDataInput: UpsertTranslationDataInput,
-  UpsertTranslationWhereInput: UpsertTranslationWhereInput,
-  UpsertKeyDataInput: UpsertKeyDataInput,
-  UpsertKeyWhereInput: UpsertKeyWhereInput,
-  UpsertLocaleDataInput: UpsertLocaleDataInput,
-  UpsertLocaleWhereInput: UpsertLocaleWhereInput,
-  UpsertScreenDataInput: UpsertScreenDataInput,
-  UpsertScreenWhereInput: UpsertScreenWhereInput,
-  UpsertUserDataInput: UpsertUserDataInput,
-  UpsertUserWhereInput: UpsertUserWhereInput,
-  AuthenticationPayload: AuthenticationPayload,
-  Key: Key,
-  Locale: Locale,
-  Project: Project,
-  Screen: Screen,
-  Translation: Translation,
-  User: User,
+  DateTime: Scalars['DateTime'];
+  JSON: Scalars['JSON'];
+  Query: {};
+  String: Scalars['String'];
+  Mutation: {};
+  Boolean: Scalars['Boolean'];
+  ProjectsWhereInput: ProjectsWhereInput;
+  ID: Scalars['ID'];
+  ProjectWhereInput: ProjectWhereInput;
+  KeyWhereInput: KeyWhereInput;
+  DeleteKeyWhereInput: DeleteKeyWhereInput;
+  TranslationWhereInput: TranslationWhereInput;
+  ScreensWhereInput: ScreensWhereInput;
+  ScreenWhereInput: ScreenWhereInput;
+  LocaleWhereInput: LocaleWhereInput;
+  UpsertProjectDataInput: UpsertProjectDataInput;
+  DeleteProjectDataInput: DeleteProjectDataInput;
+  UpsertProjectWhereInput: UpsertProjectWhereInput;
+  UpsertTranslationDataInput: UpsertTranslationDataInput;
+  UpsertTranslationWhereInput: UpsertTranslationWhereInput;
+  UpsertKeyDataInput: UpsertKeyDataInput;
+  UpsertKeyWhereInput: UpsertKeyWhereInput;
+  UpsertLocaleDataInput: UpsertLocaleDataInput;
+  UpsertLocaleWhereInput: UpsertLocaleWhereInput;
+  UpsertScreenDataInput: UpsertScreenDataInput;
+  UpsertScreenWhereInput: UpsertScreenWhereInput;
+  UpsertUserDataInput: UpsertUserDataInput;
+  UpsertUserWhereInput: UpsertUserWhereInput;
+  AuthenticationPayload: AuthenticationPayload;
+  Key: Key;
+  Locale: Locale;
+  Project: Project;
+  Screen: Screen;
+  Translation: Translation;
+  User: User;
 }>;
 
 export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['DateTime'], any> {
-  name: 'DateTime'
+  name: 'DateTime';
 }
 
 export interface JsonScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['JSON'], any> {
-  name: 'JSON'
+  name: 'JSON';
 }
 
-export type QueryResolvers<ContextType = Context, ParentType = ResolversParentTypes['Query']> = ResolversObject<{
-  login?: Resolver<Maybe<ResolversTypes['AuthenticationPayload']>, ParentType, ContextType, QueryLoginArgs>,
-  projects?: Resolver<Array<ResolversTypes['Project']>, ParentType, ContextType, QueryProjectsArgs>,
-  project?: Resolver<ResolversTypes['Project'], ParentType, ContextType, QueryProjectArgs>,
-  screens?: Resolver<Array<ResolversTypes['Screen']>, ParentType, ContextType, QueryScreensArgs>,
-  screen?: Resolver<ResolversTypes['Screen'], ParentType, ContextType, QueryScreenArgs>,
-  locale?: Resolver<ResolversTypes['Locale'], ParentType, ContextType, QueryLocaleArgs>,
-  key?: Resolver<ResolversTypes['Key'], ParentType, ContextType, QueryKeyArgs>,
-  translation?: Resolver<ResolversTypes['Translation'], ParentType, ContextType, QueryTranslationArgs>,
-  i18next?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType, QueryI18nextArgs>,
+export type QueryResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
+  login?: Resolver<Maybe<ResolversTypes['AuthenticationPayload']>, ParentType, ContextType, RequireFields<QueryLoginArgs, 'email' | 'password'>>;
+  projects?: Resolver<Array<ResolversTypes['Project']>, ParentType, ContextType, RequireFields<QueryProjectsArgs, never>>;
+  project?: Resolver<ResolversTypes['Project'], ParentType, ContextType, RequireFields<QueryProjectArgs, 'where'>>;
+  screens?: Resolver<Array<ResolversTypes['Screen']>, ParentType, ContextType, RequireFields<QueryScreensArgs, never>>;
+  screen?: Resolver<ResolversTypes['Screen'], ParentType, ContextType, RequireFields<QueryScreenArgs, 'where'>>;
+  locale?: Resolver<ResolversTypes['Locale'], ParentType, ContextType, RequireFields<QueryLocaleArgs, 'where'>>;
+  key?: Resolver<ResolversTypes['Key'], ParentType, ContextType, RequireFields<QueryKeyArgs, 'where'>>;
+  translation?: Resolver<ResolversTypes['Translation'], ParentType, ContextType, RequireFields<QueryTranslationArgs, 'where'>>;
+  i18next?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType, RequireFields<QueryI18nextArgs, 'key'>>;
 }>;
 
-export type MutationResolvers<ContextType = Context, ParentType = ResolversParentTypes['Mutation']> = ResolversObject<{
-  upsertTranslation?: Resolver<Maybe<ResolversTypes['Translation']>, ParentType, ContextType, MutationUpsertTranslationArgs>,
-  upsertKey?: Resolver<Maybe<ResolversTypes['Key']>, ParentType, ContextType, MutationUpsertKeyArgs>,
-  deleteKey?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, MutationDeleteKeyArgs>,
-  upsertLocale?: Resolver<Maybe<ResolversTypes['Locale']>, ParentType, ContextType, MutationUpsertLocaleArgs>,
-  upsertUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, MutationUpsertUserArgs>,
-  upsertProject?: Resolver<Maybe<ResolversTypes['Project']>, ParentType, ContextType, MutationUpsertProjectArgs>,
-  upsertScreen?: Resolver<Maybe<ResolversTypes['Project']>, ParentType, ContextType, MutationUpsertScreenArgs>,
-  resetPassword?: Resolver<Maybe<ResolversTypes['AuthenticationPayload']>, ParentType, ContextType, MutationResetPasswordArgs>,
-  forgotPassword?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, MutationForgotPasswordArgs>,
+export type MutationResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
+  upsertTranslation?: Resolver<Maybe<ResolversTypes['Translation']>, ParentType, ContextType, RequireFields<MutationUpsertTranslationArgs, 'data'>>;
+  upsertKey?: Resolver<Maybe<ResolversTypes['Key']>, ParentType, ContextType, RequireFields<MutationUpsertKeyArgs, 'data'>>;
+  deleteKey?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationDeleteKeyArgs, 'where'>>;
+  upsertLocale?: Resolver<Maybe<ResolversTypes['Locale']>, ParentType, ContextType, RequireFields<MutationUpsertLocaleArgs, 'data'>>;
+  upsertUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationUpsertUserArgs, 'data'>>;
+  upsertProject?: Resolver<Maybe<ResolversTypes['Project']>, ParentType, ContextType, RequireFields<MutationUpsertProjectArgs, 'data'>>;
+  deleteProject?: Resolver<Maybe<ResolversTypes['Project']>, ParentType, ContextType, RequireFields<MutationDeleteProjectArgs, 'data'>>;
+  upsertScreen?: Resolver<Maybe<ResolversTypes['Project']>, ParentType, ContextType, RequireFields<MutationUpsertScreenArgs, 'data'>>;
+  resetPassword?: Resolver<Maybe<ResolversTypes['AuthenticationPayload']>, ParentType, ContextType, RequireFields<MutationResetPasswordArgs, 'password' | 'token'>>;
+  forgotPassword?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationForgotPasswordArgs, 'email'>>;
 }>;
 
-export type AuthenticationPayloadResolvers<ContextType = Context, ParentType = ResolversParentTypes['AuthenticationPayload']> = ResolversObject<{
-  accessToken?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
-  user?: Resolver<ResolversTypes['User'], ParentType, ContextType>,
+export type AuthenticationPayloadResolvers<ContextType = Context, ParentType extends ResolversParentTypes['AuthenticationPayload'] = ResolversParentTypes['AuthenticationPayload']> = ResolversObject<{
+  accessToken?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type KeyResolvers<ContextType = Context, ParentType = ResolversParentTypes['Key']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
-  screen?: Resolver<ResolversTypes['Screen'], ParentType, ContextType>,
-  translations?: Resolver<Array<ResolversTypes['Translation']>, ParentType, ContextType>,
-  plural?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,
-  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>,
-  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>,
+export type KeyResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Key'] = ResolversParentTypes['Key']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  screen?: Resolver<ResolversTypes['Screen'], ParentType, ContextType>;
+  translations?: Resolver<Array<ResolversTypes['Translation']>, ParentType, ContextType>;
+  plural?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type LocaleResolvers<ContextType = Context, ParentType = ResolversParentTypes['Locale']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
-  nativeName?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
-  code?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
-  project?: Resolver<ResolversTypes['Project'], ParentType, ContextType>,
-  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>,
-  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>,
+export type LocaleResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Locale'] = ResolversParentTypes['Locale']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  nativeName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  code?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  project?: Resolver<ResolversTypes['Project'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type ProjectResolvers<ContextType = Context, ParentType = ResolversParentTypes['Project']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
-  key?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
-  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
-  screens?: Resolver<Array<ResolversTypes['Screen']>, ParentType, ContextType>,
-  locales?: Resolver<Array<ResolversTypes['Locale']>, ParentType, ContextType>,
-  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>,
-  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>,
+export type ProjectResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Project'] = ResolversParentTypes['Project']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  key?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  screens?: Resolver<Array<ResolversTypes['Screen']>, ParentType, ContextType>;
+  locales?: Resolver<Array<ResolversTypes['Locale']>, ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type ScreenResolvers<ContextType = Context, ParentType = ResolversParentTypes['Screen']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
-  key?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
-  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
-  project?: Resolver<ResolversTypes['Project'], ParentType, ContextType>,
-  keys?: Resolver<Array<ResolversTypes['Key']>, ParentType, ContextType>,
-  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>,
-  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>,
+export type ScreenResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Screen'] = ResolversParentTypes['Screen']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  key?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  project?: Resolver<ResolversTypes['Project'], ParentType, ContextType>;
+  keys?: Resolver<Array<ResolversTypes['Key']>, ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type TranslationResolvers<ContextType = Context, ParentType = ResolversParentTypes['Translation']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
-  value?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
-  locale?: Resolver<ResolversTypes['Locale'], ParentType, ContextType>,
-  key?: Resolver<ResolversTypes['Key'], ParentType, ContextType>,
-  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>,
-  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>,
+export type TranslationResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Translation'] = ResolversParentTypes['Translation']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  value?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  locale?: Resolver<ResolversTypes['Locale'], ParentType, ContextType>;
+  key?: Resolver<ResolversTypes['Key'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type UserResolvers<ContextType = Context, ParentType = ResolversParentTypes['User']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>,
-  firstName?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
-  lastName?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
-  email?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
-  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>,
-  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>,
+export type UserResolvers<ContextType = Context, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  firstName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  lastName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type Resolvers<ContextType = Context> = ResolversObject<{
-  DateTime?: GraphQLScalarType,
-  JSON?: GraphQLScalarType,
-  Query?: QueryResolvers<ContextType>,
-  Mutation?: MutationResolvers<ContextType>,
-  AuthenticationPayload?: AuthenticationPayloadResolvers<ContextType>,
-  Key?: KeyResolvers<ContextType>,
-  Locale?: LocaleResolvers<ContextType>,
-  Project?: ProjectResolvers<ContextType>,
-  Screen?: ScreenResolvers<ContextType>,
-  Translation?: TranslationResolvers<ContextType>,
-  User?: UserResolvers<ContextType>,
+  DateTime?: GraphQLScalarType;
+  JSON?: GraphQLScalarType;
+  Query?: QueryResolvers<ContextType>;
+  Mutation?: MutationResolvers<ContextType>;
+  AuthenticationPayload?: AuthenticationPayloadResolvers<ContextType>;
+  Key?: KeyResolvers<ContextType>;
+  Locale?: LocaleResolvers<ContextType>;
+  Project?: ProjectResolvers<ContextType>;
+  Screen?: ScreenResolvers<ContextType>;
+  Translation?: TranslationResolvers<ContextType>;
+  User?: UserResolvers<ContextType>;
 }>;
 
 
 /**
  * @deprecated
  * Use "Resolvers" root object instead. If you wish to get "IResolvers", add "typesPrefix: I" to your config.
-*/
+ */
 export type IResolvers<ContextType = Context> = Resolvers<ContextType>;
-

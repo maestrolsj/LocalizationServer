@@ -1,0 +1,38 @@
+version: "3"
+services:
+  translation-tool-app:
+    command: npm run dev
+    build: .
+    depends_on:
+      - translation-tool-db
+    env_file:
+      - ./.env
+    ports:
+      - "4000:4000"
+    networks:
+      - our_net
+    expose:
+      - "4000"
+
+  translation-tool-db:
+    image: postgres
+    restart: always
+    env_file:
+      - ./.env
+    ports:
+      - "5432:5432"
+    volumes:
+      - /app/src/db/seed/postgres
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "gkseorb12"
+      POSTGRES_DB: "public"
+      PGDATA: "/app/src/db/seed/postgres"
+    networks:
+      - our_net
+    expose:
+      - "5432"
+
+networks:
+  our_net:
+    driver: bridge
