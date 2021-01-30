@@ -6,10 +6,7 @@
 FROM nginx:alpine
 
 # For staging and production this was overwritten by kubernetes e.g with https://headhunter.staging.softgarden.io/referral/api/v1
-ENV REACT_APP_API_BASE_URL=http://localhost:4001/
-
-# Set server maintainer
-MAINTAINER Stefan Schueffler <s.schueffler@softgarden.de>
+ENV REACT_APP_API_BASE_URL=http://18.193.202.36:4000/graphql
 
 # Make sure nginx html folder is clear
 RUN rm -rf /usr/share/nginx/html/*
@@ -21,8 +18,6 @@ COPY nginx.conf /etc/nginx/nginx.conf
 # Copy entrypoint shell script and make it executable to replace relative API paths with absolute paths injected from docker environment variable
 COPY entrypoint.sh /
 RUN chmod u+x /entrypoint.sh
-
-EXPOSE 
 
 # Run nginx
 CMD ["-g", "daemon off;"]

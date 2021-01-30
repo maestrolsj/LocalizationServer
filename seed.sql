@@ -1,20 +1,9 @@
-CREATE TABLE `locale` (`id` varchar(36) NOT NULL, `name` varchar(255) NOT NULL, `nativeName` varchar(255) NOT NULL, `code` varchar(255) NOT NULL, `createdAt` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6), `updatedAt` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6), `projectId` varchar(36) NULL, UNIQUE INDEX `UQ_PROJECT_CODE` (`projectId`, `code`), PRIMARY KEY (`id`)) ENGINE=InnoDB
-CREATE TABLE `project` (`id` varchar(36) NOT NULL, `key` varchar(255) NOT NULL, `name` varchar(255) NOT NULL, `description` varchar(255) NULL, `createdAt` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6), `updatedAt` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6), UNIQUE INDEX `IDX_2db22c052f9ffdd51a6c113b37` (`key`), PRIMARY KEY (`id`)) ENGINE=InnoDB
-CREATE TABLE `screen` (`id` varchar(36) NOT NULL, `key` varchar(255) NOT NULL, `name` varchar(255) NOT NULL, `description` varchar(255) NULL, `createdAt` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6), `updatedAt` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6), `projectId` varchar(36) NULL, UNIQUE INDEX `UQ_PROJECT_SCREEN` (`projectId`, `key`), PRIMARY KEY (`id`)) ENGINE=InnoDB
-CREATE TABLE `key` (`id` varchar(36) NOT NULL, `name` varchar(255) NOT NULL, `plural` tinyint NOT NULL DEFAULT 0, `createdAt` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6), `updatedAt` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6), `screenId` varchar(36) NULL, UNIQUE INDEX `UQ_NAME_SCREEN_PLURAL` (`name`, `screenId`, `plural`), PRIMARY KEY (`id`)) ENGINE=InnoDB
-CREATE TABLE `translation` (`id` varchar(36) NOT NULL, `value` varchar(255) NOT NULL, `createdAt` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6), `updatedAt` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6), `localeId` varchar(36) NULL, `keyId` varchar(36) NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB
-CREATE TABLE `user` (`id` varchar(36) NOT NULL, `firstName` varchar(255) NOT NULL, `lastName` varchar(255) NOT NULL, `email` varchar(255) NOT NULL, `password` varchar(255) NULL, `createdAt` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6), `updatedAt` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6), UNIQUE INDEX `IDX_e12875dfb3b1d92d7d7c5377e2` (`email`), PRIMARY KEY (`id`)) ENGINE=InnoDB
-ALTER TABLE `locale` ADD CONSTRAINT `FK_6154bf046ac6eb106a64550b2dc` FOREIGN KEY (`projectId`) REFERENCES `project`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-ALTER TABLE `screen` ADD CONSTRAINT `FK_ff69bb9693731a9254e2738e160` FOREIGN KEY (`projectId`) REFERENCES `project`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-ALTER TABLE `key` ADD CONSTRAINT `FK_a3d59273014aa03bec34526a8dd` FOREIGN KEY (`screenId`) REFERENCES `screen`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-ALTER TABLE `translation` ADD CONSTRAINT `FK_3735dea211844d6d360c10f7254` FOREIGN KEY (`localeId`) REFERENCES `locale`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-ALTER TABLE `translation` ADD CONSTRAINT `FK_87000be60941b495c33ec06ac66` FOREIGN KEY (`keyId`) REFERENCES `key`(`id`) ON DELETE CASCADE ON UPDATE CASCADE
-
-INSERT INTO public.project (id,"key","name",description,"createdAt","updatedAt") VALUES 
+\c translation-tool;
+INSERT INTO public."user" (id,"firstName","lastName",email,"password","createdAt","updatedAt") VALUES 
+('57ca3cb0-37db-4570-bba9-e861d10dc3d5','Bruno','Borges','bruno.borges@softgarden.de','$2b$12$.0afM4qrddobVF4dsimy3eFQzDi6/RkSWiN3aPYpfZQy.WFDRg4LC','2020-06-10 15:17:06.980','2020-06-10 15:17:06.980')
+;INSERT INTO public.project (id,"key",name,description,"createdAt","updatedAt") VALUES 
 ('57410df1-22f6-4084-a47c-67594730aabd','MOBILE','JH APP','','2020-06-10 16:17:16.189','2020-06-10 16:17:16.189')
-;
-
-INSERT INTO public.screen (id,"key","name",description,"createdAt","updatedAt","projectId") VALUES 
+;INSERT INTO public.screen (id,"key",name,description,"createdAt","updatedAt","projectId") VALUES 
 ('2f43657e-7708-49a2-a824-cdec98653d7a','GlobalStrings','GlobalStrings','','2020-06-10 16:17:16.242','2020-06-10 16:17:16.242','57410df1-22f6-4084-a47c-67594730aabd')
 ,('3c80ba47-ce2f-4008-8295-6c1d56d68f43','Locale','Locale','','2020-06-10 16:17:16.547','2020-06-10 16:17:16.547','57410df1-22f6-4084-a47c-67594730aabd')
 ,('68044065-782e-4f49-a662-4b458494b6bf','DateTimeModal','DateTimeModal','','2020-06-10 16:17:16.677','2020-06-10 16:17:16.677','57410df1-22f6-4084-a47c-67594730aabd')
@@ -26,7 +15,7 @@ INSERT INTO public.screen (id,"key","name",description,"createdAt","updatedAt","
 ,('5bebd337-2d52-4f9c-af59-c9837e04e9cb','RatingModal','RatingModal','','2020-06-10 16:17:18.057','2020-06-10 16:17:18.057','57410df1-22f6-4084-a47c-67594730aabd')
 ,('d3be90fe-be31-4842-872f-00caff22de30','RejectionBinModal','RejectionBinModal','','2020-06-10 16:17:18.292','2020-06-10 16:17:18.292','57410df1-22f6-4084-a47c-67594730aabd')
 ;
-INSERT INTO public.screen (id,"key","name",description,"createdAt","updatedAt","projectId") VALUES 
+INSERT INTO public.screen (id,"key",name,description,"createdAt","updatedAt","projectId") VALUES 
 ('a435d712-2302-4eba-af07-e60d5fcb5e8f','RejectionReasonsModal','RejectionReasonsModal','','2020-06-10 16:17:18.527','2020-06-10 16:17:18.527','57410df1-22f6-4084-a47c-67594730aabd')
 ,('d5d4721f-b544-4f0e-80e9-8ad0697eca48','SignOutModal','SignOutModal','','2020-06-10 16:17:18.566','2020-06-10 16:17:18.566','57410df1-22f6-4084-a47c-67594730aabd')
 ,('c40f45d7-13ea-4de2-af67-134ea16df215','StatusMoreOptionsModal','StatusMoreOptionsModal','','2020-06-10 16:17:18.625','2020-06-10 16:17:18.625','57410df1-22f6-4084-a47c-67594730aabd')
@@ -38,7 +27,7 @@ INSERT INTO public.screen (id,"key","name",description,"createdAt","updatedAt","
 ,('16960f5e-f580-4582-8ed1-a48db9b736b9','ApplicationListScreen','ApplicationListScreen','','2020-06-10 16:17:19.730','2020-06-10 16:17:19.730','57410df1-22f6-4084-a47c-67594730aabd')
 ,('642338bc-f8ca-4c87-b41c-2a9a0253e598','ApplicationProfileScreen','ApplicationProfileScreen','','2020-06-10 16:17:19.873','2020-06-10 16:17:19.873','57410df1-22f6-4084-a47c-67594730aabd')
 ;
-INSERT INTO public.screen (id,"key","name",description,"createdAt","updatedAt","projectId") VALUES 
+INSERT INTO public.screen (id,"key",name,description,"createdAt","updatedAt","projectId") VALUES 
 ('064c5dc0-0df8-42e1-a90a-e78ea4b9f277','ApplicationResumeScreen','ApplicationResumeScreen','','2020-06-10 16:17:21.168','2020-06-10 16:17:21.168','57410df1-22f6-4084-a47c-67594730aabd')
 ,('ad4ee7d6-09c4-44c2-b67a-a8f4c41d5a20','AutoLockScreen','AutoLockScreen','','2020-06-10 16:17:21.295','2020-06-10 16:17:21.295','57410df1-22f6-4084-a47c-67594730aabd')
 ,('8f041ad8-e897-4f69-b597-ad4e63389bfc','ChangePinCodeScreen','ChangePinCodeScreen','','2020-06-10 16:17:21.360','2020-06-10 16:17:21.360','57410df1-22f6-4084-a47c-67594730aabd')
@@ -50,7 +39,7 @@ INSERT INTO public.screen (id,"key","name",description,"createdAt","updatedAt","
 ,('dfb7689e-ec1a-4174-bad9-7a3f1ccd0658','DefinePinCodeScreen','DefinePinCodeScreen','','2020-06-10 16:17:22.483','2020-06-10 16:17:22.483','57410df1-22f6-4084-a47c-67594730aabd')
 ,('41ea2ba8-6eb8-4bdb-85e5-787ca542d575','EmailInboxScreen','EmailInboxScreen','','2020-06-10 16:17:22.585','2020-06-10 16:17:22.585','57410df1-22f6-4084-a47c-67594730aabd')
 ;
-INSERT INTO public.screen (id,"key","name",description,"createdAt","updatedAt","projectId") VALUES 
+INSERT INTO public.screen (id,"key",name,description,"createdAt","updatedAt","projectId") VALUES 
 ('9d485963-35af-4397-9077-35c180799b68','EmailScreen','EmailScreen','','2020-06-10 16:17:22.681','2020-06-10 16:17:22.681','57410df1-22f6-4084-a47c-67594730aabd')
 ,('5cc506a2-2c71-471a-a924-60080755dc06','EmailThreadScreen','EmailThreadScreen','','2020-06-10 16:17:22.933','2020-06-10 16:17:22.933','57410df1-22f6-4084-a47c-67594730aabd')
 ,('3dcbab34-8deb-4ff5-9437-04145b13b8ef','EmailWritingScreen','EmailWritingScreen','','2020-06-10 16:17:23.008','2020-06-10 16:17:23.008','57410df1-22f6-4084-a47c-67594730aabd')
@@ -62,7 +51,7 @@ INSERT INTO public.screen (id,"key","name",description,"createdAt","updatedAt","
 ,('6f024551-897c-4557-a918-41d02f04f3a2','JobScreen','JobScreen','','2020-06-10 16:17:24.347','2020-06-10 16:17:24.347','57410df1-22f6-4084-a47c-67594730aabd')
 ,('663ab8a1-5af1-41b7-9b56-3f5296efc9fa','LanguageScreen','LanguageScreen','','2020-06-10 16:17:24.531','2020-06-10 16:17:24.531','57410df1-22f6-4084-a47c-67594730aabd')
 ;
-INSERT INTO public.screen (id,"key","name",description,"createdAt","updatedAt","projectId") VALUES 
+INSERT INTO public.screen (id,"key",name,description,"createdAt","updatedAt","projectId") VALUES 
 ('1b31052a-f213-475b-a6ed-41d180df65dd','LockScreen','LockScreen','','2020-06-10 16:17:24.569','2020-06-10 16:17:24.569','57410df1-22f6-4084-a47c-67594730aabd')
 ,('c603adaf-a9ac-429e-8f10-92f0848882c1','LoginScreen','LoginScreen','','2020-06-10 16:17:24.821','2020-06-10 16:17:24.821','57410df1-22f6-4084-a47c-67594730aabd')
 ,('f690aee8-9f79-4cbf-a9ad-0f74ca53a1b6','MailAttachmentScreen','MailAttachmentScreen','','2020-06-10 16:17:25.161','2020-06-10 16:17:25.161','57410df1-22f6-4084-a47c-67594730aabd')
@@ -74,7 +63,7 @@ INSERT INTO public.screen (id,"key","name",description,"createdAt","updatedAt","
 ,('ac19046c-cd37-4a69-9ee7-846913265f14','TodoListScreen','TodoListScreen','','2020-06-10 16:17:26.136','2020-06-10 16:17:26.136','57410df1-22f6-4084-a47c-67594730aabd')
 ,('e3f34110-1233-4311-ba38-8c53217f3932','WebViewScreen','WebViewScreen','','2020-06-10 16:17:26.387','2020-06-10 16:17:26.387','57410df1-22f6-4084-a47c-67594730aabd')
 ;
-INSERT INTO public.screen (id,"key","name",description,"createdAt","updatedAt","projectId") VALUES 
+INSERT INTO public.screen (id,"key",name,description,"createdAt","updatedAt","projectId") VALUES 
 ('68e7a839-5862-44b8-9b4e-0577493f2f23','WhoVotedScreen','WhoVotedScreen','','2020-06-10 16:17:26.436','2020-06-10 16:17:26.436','57410df1-22f6-4084-a47c-67594730aabd')
 ,('5466d9c9-ff80-49f7-a841-08941ee49ead','ApplicationSwipeButtons','ApplicationSwipeButtons','','2020-06-10 16:17:26.478','2020-06-10 16:17:26.478','57410df1-22f6-4084-a47c-67594730aabd')
 ,('5d3494e3-06e8-450a-b788-8027541e1a50','ErrorState','ErrorState','','2020-06-10 16:17:26.522','2020-06-10 16:17:26.522','57410df1-22f6-4084-a47c-67594730aabd')
@@ -83,17 +72,12 @@ INSERT INTO public.screen (id,"key","name",description,"createdAt","updatedAt","
 ,('5baf5160-f65e-41f4-822e-5e8089ee7843','NoResultsEmptyState','NoResultsEmptyState','','2020-06-10 16:17:26.715','2020-06-10 16:17:26.715','57410df1-22f6-4084-a47c-67594730aabd')
 ,('ad448a07-f27c-433d-9bae-628cee439785','OfflineState','OfflineState','','2020-06-10 16:17:26.749','2020-06-10 16:17:26.749','57410df1-22f6-4084-a47c-67594730aabd')
 ,('50cf9d3e-b030-449b-ad0a-dc1bdcf15312','util','util','','2020-06-10 16:17:26.775','2020-06-10 16:17:26.775','57410df1-22f6-4084-a47c-67594730aabd')
-;
-
-
-INSERT INTO public.locale (id,"name","nativeName",code,"createdAt","updatedAt","projectId") VALUES 
+;INSERT INTO public.locale (id,name,"nativeName",code,"createdAt","updatedAt","projectId") VALUES 
 ('ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','German','Deutsch','de','2020-06-10 16:17:16.225','2020-06-10 16:17:16.225','57410df1-22f6-4084-a47c-67594730aabd')
 ,('c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','English','English','en','2020-06-10 16:17:27.056','2020-06-10 16:17:27.056','57410df1-22f6-4084-a47c-67594730aabd')
 ,('a4aaf22b-6090-4bc6-b331-04ea9573f3ac','Spanish','Español','es','2020-06-10 16:17:33.891','2020-06-10 16:17:33.891','57410df1-22f6-4084-a47c-67594730aabd')
 ,('0c12577b-360b-4843-a86e-39c129047b0b','Polish','język polski','pl','2020-06-10 16:17:40.589','2020-06-10 16:17:40.589','57410df1-22f6-4084-a47c-67594730aabd')
-;
-
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+;INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('650749f0-2d4e-42f7-b5df-72bd9869a647','todoListViewHeader',false,'2020-06-10 16:17:16.256','2020-06-10 16:17:16.256','2f43657e-7708-49a2-a824-cdec98653d7a')
 ,('f17de69e-cf85-40dc-bad2-d05c6e1c717d','jobListHeader',false,'2020-06-10 16:17:16.279','2020-06-10 16:17:16.279','2f43657e-7708-49a2-a824-cdec98653d7a')
 ,('dc01e0e4-62b4-438a-bf63-990a87cba3ea','applicationListViewHeader',false,'2020-06-10 16:17:16.297','2020-06-10 16:17:16.297','2f43657e-7708-49a2-a824-cdec98653d7a')
@@ -105,7 +89,7 @@ INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") V
 ,('7b74dbb0-81c6-468e-b174-4c67760f58c1','toastMessage',false,'2020-06-10 16:17:16.435','2020-06-10 16:17:16.435','2f43657e-7708-49a2-a824-cdec98653d7a')
 ,('2492f444-5ad0-44ad-9e54-c7071be74e53','moveToRejectionBin',false,'2020-06-10 16:17:16.459','2020-06-10 16:17:16.459','2f43657e-7708-49a2-a824-cdec98653d7a')
 ;
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('4b6eb31a-2080-417f-9187-92f9937adb7f','removeFromRejectionBin',false,'2020-06-10 16:17:16.480','2020-06-10 16:17:16.480','2f43657e-7708-49a2-a824-cdec98653d7a')
 ,('ba32fa3b-f09d-47a2-914a-ab9cf8357f4d','dismissTodos',false,'2020-06-10 16:17:16.504','2020-06-10 16:17:16.504','2f43657e-7708-49a2-a824-cdec98653d7a')
 ,('ad7cdfaa-d1e0-4d51-8ba2-68b4f2fcf590','serverError',false,'2020-06-10 16:17:16.524','2020-06-10 16:17:16.524','2f43657e-7708-49a2-a824-cdec98653d7a')
@@ -117,7 +101,7 @@ INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") V
 ,('0a8774a5-721b-4bd2-96ff-6b18ced73781','title',false,'2020-06-10 16:17:16.690','2020-06-10 16:17:16.690','68044065-782e-4f49-a662-4b458494b6bf')
 ,('17c0a33e-317c-4b9c-9f42-97fd13c5465b','cancel',false,'2020-06-10 16:17:16.716','2020-06-10 16:17:16.716','68044065-782e-4f49-a662-4b458494b6bf')
 ;
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('bbbfac4c-e1b0-47e9-86bb-c6c8d7c84daa','done',false,'2020-06-10 16:17:16.740','2020-06-10 16:17:16.740','68044065-782e-4f49-a662-4b458494b6bf')
 ,('e98e867a-90be-44a0-8168-0e920062eeab','today',false,'2020-06-10 16:17:16.760','2020-06-10 16:17:16.760','68044065-782e-4f49-a662-4b458494b6bf')
 ,('9ca1ba5d-4d46-491a-bc49-91a180671f39','tomorrow',false,'2020-06-10 16:17:16.782','2020-06-10 16:17:16.782','68044065-782e-4f49-a662-4b458494b6bf')
@@ -129,7 +113,7 @@ INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") V
 ,('f08a9ab3-e91e-412e-a087-9cc66f6b4b31','hourPickerFormat',false,'2020-06-10 16:17:16.908','2020-06-10 16:17:16.908','68044065-782e-4f49-a662-4b458494b6bf')
 ,('2d0be6af-b945-4e19-bfe7-b9e7c47734cb','minutePickerFormat',false,'2020-06-10 16:17:16.925','2020-06-10 16:17:16.925','68044065-782e-4f49-a662-4b458494b6bf')
 ;
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('c29ae2bf-b3c3-4360-aede-a47cc3f8091f','durations',false,'2020-06-10 16:17:16.946','2020-06-10 16:17:16.946','68044065-782e-4f49-a662-4b458494b6bf')
 ,('66c1a93b-7c8f-4ba3-a935-b9dc1b29e0f8','movingDesc',false,'2020-06-10 16:17:17.151','2020-06-10 16:17:17.151','983a165d-7ab1-48e8-bc6c-4c720a04c6f3')
 ,('d6c1354c-099f-4f2d-913e-aa0d4fe51de8','onBoardingDesc',false,'2020-06-10 16:17:17.172','2020-06-10 16:17:17.172','983a165d-7ab1-48e8-bc6c-4c720a04c6f3')
@@ -141,7 +125,7 @@ INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") V
 ,('33c287a9-aca5-4ccb-a131-1aa63679c9f8','continue',false,'2020-06-10 16:17:17.290','2020-06-10 16:17:17.290','983a165d-7ab1-48e8-bc6c-4c720a04c6f3')
 ,('0de37f11-a315-4bee-b9e5-0f028cfd79d8','new',false,'2020-06-10 16:17:17.308','2020-06-10 16:17:17.308','983a165d-7ab1-48e8-bc6c-4c720a04c6f3')
 ;
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('f8a03a5e-ccce-47dc-946a-7e03f7d80cbf','short',false,'2020-06-10 16:17:17.329','2020-06-10 16:17:17.329','983a165d-7ab1-48e8-bc6c-4c720a04c6f3')
 ,('217716c4-d568-4a09-84d1-e654fa7b3773','interview',false,'2020-06-10 16:17:17.348','2020-06-10 16:17:17.348','983a165d-7ab1-48e8-bc6c-4c720a04c6f3')
 ,('9a64ebef-bcb9-406a-bf6c-3322629def71','offer',false,'2020-06-10 16:17:17.379','2020-06-10 16:17:17.379','983a165d-7ab1-48e8-bc6c-4c720a04c6f3')
@@ -153,7 +137,7 @@ INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") V
 ,('6b6f8ab5-5760-4319-a8a3-d7388aa70270','desc',false,'2020-06-10 16:17:17.578','2020-06-10 16:17:17.578','48813d38-20d9-4264-9140-bbd901e51594')
 ,('c15f5d1a-0219-46f2-8a61-f841a35c04c0','noReachableSteps',false,'2020-06-10 16:17:17.596','2020-06-10 16:17:17.596','48813d38-20d9-4264-9140-bbd901e51594')
 ;
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('d90c69cf-8cae-4f4e-8e38-af0312dfc86c','changeApplicationSteps',false,'2020-06-10 16:17:17.624','2020-06-10 16:17:17.624','2b64cab2-e41f-4b54-96f1-a0a780c6fb8f')
 ,('70ef40e2-8719-4ec3-b362-82a2855f5310','secondChance',false,'2020-06-10 16:17:17.663','2020-06-10 16:17:17.663','2b64cab2-e41f-4b54-96f1-a0a780c6fb8f')
 ,('d9570970-f54f-4c23-aba3-c8e117801f1b','pause',false,'2020-06-10 16:17:17.683','2020-06-10 16:17:17.683','2b64cab2-e41f-4b54-96f1-a0a780c6fb8f')
@@ -165,7 +149,7 @@ INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") V
 ,('9a054f34-1aa4-4a40-89d7-4b46c32c71a3','btnMoveToWorkflow',false,'2020-06-10 16:17:17.858','2020-06-10 16:17:17.858','2b64cab2-e41f-4b54-96f1-a0a780c6fb8f')
 ,('e91f70e2-3e69-4725-8f7e-c5d307800684','sendReminder',false,'2020-06-10 16:17:17.877','2020-06-10 16:17:17.877','2b64cab2-e41f-4b54-96f1-a0a780c6fb8f')
 ;
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('9dbee921-c464-4aa9-8917-073cc726ee44','decline',false,'2020-06-10 16:17:17.894','2020-06-10 16:17:17.894','2b64cab2-e41f-4b54-96f1-a0a780c6fb8f')
 ,('81c29668-8b71-4861-b64d-429034e7820f','accept',false,'2020-06-10 16:17:17.912','2020-06-10 16:17:17.912','2b64cab2-e41f-4b54-96f1-a0a780c6fb8f')
 ,('cd7c1b1f-fe02-402a-8966-3aa9526e09b4','title1',false,'2020-06-10 16:17:17.939','2020-06-10 16:17:17.939','2a55b886-6798-494c-bccc-c4ed42dc579c')
@@ -177,7 +161,7 @@ INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") V
 ,('8ff7b8ff-32c3-4499-8349-e721af150aa3','whouldHire',false,'2020-06-10 16:17:18.078','2020-06-10 16:17:18.078','5bebd337-2d52-4f9c-af59-c9837e04e9cb')
 ,('3947fab6-3dfd-4f55-80d0-a0872d304a28','writeNote',false,'2020-06-10 16:17:18.095','2020-06-10 16:17:18.095','5bebd337-2d52-4f9c-af59-c9837e04e9cb')
 ;
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('a0e452ce-9e93-4b75-b881-042f1cfc66be','submit',false,'2020-06-10 16:17:18.109','2020-06-10 16:17:18.109','5bebd337-2d52-4f9c-af59-c9837e04e9cb')
 ,('dfede26c-5760-4ba7-b387-a27d6a848fd0','inputTextPlaceholder',false,'2020-06-10 16:17:18.126','2020-06-10 16:17:18.126','5bebd337-2d52-4f9c-af59-c9837e04e9cb')
 ,('86e1e9b5-de97-422a-8269-2c5f33f25b87','inputSubtext',false,'2020-06-10 16:17:18.146','2020-06-10 16:17:18.146','5bebd337-2d52-4f9c-af59-c9837e04e9cb')
@@ -189,7 +173,7 @@ INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") V
 ,('b19e1fe8-0217-46ea-894a-034d5e3dbf63','unableToRate',false,'2020-06-10 16:17:18.275','2020-06-10 16:17:18.275','5bebd337-2d52-4f9c-af59-c9837e04e9cb')
 ,('cbd9a0c4-952c-414c-a21d-3fb78389e17e','movedToRejectionBin',false,'2020-06-10 16:17:18.333','2020-06-10 16:17:18.333','d3be90fe-be31-4842-872f-00caff22de30')
 ;
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('09b5bf5c-0a9e-4a19-907d-0141a9542b5c','unableToMoveToRejectionBin',false,'2020-06-10 16:17:18.357','2020-06-10 16:17:18.357','d3be90fe-be31-4842-872f-00caff22de30')
 ,('3cad16df-e0a9-44b9-b4ff-389f19bf86f7','movedFromRejectionBin',false,'2020-06-10 16:17:18.384','2020-06-10 16:17:18.384','d3be90fe-be31-4842-872f-00caff22de30')
 ,('7d0c6b87-9cba-45f7-ab15-9e0040792894','unableToMoveFromRejectionBin',false,'2020-06-10 16:17:18.405','2020-06-10 16:17:18.405','d3be90fe-be31-4842-872f-00caff22de30')
@@ -201,7 +185,7 @@ INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") V
 ,('6888bec2-df90-40d0-9a24-fc70de1e1400','confirm',false,'2020-06-10 16:17:18.668','2020-06-10 16:17:18.668','c40f45d7-13ea-4de2-af67-134ea16df215')
 ,('b6018e5a-ca1c-4323-812f-cc1a2f3519a1','cancelled',false,'2020-06-10 16:17:18.683','2020-06-10 16:17:18.683','c40f45d7-13ea-4de2-af67-134ea16df215')
 ;
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('b794acdd-0e97-4704-8bd1-9b300fb0ed93','confirmed',false,'2020-06-10 16:17:18.699','2020-06-10 16:17:18.699','c40f45d7-13ea-4de2-af67-134ea16df215')
 ,('c0fe40b5-4f7f-40f6-a1ea-b3269138ec49','sendOfferReminder',false,'2020-06-10 16:17:18.718','2020-06-10 16:17:18.718','c40f45d7-13ea-4de2-af67-134ea16df215')
 ,('c9577941-8855-4a5d-879e-f66437b34c1d','confirmTitle',false,'2020-06-10 16:17:18.743','2020-06-10 16:17:18.743','c40f45d7-13ea-4de2-af67-134ea16df215')
@@ -213,7 +197,7 @@ INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") V
 ,('4e69839f-486d-4305-add6-4a452956a4a9','hr',false,'2020-06-10 16:17:18.881','2020-06-10 16:17:18.881','b32b5c97-ade0-4dc7-8e6c-949ffcc5bd6c')
 ,('bd6ce1cb-923c-4831-9d5c-25c9ec939da5','nl',false,'2020-06-10 16:17:18.908','2020-06-10 16:17:18.908','b32b5c97-ade0-4dc7-8e6c-949ffcc5bd6c')
 ;
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('2b6b3ebc-bc27-40a2-a5fb-7bb56573b0e5','pt',false,'2020-06-10 16:17:18.923','2020-06-10 16:17:18.923','b32b5c97-ade0-4dc7-8e6c-949ffcc5bd6c')
 ,('fbcc52ae-ae45-483c-8d27-adeb3c6b48ee','sv',false,'2020-06-10 16:17:18.939','2020-06-10 16:17:18.939','b32b5c97-ade0-4dc7-8e6c-949ffcc5bd6c')
 ,('ebf20f20-bcb1-44f0-9f40-69b72c84401a','zh',false,'2020-06-10 16:17:18.955','2020-06-10 16:17:18.955','b32b5c97-ade0-4dc7-8e6c-949ffcc5bd6c')
@@ -225,7 +209,7 @@ INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") V
 ,('bb70e6fb-9b58-40c8-a73b-dad3e3fd5022','unableToComment',false,'2020-06-10 16:17:19.190','2020-06-10 16:17:19.190','92c13b40-727e-4030-828e-b78492a953cb')
 ,('3f834323-20f2-4578-8998-3d274733c566','online',false,'2020-06-10 16:17:19.219','2020-06-10 16:17:19.219','5f44fda4-14ef-4eb9-a460-ef5f05bf2755')
 ;
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('52576025-45fa-43cc-820e-b889fbb0e270','offline',false,'2020-06-10 16:17:19.235','2020-06-10 16:17:19.235','5f44fda4-14ef-4eb9-a460-ef5f05bf2755')
 ,('e39a08b1-f30d-4925-a21d-50cf218c9bf4','feedback',false,'2020-06-10 16:17:19.250','2020-06-10 16:17:19.250','5f44fda4-14ef-4eb9-a460-ef5f05bf2755')
 ,('36fa3435-61c9-4a54-ae9e-cdb9e54e87ed','feedbackTitle',false,'2020-06-10 16:17:19.267','2020-06-10 16:17:19.267','5f44fda4-14ef-4eb9-a460-ef5f05bf2755')
@@ -237,7 +221,7 @@ INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") V
 ,('aa9880ad-adf3-408c-ac01-860e5efbe2f1','emails',false,'2020-06-10 16:17:19.405','2020-06-10 16:17:19.405','5f44fda4-14ef-4eb9-a460-ef5f05bf2755')
 ,('188aab68-8bfa-46f0-bed8-77463b896869','imprint',false,'2020-06-10 16:17:19.446','2020-06-10 16:17:19.446','9a757284-5396-496c-8746-519f038000dd')
 ;
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('dff61361-192a-4088-b91a-b18e144a20ff','version',false,'2020-06-10 16:17:19.462','2020-06-10 16:17:19.462','9a757284-5396-496c-8746-519f038000dd')
 ,('e5f75dd6-adb8-43dd-ae95-705de793ea07','operatingSystem',false,'2020-06-10 16:17:19.477','2020-06-10 16:17:19.477','9a757284-5396-496c-8746-519f038000dd')
 ,('8b14cbc9-3a60-4429-9221-0d55da72230a','mobileDevice',false,'2020-06-10 16:17:19.494','2020-06-10 16:17:19.494','9a757284-5396-496c-8746-519f038000dd')
@@ -249,7 +233,7 @@ INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") V
 ,('d3af4e74-833d-404f-90bb-39c57b6132b8','privacySource',false,'2020-06-10 16:17:19.599','2020-06-10 16:17:19.599','9a757284-5396-496c-8746-519f038000dd')
 ,('171bf735-8e6a-4b43-b255-4bb73bae6d07','termsSource',false,'2020-06-10 16:17:19.616','2020-06-10 16:17:19.616','9a757284-5396-496c-8746-519f038000dd')
 ;
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('e59f13f4-0229-426e-9020-b4519f3d379c','licencesTitle',false,'2020-06-10 16:17:19.633','2020-06-10 16:17:19.633','9a757284-5396-496c-8746-519f038000dd')
 ,('33a36fed-3438-4075-8ced-4e4fffd691b5','licencesDescription',false,'2020-06-10 16:17:19.648','2020-06-10 16:17:19.648','9a757284-5396-496c-8746-519f038000dd')
 ,('b3d1ef39-d516-4690-bfe2-786b106ef9f5','reportProblem',false,'2020-06-10 16:17:19.662','2020-06-10 16:17:19.662','9a757284-5396-496c-8746-519f038000dd')
@@ -261,7 +245,7 @@ INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") V
 ,('b73868c7-9ede-43e1-a635-f202daddec50','pausedDate',false,'2020-06-10 16:17:19.887','2020-06-10 16:17:19.887','642338bc-f8ca-4c87-b41c-2a9a0253e598')
 ,('3aac5fdc-aea7-4945-bad5-08f2e900296b','offerSentDate',false,'2020-06-10 16:17:19.905','2020-06-10 16:17:19.905','642338bc-f8ca-4c87-b41c-2a9a0253e598')
 ;
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('b0da7047-b19e-471c-acf7-12ec574cad57','hiredDate',false,'2020-06-10 16:17:19.922','2020-06-10 16:17:19.922','642338bc-f8ca-4c87-b41c-2a9a0253e598')
 ,('a241d4f3-a77b-4e9d-af58-20288b7c1c0c','onboardDate',false,'2020-06-10 16:17:19.939','2020-06-10 16:17:19.939','642338bc-f8ca-4c87-b41c-2a9a0253e598')
 ,('aeb35b68-9a70-4c10-b2ce-4fe8f0b64d76','answeredDate',false,'2020-06-10 16:17:19.959','2020-06-10 16:17:19.959','642338bc-f8ca-4c87-b41c-2a9a0253e598')
@@ -273,7 +257,7 @@ INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") V
 ,('f214c412-8902-4426-9f14-b2fceb7ef33f','todoSection',false,'2020-06-10 16:17:20.072','2020-06-10 16:17:20.072','642338bc-f8ca-4c87-b41c-2a9a0253e598')
 ,('644b60af-5c46-4e07-b857-3df03c31d6b8','applicantOverviewSection',false,'2020-06-10 16:17:20.091','2020-06-10 16:17:20.091','642338bc-f8ca-4c87-b41c-2a9a0253e598')
 ;
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('5d9744ed-100e-4c91-b498-2befa0230ca3','tagsSection',false,'2020-06-10 16:17:20.109','2020-06-10 16:17:20.109','642338bc-f8ca-4c87-b41c-2a9a0253e598')
 ,('82a47841-8ab3-456c-9449-151adf3e7ed3','attachmentsSection',false,'2020-06-10 16:17:20.126','2020-06-10 16:17:20.126','642338bc-f8ca-4c87-b41c-2a9a0253e598')
 ,('be00c368-8109-4310-9fcf-1b8627911905','reviewsSection',false,'2020-06-10 16:17:20.150','2020-06-10 16:17:20.150','642338bc-f8ca-4c87-b41c-2a9a0253e598')
@@ -285,7 +269,7 @@ INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") V
 ,('97bf4237-a390-45e7-aba3-3a41164ccce7','coverLetter',false,'2020-06-10 16:17:20.259','2020-06-10 16:17:20.259','642338bc-f8ca-4c87-b41c-2a9a0253e598')
 ,('4a22320c-9b19-4d3d-a3e1-7f94f298e9c6','resume',false,'2020-06-10 16:17:20.276','2020-06-10 16:17:20.276','642338bc-f8ca-4c87-b41c-2a9a0253e598')
 ;
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('a115ab9a-50e9-4025-ab02-213aabdec330','viewAllPdf',false,'2020-06-10 16:17:20.292','2020-06-10 16:17:20.292','642338bc-f8ca-4c87-b41c-2a9a0253e598')
 ,('0698b174-2d48-4a24-bd86-c2cbabf19294','reviewNow',false,'2020-06-10 16:17:20.307','2020-06-10 16:17:20.307','642338bc-f8ca-4c87-b41c-2a9a0253e598')
 ,('086798da-9a38-4b68-8145-32946908501f','ratingNow',false,'2020-06-10 16:17:20.324','2020-06-10 16:17:20.324','642338bc-f8ca-4c87-b41c-2a9a0253e598')
@@ -297,7 +281,7 @@ INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") V
 ,('df296d17-3eda-4123-b535-a164f2d84cec','jobOfflineToastTitle',false,'2020-06-10 16:17:20.464','2020-06-10 16:17:20.464','642338bc-f8ca-4c87-b41c-2a9a0253e598')
 ,('32d9a0b6-ad5a-4899-a6d2-4e560ca18245','jobOfflineToastMessage',false,'2020-06-10 16:17:20.479','2020-06-10 16:17:20.479','642338bc-f8ca-4c87-b41c-2a9a0253e598')
 ;
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('f995ea19-d216-404a-843f-9c18131521d5','teamRatings',false,'2020-06-10 16:17:20.495','2020-06-10 16:17:20.495','642338bc-f8ca-4c87-b41c-2a9a0253e598')
 ,('d1942c5a-ad56-40b6-a191-ef1c8c9ec275','yourRating',false,'2020-06-10 16:17:20.512','2020-06-10 16:17:20.512','642338bc-f8ca-4c87-b41c-2a9a0253e598')
 ,('1df1c9f3-dd6c-4ab1-a57f-cc8de0a317fe','ratingScore',false,'2020-06-10 16:17:20.527','2020-06-10 16:17:20.527','642338bc-f8ca-4c87-b41c-2a9a0253e598')
@@ -309,7 +293,7 @@ INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") V
 ,('1d027d18-972b-4a1a-8747-43f0e9b3f49a','applicationDetails',false,'2020-06-10 16:17:20.624','2020-06-10 16:17:20.624','642338bc-f8ca-4c87-b41c-2a9a0253e598')
 ,('d05377c4-435d-4ddf-b58c-594b230a9e14','email',false,'2020-06-10 16:17:20.643','2020-06-10 16:17:20.643','642338bc-f8ca-4c87-b41c-2a9a0253e598')
 ;
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('b0d58993-3bf7-48bb-8abf-dbf604b88967','telephone',false,'2020-06-10 16:17:20.667','2020-06-10 16:17:20.667','642338bc-f8ca-4c87-b41c-2a9a0253e598')
 ,('b2e53602-5cf8-4828-9e0e-129969a12c57','unpause',false,'2020-06-10 16:17:20.750','2020-06-10 16:17:20.750','642338bc-f8ca-4c87-b41c-2a9a0253e598')
 ,('2b09b1d0-c2f5-47ee-b108-ee5f86ce44a8','notScheduled',false,'2020-06-10 16:17:20.765','2020-06-10 16:17:20.765','642338bc-f8ca-4c87-b41c-2a9a0253e598')
@@ -321,7 +305,7 @@ INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") V
 ,('a813d016-ecc9-4c54-8808-bcb1097bafce','forInterview',false,'2020-06-10 16:17:20.885','2020-06-10 16:17:20.885','642338bc-f8ca-4c87-b41c-2a9a0253e598')
 ,('e343f6e6-9f97-45c6-92fa-570d413cdd75','interviewed',false,'2020-06-10 16:17:20.901','2020-06-10 16:17:20.901','642338bc-f8ca-4c87-b41c-2a9a0253e598')
 ;
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('224ea73a-c41e-4cbd-9166-5b8fa75800bc','completedInterview',false,'2020-06-10 16:17:20.919','2020-06-10 16:17:20.919','642338bc-f8ca-4c87-b41c-2a9a0253e598')
 ,('faa8521b-d651-461d-a26d-520027aeb17d','confirmedUpcomingInterview',false,'2020-06-10 16:17:20.934','2020-06-10 16:17:20.934','642338bc-f8ca-4c87-b41c-2a9a0253e598')
 ,('d5f3a64b-22c4-4097-89d9-a28cc9e6e1ec','btnSendNewOffer',false,'2020-06-10 16:17:20.954','2020-06-10 16:17:20.954','642338bc-f8ca-4c87-b41c-2a9a0253e598')
@@ -333,7 +317,7 @@ INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") V
 ,('55ad0568-9ad4-4f0c-88dc-d604e280a55a','backToStepNew',false,'2020-06-10 16:17:21.070','2020-06-10 16:17:21.070','642338bc-f8ca-4c87-b41c-2a9a0253e598')
 ,('d17a76ef-2394-4f56-a76d-c1fcd2f6e6d8','reseted',false,'2020-06-10 16:17:21.086','2020-06-10 16:17:21.086','642338bc-f8ca-4c87-b41c-2a9a0253e598')
 ;
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('76a06b92-dc1e-4551-9d12-da6d95038b92','currentStatus',false,'2020-06-10 16:17:21.104','2020-06-10 16:17:21.104','642338bc-f8ca-4c87-b41c-2a9a0253e598')
 ,('41a62f5a-72c0-496c-a5d3-1268b62e24b7','createOffer',false,'2020-06-10 16:17:21.123','2020-06-10 16:17:21.123','642338bc-f8ca-4c87-b41c-2a9a0253e598')
 ,('9218cd21-8e55-4276-b327-cce9f91c64f3','acceptOffer',false,'2020-06-10 16:17:21.141','2020-06-10 16:17:21.141','642338bc-f8ca-4c87-b41c-2a9a0253e598')
@@ -345,7 +329,7 @@ INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") V
 ,('a887e868-d82a-4fad-b126-69fa744758f4','degree',false,'2020-06-10 16:17:21.277','2020-06-10 16:17:21.277','064c5dc0-0df8-42e1-a90a-e78ea4b9f277')
 ,('7dc2b23a-4e7d-422a-9c74-28a9664939d2','autoLock',false,'2020-06-10 16:17:21.304','2020-06-10 16:17:21.304','ad4ee7d6-09c4-44c2-b67a-a8f4c41d5a20')
 ;
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('c846b29d-724c-46fe-bac4-8512c6f29195','subTitle',false,'2020-06-10 16:17:21.343','2020-06-10 16:17:21.343','ad4ee7d6-09c4-44c2-b67a-a8f4c41d5a20')
 ,('ffdfdb88-df30-481f-b451-33bd78c89a9a','enterOldCodePrompt',false,'2020-06-10 16:17:21.370','2020-06-10 16:17:21.370','8f041ad8-e897-4f69-b597-ad4e63389bfc')
 ,('ecb92cf3-ca4b-490e-9b4b-841d603baf03','defineNewCodePrompt',false,'2020-06-10 16:17:21.387','2020-06-10 16:17:21.387','8f041ad8-e897-4f69-b597-ad4e63389bfc')
@@ -357,7 +341,7 @@ INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") V
 ,('9cc63a82-99d5-40d4-bd3a-b22993ec6b2f','noFilteredChatlist',false,'2020-06-10 16:17:21.525','2020-06-10 16:17:21.525','49e105ad-1ae0-4bd2-9eb4-2bc41a9796af')
 ,('26135bff-077a-4839-9d14-89c2f6e1af3c','placeholder',false,'2020-06-10 16:17:21.559','2020-06-10 16:17:21.559','d75d0819-390e-4a06-ae96-44f232f5b98e')
 ;
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('674edb43-c461-470b-874c-b23e334de223','send',false,'2020-06-10 16:17:21.576','2020-06-10 16:17:21.576','d75d0819-390e-4a06-ae96-44f232f5b98e')
 ,('5df4b335-752c-463b-8e10-4e4d1364e038','edited',false,'2020-06-10 16:17:21.618','2020-06-10 16:17:21.618','d75d0819-390e-4a06-ae96-44f232f5b98e')
 ,('8d8f7ea7-4142-4ed5-aaca-d4804895ff95','yesterday',false,'2020-06-10 16:17:21.643','2020-06-10 16:17:21.643','d75d0819-390e-4a06-ae96-44f232f5b98e')
@@ -369,7 +353,7 @@ INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") V
 ,('395c815f-fbd4-40fc-b2fd-22597ac2d433','OLD',false,'2020-06-10 16:17:21.784','2020-06-10 16:17:21.784','7ff78ef7-0b20-4cb8-84c8-ff4ad0ab88b0')
 ,('be487c3b-2a95-4ccd-ae34-6be21a949719','welcome',false,'2020-06-10 16:17:21.808','2020-06-10 16:17:21.808','cf1275a0-c489-4d2f-ad57-d6c96e53259b')
 ;
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('71a839d4-2c7e-4641-aab3-9a135b418d3e','pendingThumbVotes',false,'2020-06-10 16:17:21.827','2020-06-10 16:17:21.827','cf1275a0-c489-4d2f-ad57-d6c96e53259b')
 ,('e7b5db2f-138c-4aea-97e3-2d19a46982d5','rateAnApplication',false,'2020-06-10 16:17:21.842','2020-06-10 16:17:21.842','cf1275a0-c489-4d2f-ad57-d6c96e53259b')
 ,('470e168b-6a7e-4fff-a4a5-8545079036f4','checkApplicationStatus',false,'2020-06-10 16:17:21.856','2020-06-10 16:17:21.856','cf1275a0-c489-4d2f-ad57-d6c96e53259b')
@@ -381,7 +365,7 @@ INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") V
 ,('74434668-3bee-4669-aee2-2682e98d567d','VISITED',false,'2020-06-10 16:17:21.952','2020-06-10 16:17:21.952','cf1275a0-c489-4d2f-ad57-d6c96e53259b')
 ,('872a2475-f857-4a2f-8800-798eeaea4d74','ACTIVITY',false,'2020-06-10 16:17:21.966','2020-06-10 16:17:21.966','cf1275a0-c489-4d2f-ad57-d6c96e53259b')
 ;
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('9b1c9a79-ce1b-42cb-9d50-1a7774ba9f7d','oops',false,'2020-06-10 16:17:21.982','2020-06-10 16:17:21.982','cf1275a0-c489-4d2f-ad57-d6c96e53259b')
 ,('844dadd9-884a-4605-b842-2835793f7fd3','interviewsEmpty',false,'2020-06-10 16:17:21.998','2020-06-10 16:17:21.998','cf1275a0-c489-4d2f-ad57-d6c96e53259b')
 ,('50e71887-3062-4f3f-9a41-7d83373c9261','jobsEmpty',false,'2020-06-10 16:17:22.013','2020-06-10 16:17:22.013','cf1275a0-c489-4d2f-ad57-d6c96e53259b')
@@ -393,7 +377,7 @@ INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") V
 ,('599b2771-e6ee-4302-9edd-d2c71566239b','reviewApplication',false,'2020-06-10 16:17:22.146','2020-06-10 16:17:22.146','601ea5bc-c678-42cc-a8ed-75b66eed1b11')
 ,('0d171e37-28ce-46cf-bcee-1f85bb33a01e','noTodos',false,'2020-06-10 16:17:22.167','2020-06-10 16:17:22.167','601ea5bc-c678-42cc-a8ed-75b66eed1b11')
 ;
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('045b19aa-0fab-4662-afad-56db73acccf5','goToJobScreen',false,'2020-06-10 16:17:22.189','2020-06-10 16:17:22.189','601ea5bc-c678-42cc-a8ed-75b66eed1b11')
 ,('236abe16-e4f6-4f2d-b871-87ff979a9808','NO_APPLICATION_THUMBVOTE',false,'2020-06-10 16:17:22.206','2020-06-10 16:17:22.206','601ea5bc-c678-42cc-a8ed-75b66eed1b11')
 ,('209c4edd-3876-413d-a780-dafa27fd0a86','NO_APPLICATION_SCORECARD',false,'2020-06-10 16:17:22.222','2020-06-10 16:17:22.222','601ea5bc-c678-42cc-a8ed-75b66eed1b11')
@@ -405,7 +389,7 @@ INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") V
 ,('283ceb3a-c29a-41ae-8a46-fa893448a16a','INTERVIEW_UNCONFIRMED_BY_APPLICANT',false,'2020-06-10 16:17:22.321','2020-06-10 16:17:22.321','601ea5bc-c678-42cc-a8ed-75b66eed1b11')
 ,('41746333-c895-4e1f-9edb-023fb4b6209d','JOBAD_EXPIRES',false,'2020-06-10 16:17:22.338','2020-06-10 16:17:22.338','601ea5bc-c678-42cc-a8ed-75b66eed1b11')
 ;
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('d14ef13e-cb23-4547-a464-148215bb2866','JOBAD_EXPIRED',false,'2020-06-10 16:17:22.355','2020-06-10 16:17:22.355','601ea5bc-c678-42cc-a8ed-75b66eed1b11')
 ,('583b437f-e805-498e-babd-b753ad2e7cd7','error',false,'2020-06-10 16:17:22.372','2020-06-10 16:17:22.372','601ea5bc-c678-42cc-a8ed-75b66eed1b11')
 ,('08531c41-fa14-4719-99ab-318c05963114','surveyTitle',false,'2020-06-10 16:17:22.392','2020-06-10 16:17:22.392','601ea5bc-c678-42cc-a8ed-75b66eed1b11')
@@ -417,7 +401,7 @@ INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") V
 ,('3f95cd91-1ffb-4f93-ab03-2db7e9d81310','repeatCodePrompt',false,'2020-06-10 16:17:22.513','2020-06-10 16:17:22.513','dfb7689e-ec1a-4174-bad9-7a3f1ccd0658')
 ,('30271789-e48e-48c1-bb7f-666564671a97','modalBody',false,'2020-06-10 16:17:22.551','2020-06-10 16:17:22.551','dfb7689e-ec1a-4174-bad9-7a3f1ccd0658')
 ;
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('f24cbf9b-7810-4de6-90ab-3e4fdf7a8c86','modalAccept',false,'2020-06-10 16:17:22.568','2020-06-10 16:17:22.568','dfb7689e-ec1a-4174-bad9-7a3f1ccd0658')
 ,('114994a9-d760-4c22-85d0-1448838dc4c1','seemore',false,'2020-06-10 16:17:22.692','2020-06-10 16:17:22.692','9d485963-35af-4397-9077-35c180799b68')
 ,('e01befcc-ee20-4c00-a8ef-ac1c8101ca94','seeless',false,'2020-06-10 16:17:22.712','2020-06-10 16:17:22.712','9d485963-35af-4397-9077-35c180799b68')
@@ -429,7 +413,7 @@ INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") V
 ,('1455a67f-aa79-4376-9a7a-1c4809cf3143','sendWhenOnline',false,'2020-06-10 16:17:22.819','2020-06-10 16:17:22.819','9d485963-35af-4397-9077-35c180799b68')
 ,('ee25cd7b-983f-4639-8d67-8979c05ba8ea','htmlEmailViewMessage',false,'2020-06-10 16:17:22.836','2020-06-10 16:17:22.836','9d485963-35af-4397-9077-35c180799b68')
 ;
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('88dbe438-5427-4444-a8a1-01960979ea30','noName',false,'2020-06-10 16:17:22.851','2020-06-10 16:17:22.851','9d485963-35af-4397-9077-35c180799b68')
 ,('7f99867f-6bb1-4d13-b999-91eacce95e03','reply',false,'2020-06-10 16:17:22.868','2020-06-10 16:17:22.868','9d485963-35af-4397-9077-35c180799b68')
 ,('679b8371-8e9d-4757-ac2a-a241d704023c','replyAll',false,'2020-06-10 16:17:22.884','2020-06-10 16:17:22.884','9d485963-35af-4397-9077-35c180799b68')
@@ -441,7 +425,7 @@ INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") V
 ,('09252c4d-b47d-4a39-9753-8d2060948848','wantToleave',false,'2020-06-10 16:17:23.105','2020-06-10 16:17:23.105','3dcbab34-8deb-4ff5-9437-04145b13b8ef')
 ,('2ecb3495-794a-4b9e-9548-112495769ca0','wantToleaveDescription',false,'2020-06-10 16:17:23.120','2020-06-10 16:17:23.120','3dcbab34-8deb-4ff5-9437-04145b13b8ef')
 ;
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('72b763ee-2e5f-4e0f-b273-6a49ac28c663','sentFail',false,'2020-06-10 16:17:23.155','2020-06-10 16:17:23.155','3dcbab34-8deb-4ff5-9437-04145b13b8ef')
 ,('19051f16-3e89-46ce-9ec2-75fe8d029d5a','incorrectEmail',false,'2020-06-10 16:17:23.171','2020-06-10 16:17:23.171','3dcbab34-8deb-4ff5-9437-04145b13b8ef')
 ,('ce032782-507f-4b7c-ba73-f85b21b785f0','overSize',false,'2020-06-10 16:17:23.192','2020-06-10 16:17:23.192','3dcbab34-8deb-4ff5-9437-04145b13b8ef')
@@ -453,7 +437,7 @@ INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") V
 ,('bcd626d5-baba-46fe-9a1e-1b16b9401935','yesSend',false,'2020-06-10 16:17:23.296','2020-06-10 16:17:23.296','3dcbab34-8deb-4ff5-9437-04145b13b8ef')
 ,('417d67e1-cb0e-4dd1-a920-1fd988b41400','filters',false,'2020-06-10 16:17:23.332','2020-06-10 16:17:23.332','8d7b4d58-017d-4eaf-abdc-f02a9f775e2e')
 ;
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('e8c1a191-9f49-45d6-8dea-2e09e295ab26','todoStatus',false,'2020-06-10 16:17:23.346','2020-06-10 16:17:23.346','8d7b4d58-017d-4eaf-abdc-f02a9f775e2e')
 ,('4138f5e2-baa7-48e9-bbcb-6dafac432a99','workflowStatus',false,'2020-06-10 16:17:23.364','2020-06-10 16:17:23.364','8d7b4d58-017d-4eaf-abdc-f02a9f775e2e')
 ,('1abdaaa5-0e17-41ab-a897-e31512b2d349','jobName',false,'2020-06-10 16:17:23.378','2020-06-10 16:17:23.378','8d7b4d58-017d-4eaf-abdc-f02a9f775e2e')
@@ -465,7 +449,7 @@ INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") V
 ,('4c275149-d1e6-4174-b007-d89f7f3a6e1e','pausedApplications',false,'2020-06-10 16:17:23.483','2020-06-10 16:17:23.483','8d7b4d58-017d-4eaf-abdc-f02a9f775e2e')
 ,('b37ad9eb-7345-4b87-a1d1-565396a4c397','search',false,'2020-06-10 16:17:23.502','2020-06-10 16:17:23.502','8d7b4d58-017d-4eaf-abdc-f02a9f775e2e')
 ;
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('6368d265-bfa5-42e9-9dca-ee7c3052246c','reminderStatus',false,'2020-06-10 16:17:23.520','2020-06-10 16:17:23.520','8d7b4d58-017d-4eaf-abdc-f02a9f775e2e')
 ,('caef76e4-c7d1-4d73-83e0-eb51cabb72b5','reminderDate',false,'2020-06-10 16:17:23.536','2020-06-10 16:17:23.536','8d7b4d58-017d-4eaf-abdc-f02a9f775e2e')
 ,('52cc84a8-2111-4665-9f25-f91691f7de29','reminderType',false,'2020-06-10 16:17:23.550','2020-06-10 16:17:23.550','8d7b4d58-017d-4eaf-abdc-f02a9f775e2e')
@@ -477,7 +461,7 @@ INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") V
 ,('15fb1d7c-5b55-4780-a200-29186c4631f4','DISMISSED',false,'2020-06-10 16:17:23.745','2020-06-10 16:17:23.745','d643a382-afae-44b8-a36a-1417e667edf2')
 ,('2ed95280-3ef7-42e0-8757-216d228584f9','ALL',false,'2020-06-10 16:17:23.761','2020-06-10 16:17:23.761','d643a382-afae-44b8-a36a-1417e667edf2')
 ;
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('f5b9edb1-f0c4-4b16-9fb2-b41a37aaf7cf','LAST_24_HOURS',false,'2020-06-10 16:17:23.777','2020-06-10 16:17:23.777','d643a382-afae-44b8-a36a-1417e667edf2')
 ,('35ce8309-ef90-4fbb-971f-260974f3d64b','LAST_3_DAYS',false,'2020-06-10 16:17:23.795','2020-06-10 16:17:23.795','d643a382-afae-44b8-a36a-1417e667edf2')
 ,('02725202-a6fb-4332-a4ed-dfbcc2e1cef2','LAST_7_DAYS',false,'2020-06-10 16:17:23.812','2020-06-10 16:17:23.812','d643a382-afae-44b8-a36a-1417e667edf2')
@@ -489,7 +473,7 @@ INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") V
 ,('da113252-f0a6-4c36-9f0c-da54c9378f3a','toDateFormat',false,'2020-06-10 16:17:23.980','2020-06-10 16:17:23.980','fb0f8055-6418-4fd5-9b1e-ca200ff1ec31')
 ,('a59c857b-aeb4-459f-b305-49d364b7f7aa','composeMail',false,'2020-06-10 16:17:23.996','2020-06-10 16:17:23.996','fb0f8055-6418-4fd5-9b1e-ca200ff1ec31')
 ;
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('cfec1654-fed4-4b60-8f92-369b259b6273','movedToInterview',false,'2020-06-10 16:17:24.013','2020-06-10 16:17:24.013','fb0f8055-6418-4fd5-9b1e-ca200ff1ec31')
 ,('6bbb8a68-fd8f-499d-850f-9ca504bada8c','emailApplication',false,'2020-06-10 16:17:24.031','2020-06-10 16:17:24.031','fb0f8055-6418-4fd5-9b1e-ca200ff1ec31')
 ,('bd6c2ce4-d412-4a9d-b5a3-15573857c367','missingDate',false,'2020-06-10 16:17:24.049','2020-06-10 16:17:24.049','fb0f8055-6418-4fd5-9b1e-ca200ff1ec31')
@@ -501,7 +485,7 @@ INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") V
 ,('290383a0-23cb-46e0-b9d9-bd76dec6d7bc','introBody1',false,'2020-06-10 16:17:24.188','2020-06-10 16:17:24.188','e4779a3c-251e-4515-9c82-8bc234b1c3ca')
 ,('649aa749-e9b3-4427-a4f9-06b4b4cb1154','introBody2',false,'2020-06-10 16:17:24.207','2020-06-10 16:17:24.207','e4779a3c-251e-4515-9c82-8bc234b1c3ca')
 ;
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('71dcd81f-e233-44e2-b1c6-83cdca96551c','introBody3',false,'2020-06-10 16:17:24.225','2020-06-10 16:17:24.225','e4779a3c-251e-4515-9c82-8bc234b1c3ca')
 ,('c445b15a-9256-4829-8c5b-1ec1360e7dbe','getStarted',false,'2020-06-10 16:17:24.246','2020-06-10 16:17:24.246','e4779a3c-251e-4515-9c82-8bc234b1c3ca')
 ,('ef33eebb-4545-4a97-8369-9055b50ffc3f','buttonText12',false,'2020-06-10 16:17:24.263','2020-06-10 16:17:24.263','e4779a3c-251e-4515-9c82-8bc234b1c3ca')
@@ -513,7 +497,7 @@ INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") V
 ,('8903d4b2-a941-4285-a73a-8ca59435d257','recruitingTeam',false,'2020-06-10 16:17:24.455','2020-06-10 16:17:24.455','6f024551-897c-4557-a918-41d02f04f3a2')
 ,('899888f0-726d-414f-9102-98d1de949025','application_0',false,'2020-06-10 16:17:24.496','2020-06-10 16:17:24.496','6f024551-897c-4557-a918-41d02f04f3a2')
 ;
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('736d9da6-f4e3-48c1-8dc6-e33da7ba22f7','application_plural',true,'2020-06-10 16:17:24.514','2020-06-10 16:17:24.514','6f024551-897c-4557-a918-41d02f04f3a2')
 ,('e9aff1fb-82c8-415d-9170-911d67eacc33','enterCodePrompt',false,'2020-06-10 16:17:24.579','2020-06-10 16:17:24.579','1b31052a-f213-475b-a6ed-41d180df65dd')
 ,('2879d3cb-ef5f-4de1-b534-a51c7fa6259e','passcodeFailedAttempt',false,'2020-06-10 16:17:24.596','2020-06-10 16:17:24.596','1b31052a-f213-475b-a6ed-41d180df65dd')
@@ -525,7 +509,7 @@ INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") V
 ,('f98fae6b-960a-4c69-87ad-60299ca69c9c','needToSignout',false,'2020-06-10 16:17:24.702','2020-06-10 16:17:24.702','1b31052a-f213-475b-a6ed-41d180df65dd')
 ,('b6603dd5-8c2e-4866-be99-76bfe58d3610','signOut',false,'2020-06-10 16:17:24.718','2020-06-10 16:17:24.718','1b31052a-f213-475b-a6ed-41d180df65dd')
 ;
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('ab58d790-edac-4ea9-b555-ac5334763c17','authRequired',false,'2020-06-10 16:17:24.732','2020-06-10 16:17:24.732','1b31052a-f213-475b-a6ed-41d180df65dd')
 ,('7bdfcd9b-c463-47ec-846c-adb68a787473','touchSensor',false,'2020-06-10 16:17:24.748','2020-06-10 16:17:24.748','1b31052a-f213-475b-a6ed-41d180df65dd')
 ,('7dbc50d8-07a0-4b7f-a9ec-1d50a4ebf4ec','tooManyAttempts',false,'2020-06-10 16:17:24.768','2020-06-10 16:17:24.768','1b31052a-f213-475b-a6ed-41d180df65dd')
@@ -537,7 +521,7 @@ INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") V
 ,('2fb284a8-5e7d-4a4d-ba4c-800c9495c21f','forWhomThisApp',false,'2020-06-10 16:17:24.869','2020-06-10 16:17:24.869','c603adaf-a9ac-429e-8f10-92f0848882c1')
 ,('b66addce-ff00-4f58-91dd-7ac3a80f7ab5','loginButtonText',false,'2020-06-10 16:17:24.884','2020-06-10 16:17:24.884','c603adaf-a9ac-429e-8f10-92f0848882c1')
 ;
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('27a7dfe5-b3c6-49d7-aed3-8c003202e618','forgotPassword',false,'2020-06-10 16:17:24.906','2020-06-10 16:17:24.906','c603adaf-a9ac-429e-8f10-92f0848882c1')
 ,('5b59d12c-f89c-4068-b346-0a9c8cc12798','registerToSGPart1',false,'2020-06-10 16:17:24.920','2020-06-10 16:17:24.920','c603adaf-a9ac-429e-8f10-92f0848882c1')
 ,('2330e420-6aed-4e39-9557-c28a55a1d33f','registerToSGPart2',false,'2020-06-10 16:17:24.937','2020-06-10 16:17:24.937','c603adaf-a9ac-429e-8f10-92f0848882c1')
@@ -549,7 +533,7 @@ INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") V
 ,('b60576b9-9947-406f-afd3-13dd6003a6af','lookingForApplicationAppPart2iOS',false,'2020-06-10 16:17:25.038','2020-06-10 16:17:25.038','c603adaf-a9ac-429e-8f10-92f0848882c1')
 ,('dcf97d39-bab3-4c95-9ce2-2e23a9d2d13a','url+ios+mainpage',false,'2020-06-10 16:17:25.056','2020-06-10 16:17:25.056','c603adaf-a9ac-429e-8f10-92f0848882c1')
 ;
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('10db4375-13f5-44f9-a3a0-8da8cc5cf5e4','url+ios+network',false,'2020-06-10 16:17:25.073','2020-06-10 16:17:25.073','c603adaf-a9ac-429e-8f10-92f0848882c1')
 ,('a93f00ef-b0c6-4ea7-9619-56601b529f7c','url+ios+lostpassword',false,'2020-06-10 16:17:25.090','2020-06-10 16:17:25.090','c603adaf-a9ac-429e-8f10-92f0848882c1')
 ,('ab74829d-26f0-4f3b-ae79-c90f42dc8f77','url+android+mainpage',false,'2020-06-10 16:17:25.106','2020-06-10 16:17:25.106','c603adaf-a9ac-429e-8f10-92f0848882c1')
@@ -561,7 +545,7 @@ INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") V
 ,('c5cc9c2b-3f08-47c8-ba5a-d9115f0d20b6','offlineTitle',false,'2020-06-10 16:17:25.354','2020-06-10 16:17:25.354','a0a62765-b25d-400d-98d4-5a1ea1547507')
 ,('90e2299a-b6f1-4a00-8596-467129929542','loginWithoutSSO',false,'2020-06-10 16:17:25.378','2020-06-10 16:17:25.378','a0a62765-b25d-400d-98d4-5a1ea1547507')
 ;
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('e5d0ce90-696c-4c02-b617-b0751d6c5521','webViewTitle',false,'2020-06-10 16:17:25.394','2020-06-10 16:17:25.394','a0a62765-b25d-400d-98d4-5a1ea1547507')
 ,('e5891856-53b9-41fe-b03d-697279ffce5c','security',false,'2020-06-10 16:17:25.429','2020-06-10 16:17:25.429','084cf74d-72fe-4444-99cb-b3e80d603798')
 ,('f1d5d677-6178-432e-8ae8-f46c93da4802','notifications',false,'2020-06-10 16:17:25.445','2020-06-10 16:17:25.445','084cf74d-72fe-4444-99cb-b3e80d603798')
@@ -573,7 +557,7 @@ INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") V
 ,('e53bb57b-4e70-492a-b2f6-6031eff34c20','newRate',false,'2020-06-10 16:17:25.549','2020-06-10 16:17:25.549','084cf74d-72fe-4444-99cb-b3e80d603798')
 ,('ec1f9707-dbac-4dbd-959b-146677c8d7d5','newComment',false,'2020-06-10 16:17:25.564','2020-06-10 16:17:25.564','084cf74d-72fe-4444-99cb-b3e80d603798')
 ;
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('2d9d282e-6867-42a3-b02c-26aec3320209','newUpdate',false,'2020-06-10 16:17:25.580','2020-06-10 16:17:25.580','084cf74d-72fe-4444-99cb-b3e80d603798')
 ,('0d7c33c8-2676-4c50-90f5-b69b32b36fe9','newMention',false,'2020-06-10 16:17:25.599','2020-06-10 16:17:25.599','084cf74d-72fe-4444-99cb-b3e80d603798')
 ,('a2ed90db-37ac-4d62-89d2-0e2e59fcdd95','about',false,'2020-06-10 16:17:25.672','2020-06-10 16:17:25.672','084cf74d-72fe-4444-99cb-b3e80d603798')
@@ -585,7 +569,7 @@ INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") V
 ,('c8b088f7-f8c3-4236-b1ea-b681a5d5dbc0','summarySection',false,'2020-06-10 16:17:25.832','2020-06-10 16:17:25.832','b5b5a742-06d0-48cf-b226-138fcd5ff100')
 ,('7f50f201-2ed8-4052-9948-bf32c12f5723','ratingsSection',false,'2020-06-10 16:17:25.848','2020-06-10 16:17:25.848','b5b5a742-06d0-48cf-b226-138fcd5ff100')
 ;
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('09ae5c0e-7b0b-4585-a74b-d097b8b13a32','wouldHire',false,'2020-06-10 16:17:25.912','2020-06-10 16:17:25.912','b5b5a742-06d0-48cf-b226-138fcd5ff100')
 ,('26005f64-4667-41c6-8a6a-ee77889eec1e','wouldNotHire',false,'2020-06-10 16:17:25.930','2020-06-10 16:17:25.930','b5b5a742-06d0-48cf-b226-138fcd5ff100')
 ,('b08f1ef7-4c39-4a44-b030-8beb11b1823d','ratingCriteria',false,'2020-06-10 16:17:25.957','2020-06-10 16:17:25.957','b5b5a742-06d0-48cf-b226-138fcd5ff100')
@@ -597,7 +581,7 @@ INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") V
 ,('5e0652ed-c946-4596-bdc9-1ed9787a311b','ratingInadequate',false,'2020-06-10 16:17:26.062','2020-06-10 16:17:26.062','b5b5a742-06d0-48cf-b226-138fcd5ff100')
 ,('e1d3ffd9-7c26-478b-8a75-0da0ef7919ca','ratingInsufficient',false,'2020-06-10 16:17:26.080','2020-06-10 16:17:26.080','b5b5a742-06d0-48cf-b226-138fcd5ff100')
 ;
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('a6d50994-b8cf-4962-b90f-ff7b614d1bf4','DUE_DATE',false,'2020-06-10 16:17:26.352','2020-06-10 16:17:26.352','ac19046c-cd37-4a69-9ee7-846913265f14')
 ,('083494ff-dd4a-42b1-a71d-726c76b6f8a2','notYetVoted',false,'2020-06-10 16:17:26.456','2020-06-10 16:17:26.456','68e7a839-5862-44b8-9b4e-0577493f2f23')
 ,('b59fb522-1808-4b39-ab88-ad2a0e9d0268','close',false,'2020-06-10 16:17:26.553','2020-06-10 16:17:26.553','5d3494e3-06e8-450a-b788-8027541e1a50')
@@ -609,7 +593,7 @@ INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") V
 ,('57b4b4fc-d701-4d1f-8a82-8ae48b8f3cae','workflow+NEW',false,'2020-06-10 16:17:26.784','2020-06-10 16:17:26.784','50cf9d3e-b030-449b-ad0a-dc1bdcf15312')
 ,('85df6841-7b7d-428a-8227-d3cef23ae588','workflow+SHORTLIST',false,'2020-06-10 16:17:26.797','2020-06-10 16:17:26.797','50cf9d3e-b030-449b-ad0a-dc1bdcf15312')
 ;
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('5164c5fe-836a-40c3-8beb-67de31d5f39a','workflow+INTERVIEW',false,'2020-06-10 16:17:26.811','2020-06-10 16:17:26.811','50cf9d3e-b030-449b-ad0a-dc1bdcf15312')
 ,('b9c2f667-c605-4dcb-a6b6-9a5826071e5d','workflow+OFFER',false,'2020-06-10 16:17:26.826','2020-06-10 16:17:26.826','50cf9d3e-b030-449b-ad0a-dc1bdcf15312')
 ,('5253c260-453f-4298-9437-31872a3ebe2a','workflow+ONBOARD',false,'2020-06-10 16:17:26.840','2020-06-10 16:17:26.840','50cf9d3e-b030-449b-ad0a-dc1bdcf15312')
@@ -621,7 +605,7 @@ INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") V
 ,('5f9881db-6aaa-4b16-8531-64abd9bde4e9','workflowChange+NEW',false,'2020-06-10 16:17:26.937','2020-06-10 16:17:26.937','50cf9d3e-b030-449b-ad0a-dc1bdcf15312')
 ,('f6db2ef2-a1b0-4b5d-9fee-3b71a9411345','workflowChange+SHORTLIST',false,'2020-06-10 16:17:26.953','2020-06-10 16:17:26.953','50cf9d3e-b030-449b-ad0a-dc1bdcf15312')
 ;
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('14a7a94a-c843-471b-a631-53653e22c9d0','workflowChange+INTERVIEW',false,'2020-06-10 16:17:26.969','2020-06-10 16:17:26.969','50cf9d3e-b030-449b-ad0a-dc1bdcf15312')
 ,('68da8941-4438-49cd-808c-06037ad0e25e','workflowChange+OFFER',false,'2020-06-10 16:17:26.983','2020-06-10 16:17:26.983','50cf9d3e-b030-449b-ad0a-dc1bdcf15312')
 ,('b76eb5c4-8a40-4f4b-a8e3-1213516eeb9e','workflowChange+ONBOARD',false,'2020-06-10 16:17:26.999','2020-06-10 16:17:26.999','50cf9d3e-b030-449b-ad0a-dc1bdcf15312')
@@ -633,7 +617,7 @@ INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") V
 ,('2f306d5c-e18f-41da-b30f-1608bb0ab8b5','title',false,'2020-06-12 17:06:46.456','2020-06-12 17:06:46.456','601ea5bc-c678-42cc-a8ed-75b66eed1b11')
 ,('7dad44ed-2955-4a8c-b4e3-dc1913e7ba57','emails',false,'2020-06-12 17:09:23.883','2020-06-12 17:11:11.130','7ff78ef7-0b20-4cb8-84c8-ff4ad0ab88b0')
 ;
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('67d36e7b-280d-40b9-856b-ddb8b6a01239','changePasscode',false,'2020-06-12 17:13:34.451','2020-06-12 17:13:34.451','084cf74d-72fe-4444-99cb-b3e80d603798')
 ,('cdc180ab-a7da-4903-b0f2-3e56d56f51dd','autoLock',false,'2020-06-12 17:13:41.576','2020-06-12 17:13:41.576','084cf74d-72fe-4444-99cb-b3e80d603798')
 ,('8ef2a5be-d512-4234-a00d-bfc0eb9b50f0','language',false,'2020-06-12 17:13:59.187','2020-06-12 17:13:59.187','084cf74d-72fe-4444-99cb-b3e80d603798')
@@ -645,7 +629,7 @@ INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") V
 ,('292c648e-4885-40d9-b93b-0af73a34ee25','cancel',false,'2020-06-12 18:01:51.327','2020-06-12 18:01:51.327','ad4ee7d6-09c4-44c2-b67a-a8f4c41d5a20')
 ,('9a55a504-a2b2-4496-8bf0-a9fddea0fb33','done',false,'2020-06-12 18:01:56.798','2020-06-12 18:01:56.798','ad4ee7d6-09c4-44c2-b67a-a8f4c41d5a20')
 ;
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('796dc639-d9e5-4cce-8e7b-53a4a5a38ea8','title',false,'2020-06-15 16:26:42.870','2020-06-15 16:26:42.870','9a757284-5396-496c-8746-519f038000dd')
 ,('c746b18e-3a0d-4d50-9b77-b51a2b5f8068','searchPlaceholder',false,'2020-06-15 17:26:52.963','2020-06-15 17:26:52.963','41ea2ba8-6eb8-4bdb-85e5-787ca542d575')
 ,('cdd6aad2-c4be-4e18-ae62-857d5b2e3db9','email',false,'2020-06-15 17:26:59.011','2020-06-15 17:26:59.011','41ea2ba8-6eb8-4bdb-85e5-787ca542d575')
@@ -657,7 +641,7 @@ INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") V
 ,('deea00e5-523f-4987-a4a9-0668373dfecc','NEW',false,'2020-06-15 17:27:29.859','2020-06-15 17:27:29.859','41ea2ba8-6eb8-4bdb-85e5-787ca542d575')
 ,('f4dff64d-cf38-437e-84a2-456d22de2b3d','OLD',false,'2020-06-15 17:27:34.859','2020-06-15 17:27:34.859','41ea2ba8-6eb8-4bdb-85e5-787ca542d575')
 ;
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('c77c386e-741d-4410-a954-2c0eb8bdfc51','title',false,'2020-06-15 17:36:07.193','2020-06-15 17:36:07.193','adb10246-ec5b-48f3-9fae-99998113c505')
 ,('e0429153-dcdd-4631-9829-3520388e507e','searchPlaceholder',false,'2020-06-15 17:36:14.044','2020-06-15 17:36:14.044','adb10246-ec5b-48f3-9fae-99998113c505')
 ,('61cd86e4-a0fa-4957-b7aa-ac735d6e044b','rejectionBin',false,'2020-06-15 17:36:20.811','2020-06-15 17:36:20.811','adb10246-ec5b-48f3-9fae-99998113c505')
@@ -669,12 +653,201 @@ INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") V
 ,('19db717d-c256-4c59-9649-8c77f4372791','tes',false,'2020-06-16 01:42:25.773','2020-06-16 01:42:25.773','2f43657e-7708-49a2-a824-cdec98653d7a')
 ,('42e4db12-fb82-4da6-ae85-00c982e51d45','ves',false,'2020-06-16 01:43:33.296','2020-06-16 01:43:33.296','2f43657e-7708-49a2-a824-cdec98653d7a')
 ;
-INSERT INTO public."key" (id,"name",plural,"createdAt","updatedAt","screenId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
 ('1b6b88ed-8124-4c82-bfb4-ab32536f09fd','uuuu',false,'2020-06-16 01:44:36.663','2020-06-16 01:44:36.663','2f43657e-7708-49a2-a824-cdec98653d7a')
 ,('f16df20c-edcb-4d3a-bdcc-9d9244eeae5a','title',false,'2020-06-16 12:22:58.562','2020-06-16 12:22:58.562','ac19046c-cd37-4a69-9ee7-846913265f14')
+,('50ec5930-6fe2-40ff-b761-939ab5c3d942','reminderTitle+APPLICATION_STALLED',false,'2020-06-16 13:47:07.004','2020-06-16 13:48:30.409','ac19046c-cd37-4a69-9ee7-846913265f14')
+,('2f322489-f48c-4ff4-bcbf-e9e520985398','reminderTitle+NO_APPLICATION_THUMBVOTE',false,'2020-06-18 13:05:49.928','2020-06-18 13:05:49.928','ac19046c-cd37-4a69-9ee7-846913265f14')
+,('903fd577-7bbb-494b-87cc-ab9b74905f0e','reminderTitle+NO_APPLICATION_SCORECARD',false,'2020-06-18 13:08:49.088','2020-06-18 13:08:49.088','ac19046c-cd37-4a69-9ee7-846913265f14')
+,('16c971ea-96d6-46ee-8235-05686f794251','reminderTitle+NO_UPCOMING_INTERVIEW_UNCONFIRMED',false,'2020-06-18 13:12:41.857','2020-06-18 13:12:41.857','ac19046c-cd37-4a69-9ee7-846913265f14')
+,('6d0b57e5-9be4-4503-b1ae-7ccef4cef3a9','reminderTitle+UPCOMING_INTERVIEW_CONFIRMED',false,'2020-06-18 13:15:06.471','2020-06-18 13:15:06.471','ac19046c-cd37-4a69-9ee7-846913265f14')
+,('9d40ddad-8166-4d45-8031-595f81822bfa','reminderTitle+PENDING_THUMB_VOTING_FROM_COLLEAGUES',false,'2020-06-18 13:18:25.983','2020-06-18 13:18:25.983','ac19046c-cd37-4a69-9ee7-846913265f14')
+,('67bce5ba-f8e9-4da9-8404-0ea108ab6a12','reminderTitle+PENDING_RATING_FROM_COLLEAGUES',false,'2020-06-18 13:20:55.476','2020-06-18 13:20:55.476','ac19046c-cd37-4a69-9ee7-846913265f14')
+,('b3562612-6f5d-456c-9603-a6b2d64bcc6a','reminderTitle+INTERVIEW_UNCONFIRMED_BY_APPLICANT',false,'2020-06-18 13:24:17.784','2020-06-18 13:24:17.784','ac19046c-cd37-4a69-9ee7-846913265f14')
 ;
-
-INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
+('08f9944f-90c4-4a32-b5f9-84433b4e797f','reminderTitle+JOBAD_EXPIRES',false,'2020-06-18 13:26:17.860','2020-06-18 13:26:17.860','ac19046c-cd37-4a69-9ee7-846913265f14')
+,('e999af34-53d6-44ad-a603-818bff07744e','reminderTitle+JOBAD_EXPIRED',false,'2020-06-18 13:28:11.647','2020-06-18 13:28:11.647','ac19046c-cd37-4a69-9ee7-846913265f14')
+,('2c7e306d-56a5-4018-aa7a-266b2caf1966','reminderTitle+error',false,'2020-06-18 13:29:24.527','2020-06-18 13:29:24.527','ac19046c-cd37-4a69-9ee7-846913265f14')
+,('83789f99-c232-4798-937e-893d866daf24','surveyTitle',false,'2020-06-18 13:31:10.632','2020-06-18 13:31:10.632','ac19046c-cd37-4a69-9ee7-846913265f14')
+,('8fb6bfa0-5d1d-4ebf-8bb3-3a1f7b12f4d7','surveyDesc',false,'2020-06-18 13:32:25.265','2020-06-18 13:32:25.265','ac19046c-cd37-4a69-9ee7-846913265f14')
+,('9d3643e6-771a-40dc-a119-59d9a8f4321b','surveyOk',false,'2020-06-18 13:33:36.174','2020-06-18 13:33:36.174','ac19046c-cd37-4a69-9ee7-846913265f14')
+,('f0c4150f-7475-4017-845b-9962e932c300','surveyNo',false,'2020-06-18 13:35:27.899','2020-06-18 13:35:27.899','ac19046c-cd37-4a69-9ee7-846913265f14')
+,('a73769cf-cc1a-471f-8909-b3c688ba2319','surveyScreen',false,'2020-06-18 13:36:48.018','2020-06-18 13:36:48.018','ac19046c-cd37-4a69-9ee7-846913265f14')
+,('a66a2a99-be71-4727-be43-85e1221e97d7','NEW',false,'2020-06-18 13:38:22.532','2020-06-18 13:38:22.532','ac19046c-cd37-4a69-9ee7-846913265f14')
+,('5eab1304-b5fa-4298-9193-c12a83faebf7','OLD',false,'2020-06-18 13:41:27.918','2020-06-18 13:41:27.918','ac19046c-cd37-4a69-9ee7-846913265f14')
+;
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
+('08d70ac4-04e4-4c19-b3b2-0c6933d924e2','reviewApplication',false,'2020-06-18 13:42:54.137','2020-06-18 13:42:54.137','ac19046c-cd37-4a69-9ee7-846913265f14')
+,('08984aea-3bdc-4c54-a61f-69b6be50e4ee','noTodos',false,'2020-06-18 13:43:04.414','2020-06-18 13:43:04.414','ac19046c-cd37-4a69-9ee7-846913265f14')
+,('52255b20-57dc-49c1-9a9f-56fb3289f1f7','goToJobScreen',false,'2020-06-18 13:43:11.401','2020-06-18 13:43:11.401','ac19046c-cd37-4a69-9ee7-846913265f14')
+,('60da630d-96de-4868-8192-6c6de63ee98e','title',false,'2020-06-18 14:34:40.763','2020-06-18 14:34:40.763','5df4f4f4-5b48-45ea-98f8-d169afeb2ce8')
+,('ded088cf-e9f1-4a28-a33a-9fe8bf7996cb','applications',false,'2020-06-18 14:34:46.247','2020-06-18 14:34:46.247','5df4f4f4-5b48-45ea-98f8-d169afeb2ce8')
+,('cedff21c-b6da-42cb-bc38-da056ef25777','searchPlaceholder',false,'2020-06-18 14:34:52.846','2020-06-18 14:34:52.846','5df4f4f4-5b48-45ea-98f8-d169afeb2ce8')
+,('cd42c567-8cc7-4645-92b2-481e4e0dd4b2','jobOfflineToastTitle',false,'2020-06-18 14:39:17.513','2020-06-18 14:39:17.513','6f024551-897c-4557-a918-41d02f04f3a2')
+,('366eca54-d0cc-4b0b-867b-4ae610aa4c63','jobOfflineToastMessage',false,'2020-06-18 14:39:22.762','2020-06-18 14:39:22.762','6f024551-897c-4557-a918-41d02f04f3a2')
+,('2451d227-c617-4c48-8fe0-1fa04211763a','new',false,'2020-06-18 14:39:49.201','2020-06-18 14:39:49.201','6f024551-897c-4557-a918-41d02f04f3a2')
+,('a4471704-a962-475a-9762-14d04f28a06e','title',false,'2020-06-18 14:44:57.527','2020-06-18 14:44:57.527','16960f5e-f580-4582-8ed1-a48db9b736b9')
+;
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
+('de234372-3ae8-46cb-bf98-fd91c1575383','rejectionBin',false,'2020-06-18 14:45:15.640','2020-06-18 14:45:15.640','16960f5e-f580-4582-8ed1-a48db9b736b9')
+,('d29d5443-8a1f-4f2c-86d2-b5c3fc8d4bab','secondChance',false,'2020-06-18 14:45:20.330','2020-06-18 14:45:20.330','16960f5e-f580-4582-8ed1-a48db9b736b9')
+,('984b3aba-f6bb-4c80-8efe-878043e75404','moveToRejectionBin',false,'2020-06-18 14:45:38.438','2020-06-18 14:45:38.438','16960f5e-f580-4582-8ed1-a48db9b736b9')
+,('27c0ffac-b242-4ffa-8ca2-8e2e971ee67f','removeFromRejectionBin',false,'2020-06-18 14:45:43.018','2020-06-18 14:45:43.018','16960f5e-f580-4582-8ed1-a48db9b736b9')
+,('399f8780-1d1d-406f-9502-6ea0f5216e9b','title',false,'2020-06-18 16:02:20.525','2020-06-18 16:02:20.525','12a783aa-a240-41ae-9566-05162668be16')
+,('d935234b-c5fe-4b31-a3bf-808afd51f501','cancel',false,'2020-06-18 16:02:25.901','2020-06-18 16:02:25.901','12a783aa-a240-41ae-9566-05162668be16')
+,('06e902bc-da75-421a-a499-f88ad7e71bf6','done',false,'2020-06-18 16:02:33.430','2020-06-18 16:02:33.430','12a783aa-a240-41ae-9566-05162668be16')
+,('c6e01b66-4e23-4d4f-a42f-dcaea767a999','today',false,'2020-06-18 16:03:35.183','2020-06-18 16:03:35.183','12a783aa-a240-41ae-9566-05162668be16')
+,('e64c6288-140f-4b54-accb-589de13bd1c4','tomorrow',false,'2020-06-18 16:03:39.680','2020-06-18 16:03:39.680','12a783aa-a240-41ae-9566-05162668be16')
+,('395c2374-b06f-4ce2-8432-7bcd8e3a0232','duration',false,'2020-06-18 16:03:44.177','2020-06-18 16:03:44.177','12a783aa-a240-41ae-9566-05162668be16')
+;
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
+('9aad5c66-d8b5-46c8-86df-a4ad631dbe3d','minutes',false,'2020-06-18 16:03:48.715','2020-06-18 16:03:48.715','12a783aa-a240-41ae-9566-05162668be16')
+,('eb25cc43-416d-48c0-837d-9f8663a35768','hours',false,'2020-06-18 16:03:53.240','2020-06-18 16:03:53.240','12a783aa-a240-41ae-9566-05162668be16')
+,('1c1cfa15-c4b1-4a8b-8ce2-b41c6d223379','invaliddates',false,'2020-06-18 16:03:57.717','2020-06-18 16:03:57.717','12a783aa-a240-41ae-9566-05162668be16')
+,('ece98bf9-f692-4cf1-ab5b-dea75cad2ec2','yearPickerFormat',false,'2020-06-18 16:04:02.743','2020-06-18 16:04:02.743','12a783aa-a240-41ae-9566-05162668be16')
+,('5b07e690-c224-4cd0-9d12-3b056677d30c','hourPickerFormat',false,'2020-06-18 16:04:08.924','2020-06-18 16:04:08.924','12a783aa-a240-41ae-9566-05162668be16')
+,('1135f625-24f2-4116-b498-b35cd5c182f4','minutePickerFormat',false,'2020-06-18 16:04:13.361','2020-06-18 16:04:13.361','12a783aa-a240-41ae-9566-05162668be16')
+,('e60f9086-5c77-4e2d-8e7c-188fb4052aef','durations',false,'2020-06-18 16:04:29.355','2020-06-18 16:04:29.355','12a783aa-a240-41ae-9566-05162668be16')
+,('49be08de-d463-4a55-90de-7e0a105006ea','new',false,'2020-06-18 16:15:38.809','2020-06-18 16:15:38.809','48813d38-20d9-4264-9140-bbd901e51594')
+,('ea48b39a-b8ff-4c4e-9683-a264f0beebad','short',false,'2020-06-18 16:17:22.994','2020-06-18 16:17:22.994','48813d38-20d9-4264-9140-bbd901e51594')
+,('0097ab41-d28c-4bf9-98f3-210885460da5','interview',false,'2020-06-18 16:17:28.731','2020-06-18 16:17:28.731','48813d38-20d9-4264-9140-bbd901e51594')
+;
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
+('7edab157-bd41-4434-ab22-d021515ccbf3','offer',false,'2020-06-18 16:17:35.898','2020-06-18 16:17:35.898','48813d38-20d9-4264-9140-bbd901e51594')
+,('b29d9bfd-5fad-4718-94d5-0c7c6635cc6a','onboarding',false,'2020-06-18 16:17:42.438','2020-06-18 16:17:42.438','48813d38-20d9-4264-9140-bbd901e51594')
+,('e0baa715-b99f-457a-b74b-075237ea2c6c','hire',false,'2020-06-18 16:17:48.166','2020-06-18 16:17:48.166','48813d38-20d9-4264-9140-bbd901e51594')
+,('c42d6b49-964b-409d-ab32-b25c5cf0feb3','title',false,'2020-06-18 16:17:54.099','2020-06-18 16:17:54.099','48813d38-20d9-4264-9140-bbd901e51594')
+,('14b237eb-ae6d-45e6-9112-8a3da6a40b92','title',false,'2020-06-19 10:26:25.769','2020-06-19 10:26:25.769','d3be90fe-be31-4842-872f-00caff22de30')
+,('e425a666-d646-4ba1-9c93-a9e6f5032a29','submit',false,'2020-06-19 10:26:30.832','2020-06-19 10:26:30.832','d3be90fe-be31-4842-872f-00caff22de30')
+,('636d748c-4b8a-4752-89e9-56cb913cee0f','moveTobin',false,'2020-06-19 10:26:53.540','2020-06-19 10:26:53.540','d3be90fe-be31-4842-872f-00caff22de30')
+,('c1ff0f7a-2029-4b2b-915d-9750e99c658b','toastMessage',false,'2020-06-19 10:26:58.144','2020-06-19 10:26:58.144','d3be90fe-be31-4842-872f-00caff22de30')
+,('8e9d78dc-00eb-4db6-bda7-89b741ce48e9','yes',false,'2020-06-19 10:27:02.723','2020-06-19 10:27:02.723','d3be90fe-be31-4842-872f-00caff22de30')
+,('4abba8cf-e3e2-44e0-b570-fa9b9d9b09fe','no',false,'2020-06-19 10:27:06.975','2020-06-19 10:27:06.975','d3be90fe-be31-4842-872f-00caff22de30')
+;
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
+('4a305295-b4b2-48fd-bfb1-31c8fc5cdc86','secondChance',false,'2020-06-19 10:27:17.581','2020-06-19 10:27:17.581','d3be90fe-be31-4842-872f-00caff22de30')
+,('ad21e58a-2f18-4872-a4df-28c17698a78d','yes',false,'2020-06-19 10:37:57.878','2020-06-19 10:37:57.878','d5d4721f-b544-4f0e-80e9-8ad0697eca48')
+,('ed29d808-59d6-4a59-b418-56caa87ef202','no',false,'2020-06-19 10:38:01.161','2020-06-19 10:38:01.161','d5d4721f-b544-4f0e-80e9-8ad0697eca48')
+,('d6dd85b3-dc92-4019-b466-90734d2e75e6','sendReminder',false,'2020-06-19 10:40:09.054','2020-06-19 10:40:09.054','c40f45d7-13ea-4de2-af67-134ea16df215')
+,('e8678640-32e4-4c04-bf2b-a6f03050915d','cancel',false,'2020-06-19 10:40:18.791','2020-06-19 10:40:18.791','c40f45d7-13ea-4de2-af67-134ea16df215')
+,('a8a28c8d-2dda-42b7-83cd-7195e9d1450c','decline',false,'2020-06-19 10:42:24.155','2020-06-19 10:42:24.155','c40f45d7-13ea-4de2-af67-134ea16df215')
+,('4d47bcbf-50d0-429f-ad41-ff2c5713b5a7','yes',false,'2020-06-19 10:42:37.187','2020-06-19 10:42:37.187','c40f45d7-13ea-4de2-af67-134ea16df215')
+,('932ec36c-48ec-40e9-abd1-cc16f59f6ec4','no',false,'2020-06-19 10:42:42.374','2020-06-19 10:42:42.374','c40f45d7-13ea-4de2-af67-134ea16df215')
+,('f9c6b9bf-b96e-42bc-977d-d1bf45ac277f','en',false,'2020-06-19 11:01:13.829','2020-06-19 11:01:13.829','b32b5c97-ade0-4dc7-8e6c-949ffcc5bd6c')
+,('39cf452b-b057-47f6-b4f4-3de9050eaf37','de',false,'2020-06-19 11:01:17.970','2020-06-19 11:01:17.970','b32b5c97-ade0-4dc7-8e6c-949ffcc5bd6c')
+;
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
+('97b39a54-aa86-4fdd-9ffe-8e118a1a632c','pl',false,'2020-06-19 11:01:22.300','2020-06-19 11:01:22.300','b32b5c97-ade0-4dc7-8e6c-949ffcc5bd6c')
+,('54af450c-3fbf-4ec3-b3f5-a1d8ffb92b59','es',false,'2020-06-19 11:01:25.633','2020-06-19 11:01:25.633','b32b5c97-ade0-4dc7-8e6c-949ffcc5bd6c')
+,('cdb36225-5948-458b-91e7-7df68c5a865d','title',false,'2020-06-19 11:07:36.785','2020-06-19 11:07:36.785','d7c85a24-d215-44ee-9b10-f933f369ab0b')
+,('e2d1bc2a-a1b5-4750-9d2e-10fd1b8b2930','cancel',false,'2020-06-19 11:07:41.051','2020-06-19 11:07:41.051','d7c85a24-d215-44ee-9b10-f933f369ab0b')
+,('54a0c80b-7667-40f0-9712-034da69a2509','done',false,'2020-06-19 11:07:44.942','2020-06-19 11:07:44.942','d7c85a24-d215-44ee-9b10-f933f369ab0b')
+,('753070e4-eb5c-436f-8c11-a496c7182a32','confirm',false,'2020-06-19 11:07:53.226','2020-06-19 11:07:53.226','d7c85a24-d215-44ee-9b10-f933f369ab0b')
+,('5af7a11e-654a-4b77-b6d7-3e3843cbd567','title',false,'2020-06-19 11:10:18.011','2020-06-19 11:10:18.011','92c13b40-727e-4030-828e-b78492a953cb')
+,('9b40d606-867c-4c2e-b40b-9faab39ca9a1','writeNote',false,'2020-06-19 11:10:36.203','2020-06-19 11:10:36.203','92c13b40-727e-4030-828e-b78492a953cb')
+,('fa33782a-4dd4-4e71-892d-6442553a4ccb','submit',false,'2020-06-19 11:10:41.268','2020-06-19 11:10:41.268','92c13b40-727e-4030-828e-b78492a953cb')
+,('f005fdab-d8de-44e1-a8c2-9240661e4993','inputTextPlaceholder',false,'2020-06-19 11:10:44.791','2020-06-19 11:10:44.791','92c13b40-727e-4030-828e-b78492a953cb')
+;
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
+('8cfb9163-166d-45a0-81d8-027894b4b2da','inputSubtext',false,'2020-06-19 11:10:48.244','2020-06-19 11:10:48.244','92c13b40-727e-4030-828e-b78492a953cb')
+,('858f8352-9399-4ad6-a879-eb2489a0784d','toastTitle',false,'2020-06-19 11:10:51.756','2020-06-19 11:10:51.756','92c13b40-727e-4030-828e-b78492a953cb')
+,('0d528db8-0cdb-47c7-a813-8006fe1be0ad','toastMessage',false,'2020-06-19 11:10:56.164','2020-06-19 11:10:56.164','92c13b40-727e-4030-828e-b78492a953cb')
+,('aa724143-2da5-4dbc-b5fc-94053e01710b','yes',false,'2020-06-19 11:18:56.605','2020-06-19 11:18:56.605','5f44fda4-14ef-4eb9-a460-ef5f05bf2755')
+,('ef9b3ded-5f62-4882-80d5-d8d0624c3c99','no',false,'2020-06-19 11:19:00.813','2020-06-19 11:19:00.813','5f44fda4-14ef-4eb9-a460-ef5f05bf2755')
+,('fb5aff82-73c9-4c08-b8b8-2090547d2765','yes',false,'2020-06-19 11:28:51.398','2020-06-19 11:28:51.398','9a757284-5396-496c-8746-519f038000dd')
+,('43fc6676-23da-4915-b6dc-51d8aada23d4','no',false,'2020-06-19 11:28:54.816','2020-06-19 11:28:54.816','9a757284-5396-496c-8746-519f038000dd')
+,('a98972e3-27f8-40c8-a99c-29fb46902cf3','declineOffer',false,'2020-06-19 11:31:25.143','2020-06-19 11:31:25.143','642338bc-f8ca-4c87-b41c-2a9a0253e598')
+,('8b96d84e-5d14-4553-adc4-44f4170e8977','reschedule',false,'2020-06-19 11:32:30.686','2020-06-19 11:32:30.686','642338bc-f8ca-4c87-b41c-2a9a0253e598')
+,('001dd7dd-7ced-4485-b9c1-e8e67970253d','btnMoveToWorkflow',false,'2020-06-19 11:32:44.931','2020-06-19 11:32:44.931','642338bc-f8ca-4c87-b41c-2a9a0253e598')
+;
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
+('866118e6-6926-4819-b34b-c7ba7da185e8','cancel',false,'2020-06-19 11:34:14.664','2020-06-19 11:34:14.664','642338bc-f8ca-4c87-b41c-2a9a0253e598')
+,('ad693163-23a2-44ad-b356-9c56388939fc','no',false,'2020-06-19 11:34:21.846','2020-06-19 11:34:21.846','642338bc-f8ca-4c87-b41c-2a9a0253e598')
+,('6fae4d2e-b023-472a-9ca9-45dd7e84c27e','yes',false,'2020-06-19 11:34:25.918','2020-06-19 11:34:25.918','642338bc-f8ca-4c87-b41c-2a9a0253e598')
+,('7efff57d-c4d4-4208-81ff-68ae16dd7a3f','moveTobin',false,'2020-06-19 11:34:29.723','2020-06-19 11:34:29.723','642338bc-f8ca-4c87-b41c-2a9a0253e598')
+,('22dfd5e2-5902-4ed1-900a-f7b33f03e51d','unableToMoveFromRejectionBin',false,'2020-06-19 11:34:34.255','2020-06-19 11:34:34.255','642338bc-f8ca-4c87-b41c-2a9a0253e598')
+,('06a1bdcf-0f88-4bf7-9aa1-c91fcdeae63c','movedFromRejectionBin',false,'2020-06-19 11:34:39.355','2020-06-19 11:34:39.355','642338bc-f8ca-4c87-b41c-2a9a0253e598')
+,('444b384d-410c-40ee-9781-b68a98912b58','toastMessage',false,'2020-06-19 11:36:25.578','2020-06-19 11:36:25.578','642338bc-f8ca-4c87-b41c-2a9a0253e598')
+,('a78f68ff-299d-40d3-bc10-4a68dec7da07','toastTitle',false,'2020-06-19 11:36:29.215','2020-06-19 11:36:29.215','642338bc-f8ca-4c87-b41c-2a9a0253e598')
+,('0a97cce4-2300-489a-8fbc-a1e4c786a3bc','ratingScore_0',false,'2020-06-19 13:06:46.589','2020-06-19 13:06:46.589','642338bc-f8ca-4c87-b41c-2a9a0253e598')
+,('09db2c5a-5f41-42f9-8c67-4a1d06c29c7c','dateFormat',false,'2020-06-19 14:09:51.210','2020-06-19 14:09:51.210','064c5dc0-0df8-42e1-a90a-e78ea4b9f277')
+;
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
+('94c9cb6e-639a-4334-a7b8-30a9ba18fb77','title',false,'2020-06-19 14:17:31.157','2020-06-19 14:17:31.157','49e105ad-1ae0-4bd2-9eb4-2bc41a9796af')
+,('e2a7ae53-d746-4106-a1b0-ced52840b62b','searchPlaceholder',false,'2020-06-19 14:17:37.033','2020-06-19 14:17:37.033','49e105ad-1ae0-4bd2-9eb4-2bc41a9796af')
+,('0fb49a6a-4cd5-4cd5-a37c-1fcf928f5440','today',false,'2020-06-19 14:25:25.354','2020-06-19 14:25:25.354','d75d0819-390e-4a06-ae96-44f232f5b98e')
+,('454c0040-f374-4c01-ac30-90705d983767','searchPlaceholder',false,'2020-06-19 14:31:32.497','2020-06-19 14:31:32.497','7ff78ef7-0b20-4cb8-84c8-ff4ad0ab88b0')
+,('e101bfba-b0f9-43ef-aaa8-d4830a7cd4c1','modalTitle',false,'2020-06-19 14:41:25.770','2020-06-19 14:41:25.770','dfb7689e-ec1a-4174-bad9-7a3f1ccd0658')
+,('77f2a9ac-2393-4f12-84a1-ea6b8e9037e4','reDefineCodePromptBottom',false,'2020-06-19 14:41:33.105','2020-06-19 14:41:33.105','dfb7689e-ec1a-4174-bad9-7a3f1ccd0658')
+,('01d334ed-ef85-43d4-bbc4-b57af3e7e224','email',false,'2020-06-19 14:47:12.867','2020-06-19 14:47:12.867','5cc506a2-2c71-471a-a924-60080755dc06')
+,('7ef9df1e-2898-4dac-8ccd-2c4b943fcdfa','emails',false,'2020-06-19 14:47:16.246','2020-06-19 14:47:16.246','5cc506a2-2c71-471a-a924-60080755dc06')
+,('9a70ad79-5216-4c34-8311-8c750ced75af','noEmails',false,'2020-06-19 14:47:19.389','2020-06-19 14:47:19.389','5cc506a2-2c71-471a-a924-60080755dc06')
+,('83f75dac-b136-414f-b342-4edf70cd72b7','noName',false,'2020-06-19 14:47:22.340','2020-06-19 14:47:22.340','5cc506a2-2c71-471a-a924-60080755dc06')
+;
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
+('5066d1c3-f0a0-42e3-9fbd-daf445ea45af','sending',false,'2020-06-19 14:47:25.749','2020-06-19 14:47:25.749','5cc506a2-2c71-471a-a924-60080755dc06')
+,('5ecadfbf-ab67-40a1-98b6-3eb9084480d1','to',false,'2020-06-19 14:59:35.842','2020-06-19 14:59:35.842','3dcbab34-8deb-4ff5-9437-04145b13b8ef')
+,('64858122-df0f-42a5-9783-a04169a9a925','more',false,'2020-06-19 14:59:41.014','2020-06-19 14:59:41.014','3dcbab34-8deb-4ff5-9437-04145b13b8ef')
+,('827c53b4-58d9-4f3d-878e-5c039d6dde0b','cc',false,'2020-06-19 14:59:59.077','2020-06-19 14:59:59.077','3dcbab34-8deb-4ff5-9437-04145b13b8ef')
+,('0d6b93df-3d16-4fbc-a295-aa1cc0207cba','bcc',false,'2020-06-19 15:00:03.509','2020-06-19 15:00:03.509','3dcbab34-8deb-4ff5-9437-04145b13b8ef')
+,('8bc92785-a632-4066-8fcb-04db4c794d6e','sent',false,'2020-06-19 15:00:28.887','2020-06-19 15:00:28.887','3dcbab34-8deb-4ff5-9437-04145b13b8ef')
+,('06612db1-9408-42bd-9aa4-40714140c2db','cancel',false,'2020-06-19 15:00:52.573','2020-06-19 15:00:52.573','3dcbab34-8deb-4ff5-9437-04145b13b8ef')
+,('40abf24c-1fb6-4f75-bee2-a0d6c8317a0a','sendWhenOnline',false,'2020-06-19 15:01:11.936','2020-06-19 15:01:11.936','3dcbab34-8deb-4ff5-9437-04145b13b8ef')
+,('45d632b0-c2b3-4e06-a810-a8aac72a6e69','workflowStatus',false,'2020-06-19 19:18:41.024','2020-06-19 19:18:41.024','d643a382-afae-44b8-a36a-1417e667edf2')
+,('33d2bc63-f436-474c-8df7-b4755b8ed23a','jobName',false,'2020-06-19 19:18:46.487','2020-06-19 19:18:46.487','d643a382-afae-44b8-a36a-1417e667edf2')
+;
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
+('2457a1d0-ade3-44a0-82e1-a2a1991043be','jobLocation',false,'2020-06-19 19:18:55.848','2020-06-19 19:18:55.848','d643a382-afae-44b8-a36a-1417e667edf2')
+,('27ded963-39a1-4280-bb98-0361fd608a91','clearAll',false,'2020-06-19 19:19:06.323','2020-06-19 19:19:06.323','d643a382-afae-44b8-a36a-1417e667edf2')
+,('f5b40b51-c2ee-4e68-a9ce-e2735ca37394','search',false,'2020-06-19 19:19:14.713','2020-06-19 19:19:14.713','d643a382-afae-44b8-a36a-1417e667edf2')
+,('15637dba-a885-494d-a68e-8582f43722da','tags',false,'2020-06-19 19:19:19.609','2020-06-19 19:19:19.609','d643a382-afae-44b8-a36a-1417e667edf2')
+,('5a1819d7-a0a1-44a8-b26b-5bb68e1b6d5b','reminderStatus',false,'2020-06-19 19:19:23.818','2020-06-19 19:19:23.818','d643a382-afae-44b8-a36a-1417e667edf2')
+,('3aabd5d0-7401-48bd-81b3-b2c1e6e9e554','reminderDate',false,'2020-06-19 19:19:27.724','2020-06-19 19:19:27.724','d643a382-afae-44b8-a36a-1417e667edf2')
+,('0b6d1a27-6b64-4050-8aa6-e34bd457e321','reminderType',false,'2020-06-19 19:19:31.942','2020-06-19 19:19:31.942','d643a382-afae-44b8-a36a-1417e667edf2')
+,('12281157-6b88-48dc-98a2-e36beab1f52f','NO_APPLICATION_THUMBVOTE',false,'2020-06-19 19:20:06.479','2020-06-19 19:20:06.479','d643a382-afae-44b8-a36a-1417e667edf2')
+,('4fbdbaf9-81ce-420c-a8dc-8c658c72b701','NO_APPLICATION_SCORECARD',false,'2020-06-19 19:20:10.706','2020-06-19 19:20:10.706','d643a382-afae-44b8-a36a-1417e667edf2')
+,('d4ae00db-adbb-4036-ae66-9e5a6393bdc7','UPCOMING_INTERVIEW_UNCONFIRMED',false,'2020-06-19 19:20:15.434','2020-06-19 19:20:15.434','d643a382-afae-44b8-a36a-1417e667edf2')
+;
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
+('2651fd4c-7acc-4062-a8b1-e333ef5745ba','APPLICATION_STALLED',false,'2020-06-19 19:20:19.145','2020-06-19 19:20:19.145','d643a382-afae-44b8-a36a-1417e667edf2')
+,('0f325013-e2a9-49cd-9ec6-f73821b49c59','INTERVIEW_UNCONFIRMED_BY_APPLICANT',false,'2020-06-19 19:20:23.329','2020-06-19 19:20:23.329','d643a382-afae-44b8-a36a-1417e667edf2')
+,('ab7e936b-24a2-49b7-a130-332a7a74f92b','btnSchedule',false,'2020-06-19 20:01:55.999','2020-06-19 20:01:55.999','fb0f8055-6418-4fd5-9b1e-ca200ff1ec31')
+,('f2bf0598-268f-4663-8df8-675adf5ef5f5','cancel',false,'2020-06-19 20:30:25.783','2020-06-19 20:30:25.783','1b31052a-f213-475b-a6ed-41d180df65dd')
+,('cea84374-0023-4610-b596-e128b645190a','title',false,'2020-06-19 20:39:59.902','2020-06-19 20:39:59.902','f690aee8-9f79-4cbf-a9ad-0f74ca53a1b6')
+,('5841b57d-9c63-4b8f-b50e-d46b3cfdafd8','yes',false,'2020-06-19 20:40:03.905','2020-06-19 20:40:03.905','f690aee8-9f79-4cbf-a9ad-0f74ca53a1b6')
+,('3ec4814d-28df-46b3-a9f1-62f56de58012','cancel',false,'2020-06-19 20:40:07.709','2020-06-19 20:40:07.709','f690aee8-9f79-4cbf-a9ad-0f74ca53a1b6')
+,('0b2f8d2e-9021-458a-9a37-a9d7fd60a6ce','forWhomThisApp',false,'2020-06-19 21:01:03.148','2020-06-19 21:01:03.148','a0a62765-b25d-400d-98d4-5a1ea1547507')
+,('d0e16225-eeae-42aa-8fae-baf1029ed68a','loginButtonText',false,'2020-06-19 21:01:08.008','2020-06-19 21:01:08.008','a0a62765-b25d-400d-98d4-5a1ea1547507')
+,('5480afa9-0160-4a52-9fb2-5a31b1bbbe73','offlineMessage',false,'2020-06-19 21:01:16.455','2020-06-19 21:01:16.455','a0a62765-b25d-400d-98d4-5a1ea1547507')
+;
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
+('ec1c470c-1c69-41ac-905f-9c3e21ec87de','signOut',false,'2020-06-19 21:17:46.070','2020-06-19 21:17:46.070','084cf74d-72fe-4444-99cb-b3e80d603798')
+,('462bb112-829a-4b92-81e3-6ad5c43fa73a','headerTitle',false,'2020-06-19 21:26:19.825','2020-06-19 21:26:19.825','b5b5a742-06d0-48cf-b226-138fcd5ff100')
+,('fc1df409-e0c0-45bc-a0fd-cad3f182341c','isUndecided',false,'2020-06-19 21:29:39.128','2020-06-19 21:29:39.128','b5b5a742-06d0-48cf-b226-138fcd5ff100')
+,('fceb1824-f91c-4f90-9ad0-2540538468e3','notRated',false,'2020-06-19 21:29:56.928','2020-06-19 21:29:56.928','b5b5a742-06d0-48cf-b226-138fcd5ff100')
+,('d2fa10e9-6ae4-4526-9285-56c0affd6af6','wouldHireCandidate',false,'2020-06-19 21:30:49.475','2020-06-19 21:30:49.475','b5b5a742-06d0-48cf-b226-138fcd5ff100')
+,('535ed796-d734-4f72-ae84-a7ca072afbb7','wouldNotHireCandidate',false,'2020-06-19 21:31:00.920','2020-06-19 21:31:00.920','b5b5a742-06d0-48cf-b226-138fcd5ff100')
+,('9fea9efa-331b-4103-b350-fcf7e04ee5c1','ratingScore_plural',true,'2020-06-19 21:32:01.034','2020-06-19 21:32:01.034','b5b5a742-06d0-48cf-b226-138fcd5ff100')
+,('82b2beee-627f-4218-b137-46d607eebe13','ratingScore',false,'2020-06-19 21:34:04.611','2020-06-19 21:34:04.611','b5b5a742-06d0-48cf-b226-138fcd5ff100')
+,('960e66bf-b8da-45a8-ac38-ffdc769cc929','ratingScore_0',false,'2020-06-19 21:41:29.584','2020-06-19 21:41:29.584','b5b5a742-06d0-48cf-b226-138fcd5ff100')
+,('2577d05c-8eed-41b8-b43d-b96595eb42c0','title',false,'2020-06-20 13:35:38.731','2020-06-20 13:35:38.731','68e7a839-5862-44b8-9b4e-0577493f2f23')
+;
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
+('96b9532d-d2a5-4741-af32-f449a1233875','noThumbVote',false,'2020-06-20 13:35:44.951','2020-06-20 13:35:44.951','68e7a839-5862-44b8-9b4e-0577493f2f23')
+,('eec4b901-5874-4665-bc51-2222c3b60922','changeStatus',false,'2020-06-20 13:43:39.324','2020-06-20 13:43:39.324','5466d9c9-ff80-49f7-a841-08941ee49ead')
+,('a7e28ad2-136f-404f-9b03-96712f85cbd6','moveToRejectionBin',false,'2020-06-20 13:43:44.363','2020-06-20 13:43:44.363','5466d9c9-ff80-49f7-a841-08941ee49ead')
+,('13a882fa-abfd-488f-acdb-f9f8d1694b09','removeFromRejectionBin',false,'2020-06-20 13:43:47.426','2020-06-20 13:43:47.426','5466d9c9-ff80-49f7-a841-08941ee49ead')
+,('a8f723a9-572d-4b19-8469-b91be2757d81','more',false,'2020-06-20 13:43:51.113','2020-06-20 13:43:51.113','5466d9c9-ff80-49f7-a841-08941ee49ead')
+,('6ee051ea-8acb-4a90-8c3a-6b586e5de147','title',false,'2020-06-20 13:48:13.029','2020-06-20 13:48:13.029','5d3494e3-06e8-450a-b788-8027541e1a50')
+,('36ca5931-682b-4700-b808-96fdd27c453f','tryAgain',false,'2020-06-20 13:48:23.578','2020-06-20 13:48:23.578','5d3494e3-06e8-450a-b788-8027541e1a50')
+,('1ee9f9dd-91e0-4ad4-8aba-2a3e87387718','error',false,'2020-06-20 13:55:00.538','2020-06-20 13:55:00.538','f872143a-f7f3-414d-ae7b-9c78a1dd29d1')
+,('2bb54870-43de-4c96-915a-9395bc505696','clearAll',false,'2020-06-20 13:56:28.122','2020-06-20 13:56:28.122','5baf5160-f65e-41f4-822e-5e8089ee7843')
+,('351786ab-2e89-4be7-903a-afa9c08c388a','title',false,'2020-06-20 13:59:05.554','2020-06-20 13:59:05.554','ad448a07-f27c-433d-9bae-628cee439785')
+;
+INSERT INTO public."key" (id,name,plural,"createdAt","updatedAt","screenId") VALUES 
+('453a88c4-8e2b-4233-a44e-c180414febb1','desc',false,'2020-06-20 13:59:08.326','2020-06-20 13:59:08.326','ad448a07-f27c-433d-9bae-628cee439785')
+;INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
 ('e1d2161f-73e4-470b-a57c-47961ee0c615','To-dos','2020-06-10 16:17:16.265','2020-06-10 16:17:16.265','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','650749f0-2d4e-42f7-b5df-72bd9869a647')
 ,('df1d5881-4be2-4d6b-b632-d8fd2e0d98d0','Jobs','2020-06-10 16:17:16.286','2020-06-10 16:17:16.286','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','f17de69e-cf85-40dc-bad2-d05c6e1c717d')
 ,('4935d876-87a6-48c7-a2a1-1ea50e0bf0c5','Bewerbungen','2020-06-10 16:17:16.305','2020-06-10 16:17:16.305','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','dc01e0e4-62b4-438a-bf63-990a87cba3ea')
@@ -1273,7 +1446,6 @@ Um ein neuen Job zu erstellen, nutzen Sie bitte softgarden E-Recruiting oder kon
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
 ('82b49d2d-c8c1-425b-bbb3-5d771a6e6915','Bitte mit dem Internet verbinden und erneut versuchen','2020-06-10 16:17:24.445','2020-06-10 16:17:24.445','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','32d9a0b6-ad5a-4899-a6d2-4e560ca18245')
-,('8122525e-3c3a-4d83-b374-4a6a706e7cc5','Recruiting Team','2020-06-10 16:17:24.465','2020-06-10 16:17:24.465','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','8903d4b2-a941-4285-a73a-8ca59435d257')
 ,('624ff992-8c65-4e01-a9a6-dd8008459c55','neu','2020-06-10 16:17:24.486','2020-06-10 16:17:24.486','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','0de37f11-a315-4bee-b9e5-0f028cfd79d8')
 ,('12d39745-307f-46a6-95cf-481c7f27b937','BEWERBUNG','2020-06-10 16:17:24.502','2020-06-10 16:17:24.502','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','899888f0-726d-414f-9102-98d1de949025')
 ,('ff23a6c3-f251-4abc-a4b5-91a419b3908f','BEWERBUNGEN','2020-06-10 16:17:24.521','2020-06-10 16:17:24.521','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','736d9da6-f4e3-48c1-8dc6-e33da7ba22f7')
@@ -1282,10 +1454,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('2c84d2bf-2b6d-4ca4-abe1-7bd3a651d660','Fertig','2020-06-10 16:17:24.558','2020-06-10 16:17:24.558','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','bbbfac4c-e1b0-47e9-86bb-c6c8d7c84daa')
 ,('f78d9180-d15f-461d-baf9-4fdebbfd217b','Bitte geben Sie Ihren Pincode ein','2020-06-10 16:17:24.584','2020-06-10 16:17:24.584','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','e9aff1fb-82c8-415d-9170-911d67eacc33')
 ,('bd85b311-49a8-46f7-91a8-1201c742d100','1 Fehlgeschlagener Eingabeversuch','2020-06-10 16:17:24.603','2020-06-10 16:17:24.603','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','2879d3cb-ef5f-4de1-b534-a51c7fa6259e')
+,('b98fc69e-adc7-44e8-8d60-a30d6357666c','Gesperrt für {{a}} Sekunden','2020-06-10 16:17:24.618','2020-06-10 16:17:24.618','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','698134b4-67e9-4b13-bcf0-5208d5efb93d')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('b98fc69e-adc7-44e8-8d60-a30d6357666c','Gesperrt für {{a}} Sekunden','2020-06-10 16:17:24.618','2020-06-10 16:17:24.618','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','698134b4-67e9-4b13-bcf0-5208d5efb93d')
-,('e1e93974-353f-455d-9a35-e4664404e29c','Abbrechen','2020-06-10 16:17:24.627','2020-06-10 16:17:24.627','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','17c0a33e-317c-4b9c-9f42-97fd13c5465b')
+('e1e93974-353f-455d-9a35-e4664404e29c','Abbrechen','2020-06-10 16:17:24.627','2020-06-10 16:17:24.627','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','17c0a33e-317c-4b9c-9f42-97fd13c5465b')
 ,('da6423c2-cfcc-4bdf-9cf8-2d09c199efa1','Mit Touch-ID anmelden','2020-06-10 16:17:24.641','2020-06-10 16:17:24.641','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','46774a29-efb3-42a4-b203-727905a96d44')
 ,('58fd53cb-7ac9-491d-a626-e9b9840024ce','Mit Fingerabdruck einloggen','2020-06-10 16:17:24.658','2020-06-10 16:17:24.658','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','6d1b623a-b54c-4b75-a935-e4d02444b455')
 ,('ce3d954c-5c28-4292-aaaa-0b084b69a0ec','Bitte authentifizieren oder brechen sie ab um den Pincode einzugeben','2020-06-10 16:17:24.674','2020-06-10 16:17:24.674','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','a94fdd50-58e7-4293-862e-f72aa70f2e63')
@@ -1294,10 +1466,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('65666f30-d8a5-4f3e-a48a-d13c840d77d5','Abmelden','2020-06-10 16:17:24.724','2020-06-10 16:17:24.724','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','b6603dd5-8c2e-4866-be99-76bfe58d3610')
 ,('415dea69-6d5b-47cd-8dcc-f8fa7f936be3','Authentifizierung erforderlich','2020-06-10 16:17:24.739','2020-06-10 16:17:24.739','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','ab58d790-edac-4ea9-b555-ac5334763c17')
 ,('1d55a096-9b67-4efb-b548-e8fdea8b0dc0','Berührungssensor','2020-06-10 16:17:24.755','2020-06-10 16:17:24.755','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','7bdfcd9b-c463-47ec-846c-adb68a787473')
+,('b37431b2-7345-406e-8ff1-47093fd12d12','Zu viele Versuche, bitte PIN verwenden','2020-06-10 16:17:24.775','2020-06-10 16:17:24.775','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','7dbc50d8-07a0-4b7f-a9ec-1d50a4ebf4ec')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('b37431b2-7345-406e-8ff1-47093fd12d12','Zu viele Versuche, bitte PIN verwenden','2020-06-10 16:17:24.775','2020-06-10 16:17:24.775','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','7dbc50d8-07a0-4b7f-a9ec-1d50a4ebf4ec')
-,('0be38799-f366-4cb5-8eab-0ca3ca58a787','','2020-06-10 16:17:24.792','2020-06-10 16:17:24.792','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','d6e9c57c-899d-45f2-ae93-a3a3259f862a')
+('0be38799-f366-4cb5-8eab-0ca3ca58a787','','2020-06-10 16:17:24.792','2020-06-10 16:17:24.792','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','d6e9c57c-899d-45f2-ae93-a3a3259f862a')
 ,('54c983db-b4b4-4eff-8501-6ad94effec8a','{{count}} Fehlgeschlagene Eingabeversuche','2020-06-10 16:17:24.811','2020-06-10 16:17:24.811','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','734c890c-48a7-4ef3-87de-a7aaf2708d6b')
 ,('660d04c8-c03f-4c4a-98d8-c4d45b1e15de','Mit SSO anmelden','2020-06-10 16:17:24.834','2020-06-10 16:17:24.834','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','1f913b99-a1f2-4b5f-b72a-4e131d824ca8')
 ,('72bba9a0-2d84-452d-b773-e1b1153d52b7','E-Mail oder Nutzername','2020-06-10 16:17:24.848','2020-06-10 16:17:24.848','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','1bd9b935-6d1f-4fb5-bf35-f47feec64e4d')
@@ -1306,10 +1478,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('42efff67-edc9-49ae-9a4d-4f5da27c090b','Anmeldung','2020-06-10 16:17:24.891','2020-06-10 16:17:24.891','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','b66addce-ff00-4f58-91dd-7ac3a80f7ab5')
 ,('258cf4a3-efa8-44ec-9de8-b8c53438fcb4','Passwort vergessen?','2020-06-10 16:17:24.912','2020-06-10 16:17:24.912','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','27a7dfe5-b3c6-49d7-aed3-8c003202e618')
 ,('72ef53fb-de97-44da-b504-50e73389ff08','Mehr über softgarden Bewerbermanagement','2020-06-10 16:17:24.927','2020-06-10 16:17:24.927','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','5b59d12c-f89c-4068-b346-0a9c8cc12798')
+,('979fb253-b157-4cea-9482-95920f5abe1d','Mehr zum softgarden E-Recruiting','2020-06-10 16:17:24.944','2020-06-10 16:17:24.944','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','2330e420-6aed-4e39-9557-c28a55a1d33f')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('979fb253-b157-4cea-9482-95920f5abe1d','Mehr zum softgarden E-Recruiting','2020-06-10 16:17:24.944','2020-06-10 16:17:24.944','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','2330e420-6aed-4e39-9557-c28a55a1d33f')
-,('6c3d9d51-1d04-4759-bf83-a56309b0ccc2','Stage wählen','2020-06-10 16:17:24.962','2020-06-10 16:17:24.962','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','a501df3e-b88f-407a-bee7-31332a989797')
+('6c3d9d51-1d04-4759-bf83-a56309b0ccc2','Stage wählen','2020-06-10 16:17:24.962','2020-06-10 16:17:24.962','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','a501df3e-b88f-407a-bee7-31332a989797')
 ,('216d1c8a-ba0d-4b70-82e2-aa2f452f8118','Gewählt: ','2020-06-10 16:17:24.976','2020-06-10 16:17:24.976','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','54a63b48-6876-43db-8453-5402bb638886')
 ,('5f8fe880-9953-4ffb-a478-1efcc38b7a85','Sind Sie Bewerber?','2020-06-10 16:17:24.996','2020-06-10 16:17:24.996','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','35293900-ee6e-440c-bf3c-0ccfa10556c8')
 ,('f0a335e2-e86f-4c70-ab13-cf3c7adac915','Werden Sie zu Ihrem Traumjob eingeladen','2020-06-10 16:17:25.013','2020-06-10 16:17:25.013','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','8575d832-c37c-467c-85d4-f6d4ffecce2b')
@@ -1319,23 +1491,22 @@ Den Login für Bewerber finden Sie auf der Website von softgarden.','2020-06-10 
 ,('766fd8d0-df91-4a30-904c-a7579241446b','https://www.softgarden.de/?utm_medium=app&utm_source=iOS','2020-06-10 16:17:25.063','2020-06-10 16:17:25.063','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','dcf97d39-bab3-4c95-9ce2-2e23a9d2d13a')
 ,('2de757b1-df65-4143-8a1c-f09572a94044','https://network.softgarden.io/#/landing?utm_medium=app&utm_source=iOS','2020-06-10 16:17:25.080','2020-06-10 16:17:25.080','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','10db4375-13f5-44f9-a3a0-8da8cc5cf5e4')
 ,('119909d3-7405-42ed-8676-3bfee0cd8335','https://app.softgarden.io/just-hire/lostpassword?utm_medium=app&utm_source=iOS','2020-06-10 16:17:25.095','2020-06-10 16:17:25.095','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','a93f00ef-b0c6-4ea7-9619-56601b529f7c')
+,('571cfe4a-9696-44e8-919a-ae10027f3f67','https://www.softgarden.de/?utm_medium=app&utm_source=Android','2020-06-10 16:17:25.116','2020-06-10 16:17:25.116','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','ab74829d-26f0-4f3b-ae79-c90f42dc8f77')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('571cfe4a-9696-44e8-919a-ae10027f3f67','https://www.softgarden.de/?utm_medium=app&utm_source=Android','2020-06-10 16:17:25.116','2020-06-10 16:17:25.116','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','ab74829d-26f0-4f3b-ae79-c90f42dc8f77')
-,('d0d82be1-25ce-47ab-89c6-d74465f3100c','https://network.softgarden.io/#/landing?utm_medium=app&utm_source=Android','2020-06-10 16:17:25.133','2020-06-10 16:17:25.133','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','4e5a1dbe-89fa-4293-b0d0-4dcd38d230af')
+('d0d82be1-25ce-47ab-89c6-d74465f3100c','https://network.softgarden.io/#/landing?utm_medium=app&utm_source=Android','2020-06-10 16:17:25.133','2020-06-10 16:17:25.133','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','4e5a1dbe-89fa-4293-b0d0-4dcd38d230af')
 ,('22104210-2270-4982-896f-c7479f6b22bd','https://app.softgarden.io/just-hire/lostpassword?utm_medium=app&utm_source=Android','2020-06-10 16:17:25.150','2020-06-10 16:17:25.150','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','9de3b35b-9678-4eb9-b571-29aa6df700b7')
 ,('29a6718c-327b-4fa7-811a-ff16a27feb53','Download','2020-06-10 16:17:25.170','2020-06-10 16:17:25.170','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','0a8774a5-721b-4bd2-96ff-6b18ced73781')
 ,('8e53c5e2-f2dd-4dcd-a8a4-892471d09e65','Die Datei wird beim Akzeptieren auf ihrem Gerät gespeichert.','2020-06-10 16:17:25.187','2020-06-10 16:17:25.187','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','aa026bb7-6c24-4904-9ffb-47f74d10e6d1')
 ,('c0be12ce-419d-40f0-ac16-6438c3840ead','Ja','2020-06-10 16:17:25.195','2020-06-10 16:17:25.195','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','d92869c0-3473-4d7d-8e06-aa821fe5ca8c')
 ,('0a5490cf-20be-4d3c-af54-0cbdc1da4d12','Abbrechen','2020-06-10 16:17:25.204','2020-06-10 16:17:25.204','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','17c0a33e-317c-4b9c-9f42-97fd13c5465b')
-,('9b1d7301-43d5-49d8-9c27-f37c3d15a73b','Recruiting-Team','2020-06-10 16:17:25.222','2020-06-10 16:17:25.222','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','8903d4b2-a941-4285-a73a-8ca59435d257')
 ,('4ac9cddd-afa1-46a4-979e-aa0cd699dfd3','Absagekorb','2020-06-10 16:17:25.240','2020-06-10 16:17:25.240','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','0a8774a5-721b-4bd2-96ff-6b18ced73781')
 ,('bbbd0351-4f56-4006-ba85-bd05c66a7c77','Suche nach Namen oder Titel oder Standorte','2020-06-10 16:17:25.250','2020-06-10 16:17:25.250','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','2d84282c-de52-492a-a55b-469d769e12ae')
+,('c61bfe94-8522-4f56-8dfc-aab6f6482fd4','Absagekorb','2020-06-10 16:17:25.259','2020-06-10 16:17:25.259','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','13271e8b-fce9-4a07-b2eb-59a9a4c80bfc')
+,('92284d52-7b9a-4272-8363-e41ba89c7052','Zweite Chance','2020-06-10 16:17:25.267','2020-06-10 16:17:25.267','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','70ef40e2-8719-4ec3-b362-82a2855f5310')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('c61bfe94-8522-4f56-8dfc-aab6f6482fd4','Absagekorb','2020-06-10 16:17:25.259','2020-06-10 16:17:25.259','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','13271e8b-fce9-4a07-b2eb-59a9a4c80bfc')
-,('92284d52-7b9a-4272-8363-e41ba89c7052','Zweite Chance','2020-06-10 16:17:25.267','2020-06-10 16:17:25.267','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','70ef40e2-8719-4ec3-b362-82a2855f5310')
-,('35935182-9b9d-4cbe-a2dd-938bd5d27ad9','Aktuell gibt es keine Bewerbungen im Absagekorb.','2020-06-10 16:17:25.276','2020-06-10 16:17:25.276','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','35bb7f80-c09c-4686-b631-77a013ea0e75')
+('35935182-9b9d-4cbe-a2dd-938bd5d27ad9','Aktuell gibt es keine Bewerbungen im Absagekorb.','2020-06-10 16:17:25.276','2020-06-10 16:17:25.276','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','35bb7f80-c09c-4686-b631-77a013ea0e75')
 ,('580e1aa2-5e85-47db-b997-7fa20041573a','Unternehmens ID','2020-06-10 16:17:25.303','2020-06-10 16:17:25.303','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','945fa727-9c57-4236-8270-231ea7eaca55')
 ,('b1e0add4-27b2-4216-af50-2df7b73fe282','Die App für Recruiting-Teams','2020-06-10 16:17:25.314','2020-06-10 16:17:25.314','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','2fb284a8-5e7d-4a4d-ba4c-800c9495c21f')
 ,('4ee4f33b-f6aa-4ab0-9aef-a213e88acfd2','Anmeldung','2020-06-10 16:17:25.328','2020-06-10 16:17:25.328','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','b66addce-ff00-4f58-91dd-7ac3a80f7ab5')
@@ -1343,10 +1514,11 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('afbfb4ab-b2cb-4b78-a16e-c15b89d6ed6e','Login fehlgeschlagen','2020-06-10 16:17:25.360','2020-06-10 16:17:25.360','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','c5cc9c2b-3f08-47c8-ba5a-d9115f0d20b6')
 ,('895371cc-6fe0-46fb-9b2e-d62cf1287731','Sie können nicht eingeloggt werden, da sie offline sind','2020-06-10 16:17:25.369','2020-06-10 16:17:25.369','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','dc1467be-1a8d-43d6-991f-0e0fca314b0d')
 ,('59b218eb-1f4e-481f-9cf9-802e23ed4cb1','Anmelden ohne SSO','2020-06-10 16:17:25.384','2020-06-10 16:17:25.384','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','90e2299a-b6f1-4a00-8596-467129929542')
+,('bc0d667d-0d43-43e0-8917-f4e8e6285581','SSO Anmeldung','2020-06-10 16:17:25.400','2020-06-10 16:17:25.400','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','e5d0ce90-696c-4c02-b617-b0751d6c5521')
+,('a3c0ecc6-25d3-480f-9fd9-16a127bf9d57','Einstellungen','2020-06-10 16:17:25.420','2020-06-10 16:17:25.420','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','0a8774a5-721b-4bd2-96ff-6b18ced73781')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('bc0d667d-0d43-43e0-8917-f4e8e6285581','SSO Anmeldung','2020-06-10 16:17:25.400','2020-06-10 16:17:25.400','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','e5d0ce90-696c-4c02-b617-b0751d6c5521')
-,('a3c0ecc6-25d3-480f-9fd9-16a127bf9d57','Einstellungen','2020-06-10 16:17:25.420','2020-06-10 16:17:25.420','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','0a8774a5-721b-4bd2-96ff-6b18ced73781')
+('9b1d7301-43d5-49d8-9c27-f37c3d15a73b','Recruiting Team','2020-06-10 16:17:25.222','2020-06-18 14:39:37.382','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','8903d4b2-a941-4285-a73a-8ca59435d257')
 ,('4e8ca404-dd55-4610-8691-59127aa7d12e','Sicherheit','2020-06-10 16:17:25.435','2020-06-10 16:17:25.435','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','e5891856-53b9-41fe-b03d-697279ffce5c')
 ,('4a092655-9dee-4f0f-a9c5-9a5df549fb29','Benachrichtigungen','2020-06-10 16:17:25.451','2020-06-10 16:17:25.451','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','f1d5d677-6178-432e-8ae8-f46c93da4802')
 ,('aa552776-aec1-4e5e-ad1e-88ccb704483d','Allgemein','2020-06-10 16:17:25.464','2020-06-10 16:17:25.464','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','d0f10494-6484-4c08-be45-ebefc0f67697')
@@ -1355,10 +1527,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('7a7bde77-4d68-486f-89c2-42b764821807','Pincode ändern','2020-06-10 16:17:25.503','2020-06-10 16:17:25.503','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','b6b66c61-de8a-41a7-8670-ab5acd8bb45f')
 ,('4c003485-eec8-4256-8038-3c84fe77cbbe','Automatische Sperre','2020-06-10 16:17:25.512','2020-06-10 16:17:25.512','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','7dc2b23a-4e7d-422a-9c74-28a9664939d2')
 ,('2695a372-be23-404a-a8f9-68604b3bce4a','Face ID / Touch ID','2020-06-10 16:17:25.526','2020-06-10 16:17:25.526','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','443ab63d-01ca-4171-9d3b-ec1517a62394')
+,('499fcca8-f5ec-46f5-955f-a96f1c2fe0ff','Neue Bewerber zum Abstimmen','2020-06-10 16:17:25.541','2020-06-10 16:17:25.541','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','83f78b19-8f52-4356-9bee-e58b62906f76')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('499fcca8-f5ec-46f5-955f-a96f1c2fe0ff','Neue Bewerber zum Abstimmen','2020-06-10 16:17:25.541','2020-06-10 16:17:25.541','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','83f78b19-8f52-4356-9bee-e58b62906f76')
-,('9f50c4c1-5893-4f7f-b064-a258de417582','Neue Bewerber zum Bewerten','2020-06-10 16:17:25.555','2020-06-10 16:17:25.555','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','e53bb57b-4e70-492a-b2f6-6031eff34c20')
+('9f50c4c1-5893-4f7f-b064-a258de417582','Neue Bewerber zum Bewerten','2020-06-10 16:17:25.555','2020-06-10 16:17:25.555','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','e53bb57b-4e70-492a-b2f6-6031eff34c20')
 ,('06ee82d1-b431-48c3-a0e2-13151568cbe6','Neue Kommentare','2020-06-10 16:17:25.571','2020-06-10 16:17:25.571','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','ec1f9707-dbac-4dbd-959b-146677c8d7d5')
 ,('6c26f4b3-caeb-48c3-b54f-cb2e720d62cc','Neue Statusaktualisierungen','2020-06-10 16:17:25.591','2020-06-10 16:17:25.591','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','2d9d282e-6867-42a3-b02c-26aec3320209')
 ,('e168e9a0-fc88-4ced-b2dc-b8310d127ead','Neue Erwähnungen','2020-06-10 16:17:25.604','2020-06-10 16:17:25.604','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','0d7c33c8-2676-4c50-90f5-b69b32b36fe9')
@@ -1367,10 +1539,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('00d78c14-420e-478b-844f-552425c33ad9','Nutzungsbedingungen','2020-06-10 16:17:25.633','2020-06-10 16:17:25.633','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','6b321c2a-fcf5-4194-b2ce-082da4ba0a5f')
 ,('3bcdfec1-5e06-406f-95d5-4a2b14985746','Lizenzen','2020-06-10 16:17:25.643','2020-06-10 16:17:25.643','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','8d1fe0a4-58a9-4026-8c43-f569b8af87dd')
 ,('bd70cddd-5e43-4a36-8d86-2a8bfb2955a2','Abmelden','2020-06-10 16:17:25.652','2020-06-10 16:17:25.652','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','b6603dd5-8c2e-4866-be99-76bfe58d3610')
+,('3315feb6-198b-477f-ba37-4becab010013','Sprache','2020-06-10 16:17:25.662','2020-06-10 16:17:25.662','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','a0925053-ddfb-45be-975c-70ad961690d7')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('3315feb6-198b-477f-ba37-4becab010013','Sprache','2020-06-10 16:17:25.662','2020-06-10 16:17:25.662','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','a0925053-ddfb-45be-975c-70ad961690d7')
-,('a2f16a78-107d-4b01-8713-af62a5367226','Über die App','2020-06-10 16:17:25.678','2020-06-10 16:17:25.678','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','a2ed90db-37ac-4d62-89d2-0e2e59fcdd95')
+('a2f16a78-107d-4b01-8713-af62a5367226','Über die App','2020-06-10 16:17:25.678','2020-06-10 16:17:25.678','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','a2ed90db-37ac-4d62-89d2-0e2e59fcdd95')
 ,('9715354a-bd37-4385-a504-d2a8fb416358','https://www.softgarden.de/unternehmen/impressum/','2020-06-10 16:17:25.691','2020-06-10 16:17:25.691','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','cd927ee7-c197-4ece-9671-64cb61b4a39b')
 ,('598a90d0-6bda-40e7-a567-6e849ce3db50','https://www.softgarden.de/unternehmen/datenschutz-softgarden-produkte/','2020-06-10 16:17:25.699','2020-06-10 16:17:25.699','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','d3af4e74-833d-404f-90bb-39c57b6132b8')
 ,('8c6227c9-8511-4b03-b362-cdffe8cc5663','https://www.softgarden.de/unternehmen/nutzungsbedingungen/','2020-06-10 16:17:25.708','2020-06-10 16:17:25.708','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','171bf735-8e6a-4b43-b255-4bb73bae6d07')
@@ -1379,10 +1551,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('6dccd89d-1ab7-4f2d-a228-1982c724b679','Kann nicht folgenden Benachrichtigungsstatus ändern:','2020-06-10 16:17:25.741','2020-06-10 16:17:25.741','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','24e86fad-c8fc-489b-ba97-043d7fbc6672')
 ,('5c262f96-2d55-4fbd-b64c-efec55dbdea0','Anstehendes Interview','2020-06-10 16:17:25.756','2020-06-10 16:17:25.756','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','7cc204d6-ed61-4bfa-961a-e6e568280444')
 ,('1d55a591-0352-4714-8a6c-f6c74762b497','Bewerbungsstatus überprüfen','2020-06-10 16:17:25.771','2020-06-10 16:17:25.771','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','84a1f4e9-e20a-47ea-8365-7ee25a8362f3')
+,('4f6ca44c-9e11-4939-a4be-351c3c96c535','Interview überprüfen','2020-06-10 16:17:25.787','2020-06-10 16:17:25.787','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','1fdcac0f-2287-4b4c-ac48-2ba7cc66517a')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('4f6ca44c-9e11-4939-a4be-351c3c96c535','Interview überprüfen','2020-06-10 16:17:25.787','2020-06-10 16:17:25.787','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','1fdcac0f-2287-4b4c-ac48-2ba7cc66517a')
-,('7913fa20-5159-4e57-9867-fc7a4425aaf4','Neue Bewerber-Mail','2020-06-10 16:17:25.803','2020-06-10 16:17:25.803','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','fcb918bb-ca11-4efa-b0e3-7e3b211b0f20')
+('7913fa20-5159-4e57-9867-fc7a4425aaf4','Neue Bewerber-Mail','2020-06-10 16:17:25.803','2020-06-10 16:17:25.803','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','fcb918bb-ca11-4efa-b0e3-7e3b211b0f20')
 ,('eb07ddfc-2400-4f59-bbd1-361df4b63de0','Teambewertung','2020-06-10 16:17:25.823','2020-06-10 16:17:25.823','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','058cbe78-e18c-4dac-b684-9621d1a5d80b')
 ,('0edf9c28-9e2e-4415-848a-9b7cdcd498d9','ZUSAMMENFASSUNG','2020-06-10 16:17:25.839','2020-06-10 16:17:25.839','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','c8b088f7-f8c3-4236-b1ea-b681a5d5dbc0')
 ,('4af405d6-1b6b-4eee-a306-1fbbf7553a09','BEWERTUNGEN','2020-06-10 16:17:25.855','2020-06-10 16:17:25.855','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','7f50f201-2ed8-4052-9948-bf32c12f5723')
@@ -1391,10 +1563,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('9a7ad9a4-4358-43cd-abfa-d3dd72dcd8cc','Keine Daumen-Bewertung','2020-06-10 16:17:25.891','2020-06-10 16:17:25.891','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','804afffc-ad53-42b7-8096-181969082ae7')
 ,('f8659c1d-0afd-477f-b8da-d7729c016660','Bearbeiten','2020-06-10 16:17:25.901','2020-06-10 16:17:25.901','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','d1be4854-8db7-4081-8c25-25465d36120b')
 ,('dd9a3130-5da3-4cec-b672-83f31093c1cc','Würde einstellen','2020-06-10 16:17:25.918','2020-06-10 16:17:25.918','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','09ae5c0e-7b0b-4585-a74b-d097b8b13a32')
+,('6e055bc2-aa0c-4681-ba93-78bd22cf6298','Würde nicht einstellen','2020-06-10 16:17:25.938','2020-06-10 16:17:25.938','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','26005f64-4667-41c6-8a6a-ee77889eec1e')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('6e055bc2-aa0c-4681-ba93-78bd22cf6298','Würde nicht einstellen','2020-06-10 16:17:25.938','2020-06-10 16:17:25.938','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','26005f64-4667-41c6-8a6a-ee77889eec1e')
-,('f3b4f1f7-4a4a-4ea2-bf02-54befc389358','Nicht entschieden','2020-06-10 16:17:25.948','2020-06-10 16:17:25.948','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','8588c8bf-0632-4746-b77e-8563ed21d827')
+('f3b4f1f7-4a4a-4ea2-bf02-54befc389358','Nicht entschieden','2020-06-10 16:17:25.948','2020-06-10 16:17:25.948','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','8588c8bf-0632-4746-b77e-8563ed21d827')
 ,('d2015aa4-84f5-45a1-88c7-3bd8c3fbf30c','Bewertungskriterien','2020-06-10 16:17:25.963','2020-06-10 16:17:25.963','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','b08f1ef7-4c39-4a44-b030-8beb11b1823d')
 ,('c1c72d57-aab6-48ec-aa57-1553d657ee5c','Nicht Bewertet','2020-06-10 16:17:25.972','2020-06-10 16:17:25.972','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','f253ea97-bbf7-490b-94e4-112a55a3d521')
 ,('25157166-2411-4a0d-b2e4-9b33dd5d194a','Gesamtbewertung','2020-06-10 16:17:25.989','2020-06-10 16:17:25.989','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','e970152d-09f2-46c4-96ef-bf42de60f888')
@@ -1403,10 +1575,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('d09ab6ce-89a4-4fda-ab8a-cc3c6abb128b','Befriedigend','2020-06-10 16:17:26.036','2020-06-10 16:17:26.036','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','0e329f70-8bd6-4dbd-ad23-293d48061398')
 ,('e478e055-06a6-49b7-9221-6a30e3550aba','Ausreichend','2020-06-10 16:17:26.052','2020-06-10 16:17:26.052','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','3be053ff-e609-434f-8e06-f8e4f9fabb85')
 ,('f1079af9-e6e3-45c2-8ee2-f270f4824004','Mangelhaft','2020-06-10 16:17:26.068','2020-06-10 16:17:26.068','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','5e0652ed-c946-4596-bdc9-1ed9787a311b')
+,('f0a4f546-410b-4dfd-830c-954d56662be0','Ungenügend','2020-06-10 16:17:26.087','2020-06-10 16:17:26.087','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','e1d3ffd9-7c26-478b-8a75-0da0ef7919ca')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('f0a4f546-410b-4dfd-830c-954d56662be0','Ungenügend','2020-06-10 16:17:26.087','2020-06-10 16:17:26.087','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','e1d3ffd9-7c26-478b-8a75-0da0ef7919ca')
-,('d905e5af-e349-4fad-86e7-5859a9676091','1 Bewertung','2020-06-10 16:17:26.096','2020-06-10 16:17:26.096','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','1df1c9f3-dd6c-4ab1-a57f-cc8de0a317fe')
+('d905e5af-e349-4fad-86e7-5859a9676091','1 Bewertung','2020-06-10 16:17:26.096','2020-06-10 16:17:26.096','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','1df1c9f3-dd6c-4ab1-a57f-cc8de0a317fe')
 ,('f679ff7a-103b-4252-81f9-5bbe57152275','{{count}} Bewertungen','2020-06-10 16:17:26.105','2020-06-10 16:17:26.105','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','6c585adf-7914-4a21-9ff7-7731126d787a')
 ,('3b5f5886-7bd1-4619-99b2-8e2064cbe5cd','Würde den Bewerber einstellen','2020-06-10 16:17:26.116','2020-06-10 16:17:26.116','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','18b5d460-6afe-41c9-b65e-7ca313b181af')
 ,('1aa4fe99-d840-4541-b94c-d25fe1aa9102','Würde den Bewerber nicht einstellen','2020-06-10 16:17:26.127','2020-06-10 16:17:26.127','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','e1fb5b39-54e5-454b-b5b2-218e19b3696c')
@@ -1415,10 +1587,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('ed550790-1f79-40b1-a76b-ee291858a359','Momentan sind keine aktiven To-dos verfügbar.','2020-06-10 16:17:26.175','2020-06-10 16:17:26.175','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','0d171e37-28ce-46cf-bcee-1f85bb33a01e')
 ,('3adc1c18-fca0-4b28-be6c-07bd3567e6e6','Gehen Sie zur Liste der Jobs.','2020-06-10 16:17:26.188','2020-06-10 16:17:26.188','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','045b19aa-0fab-4662-afad-56db73acccf5')
 ,('b8c4f569-208e-4f47-8fbf-47af7404bc98','Zum Interview einladen?','2020-06-10 16:17:26.198','2020-06-10 16:17:26.198','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','236abe16-e4f6-4f2d-b871-87ff979a9808')
+,('59deef9e-9c77-4429-87fc-ffbcde0c67af','Bewerbung bewerten','2020-06-10 16:17:26.208','2020-06-10 16:17:26.208','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','209c4edd-3876-413d-a780-dafa27fd0a86')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('59deef9e-9c77-4429-87fc-ffbcde0c67af','Bewerbung bewerten','2020-06-10 16:17:26.208','2020-06-10 16:17:26.208','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','209c4edd-3876-413d-a780-dafa27fd0a86')
-,('c6733040-5d51-4927-9847-ea26cf0268e5','Anstehendes Interview','2020-06-10 16:17:26.217','2020-06-10 16:17:26.217','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','72050ea4-d10c-43cf-9f39-a420714b6c37')
+('c6733040-5d51-4927-9847-ea26cf0268e5','Anstehendes Interview','2020-06-10 16:17:26.217','2020-06-10 16:17:26.217','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','72050ea4-d10c-43cf-9f39-a420714b6c37')
 ,('8d4011ee-bcea-425b-89dc-96319261a385','Anstehendes Interview','2020-06-10 16:17:26.227','2020-06-10 16:17:26.227','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','7c3346b6-aa2b-47bb-83b0-3a15ba4fa721')
 ,('0862a5a2-3abd-419e-84cc-009d326cca60','Ausstehende Daumen-Bewertung','2020-06-10 16:17:26.236','2020-06-10 16:17:26.236','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','16895f21-62c0-4d13-afbb-22a2d34a6e2e')
 ,('710f5546-e9e8-481d-992c-cbb9a2e28ce0','Ausstehende Scorecard-Bewertung','2020-06-10 16:17:26.248','2020-06-10 16:17:26.248','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','a2f55647-c712-4ba3-b332-4fc2293a5ac6')
@@ -1427,10 +1599,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('9fa4a502-41b4-4c92-a235-c15168447ea9','Stellenanzeige überprüfen','2020-06-10 16:17:26.278','2020-06-10 16:17:26.278','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','41746333-c895-4e1f-9edb-023fb4b6209d')
 ,('5dae3a12-ba8d-49ce-a89f-40481279f0c5','Stellenanzeige ist abgelaufen','2020-06-10 16:17:26.288','2020-06-10 16:17:26.288','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','d14ef13e-cb23-4547-a464-148215bb2866')
 ,('2e746e91-aff7-4108-9a98-17ccc6ff7ef4','Keine Typen sind aktiv!','2020-06-10 16:17:26.297','2020-06-10 16:17:26.297','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','583b437f-e805-498e-babd-b753ad2e7cd7')
+,('9438b8cb-c759-4e9e-8523-817b2242e06e','Ihre Meinung ist gefragt!','2020-06-10 16:17:26.307','2020-06-10 16:17:26.307','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','08531c41-fa14-4719-99ab-318c05963114')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('9438b8cb-c759-4e9e-8523-817b2242e06e','Ihre Meinung ist gefragt!','2020-06-10 16:17:26.307','2020-06-10 16:17:26.307','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','08531c41-fa14-4719-99ab-318c05963114')
-,('a3a35e2b-b001-4daa-b774-bcb63a321224','Bitte nehmen Sie sich einen Moment Zeit, um in unserer kurzen Umfrage teilzunehmen.','2020-06-10 16:17:26.316','2020-06-10 16:17:26.316','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','a24a8627-5c3a-4d59-9624-520d3c10fd91')
+('a3a35e2b-b001-4daa-b774-bcb63a321224','Bitte nehmen Sie sich einen Moment Zeit, um in unserer kurzen Umfrage teilzunehmen.','2020-06-10 16:17:26.316','2020-06-10 16:17:26.316','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','a24a8627-5c3a-4d59-9624-520d3c10fd91')
 ,('278bc7b3-4407-412b-a667-6362c86d3ccd','Umfrage starten','2020-06-10 16:17:26.325','2020-06-10 16:17:26.325','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','8fccf0b6-b504-40f7-bb35-f7ec94556038')
 ,('ae1dcadc-2736-4100-975f-66a7a99079f8','Umfrage','2020-06-10 16:17:26.334','2020-06-10 16:17:26.334','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','79884ca9-e100-496c-8b9d-61cd53d14034')
 ,('91f213b7-c737-456c-8537-8dea0edc06ba','Jetzt nicht','2020-06-10 16:17:26.343','2020-06-10 16:17:26.343','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','ecdb2c54-a5c4-4d97-9e09-d8b07926a38f')
@@ -1439,10 +1611,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('c3bf13e1-e302-4276-8f45-37a616e6c4a8','Älteste zuerst','2020-06-10 16:17:26.378','2020-06-10 16:17:26.378','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','395c815f-fbd4-40fc-b2fd-22597ac2d433')
 ,('d7786835-e85b-46f0-b1b8-397de0ced87f','Impressum','2020-06-10 16:17:26.396','2020-06-10 16:17:26.396','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','188aab68-8bfa-46f0-bed8-77463b896869')
 ,('ddec5600-9c85-44b0-a177-34ab571a84c0','Datenschutzerklärung','2020-06-10 16:17:26.406','2020-06-10 16:17:26.406','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','31a677e8-8b95-4829-bae2-58a004c55028')
+,('a634c357-a26a-4c97-bbc0-0158798d2117','Nutzungsbedingungen','2020-06-10 16:17:26.420','2020-06-10 16:17:26.420','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','6b321c2a-fcf5-4194-b2ce-082da4ba0a5f')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('a634c357-a26a-4c97-bbc0-0158798d2117','Nutzungsbedingungen','2020-06-10 16:17:26.420','2020-06-10 16:17:26.420','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','6b321c2a-fcf5-4194-b2ce-082da4ba0a5f')
-,('34db19ed-065b-424b-a50e-d90e543f240c','Lizenzen','2020-06-10 16:17:26.429','2020-06-10 16:17:26.429','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','8d1fe0a4-58a9-4026-8c43-f569b8af87dd')
+('34db19ed-065b-424b-a50e-d90e543f240c','Lizenzen','2020-06-10 16:17:26.429','2020-06-10 16:17:26.429','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','8d1fe0a4-58a9-4026-8c43-f569b8af87dd')
 ,('a7f0bd35-01d9-4c9e-8c3c-0685cc83da68','Abstimmungen','2020-06-10 16:17:26.446','2020-06-10 16:17:26.446','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','0a8774a5-721b-4bd2-96ff-6b18ced73781')
 ,('748771e4-389d-4f9d-84ea-14f8f82429f6','Noch nicht abgestimmt','2020-06-10 16:17:26.462','2020-06-10 16:17:26.462','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','083494ff-dd4a-42b1-a71d-726c76b6f8a2')
 ,('2a4dc2e9-0bdb-4ef0-bf1c-e5552883b013','Keine Daumen-Bewertung','2020-06-10 16:17:26.470','2020-06-10 16:17:26.470','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','804afffc-ad53-42b7-8096-181969082ae7')
@@ -1453,10 +1625,10 @@ verändern','2020-06-10 16:17:26.487','2020-06-10 16:17:26.487','ab0dff07-2621-4
 Chance','2020-06-10 16:17:26.506','2020-06-10 16:17:26.506','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','4b6eb31a-2080-417f-9187-92f9937adb7f')
 ,('eb54fbd3-dd72-45bd-9a3a-5e1d2a4a7077','Mehr','2020-06-10 16:17:26.514','2020-06-10 16:17:26.514','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','d5447ac5-7736-48fe-a201-68d00a947659')
 ,('c324bf41-84d7-4c6e-810a-be4675ecde46','Hoppla, das sollte nicht passieren','2020-06-10 16:17:26.533','2020-06-10 16:17:26.533','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','0a8774a5-721b-4bd2-96ff-6b18ced73781')
+,('608d5fa1-3f39-4e1c-bd07-41c35548dbde','Nochmal versuchen','2020-06-10 16:17:26.545','2020-06-10 16:17:26.545','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','a191caaf-f72a-4336-8a07-e4e24104139c')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('608d5fa1-3f39-4e1c-bd07-41c35548dbde','Nochmal versuchen','2020-06-10 16:17:26.545','2020-06-10 16:17:26.545','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','a191caaf-f72a-4336-8a07-e4e24104139c')
-,('ef87ba39-25ce-43aa-bfd9-c2e289519c5f','Schließen','2020-06-10 16:17:26.559','2020-06-10 16:17:26.559','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','b59fb522-1808-4b39-ab88-ad2a0e9d0268')
+('ef87ba39-25ce-43aa-bfd9-c2e289519c5f','Schließen','2020-06-10 16:17:26.559','2020-06-10 16:17:26.559','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','b59fb522-1808-4b39-ab88-ad2a0e9d0268')
 ,('3bb1c819-5b27-41b2-88ee-f9f3a51a5eba','Filter','2020-06-10 16:17:26.577','2020-06-10 16:17:26.577','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','417d67e1-cb0e-4dd1-a920-1fd988b41400')
 ,('1690f529-bda6-4b5d-b9e0-9616200409dd','1 Treffer','2020-06-10 16:17:26.644','2020-06-10 16:17:26.644','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','42df9a67-c4fe-4d02-8f27-03d0e657228d')
 ,('eb958fd1-8776-4135-90bc-11fcddd01d2a','... Treffer','2020-06-10 16:17:26.659','2020-06-10 16:17:26.659','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','a4ed91a3-6f76-4d29-b9ce-08ac3ddcae56')
@@ -1465,10 +1637,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('aecb644f-a9b9-44d0-b431-945e20e0fc08','{{count}} Treffer','2020-06-10 16:17:26.706','2020-06-10 16:17:26.706','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','9a462ce1-452e-47af-902d-b110a86ffaa0')
 ,('97cea5dc-baf1-4b03-a328-dbc11f85d46e','Entschuldigung, keine Treffer gefunden','2020-06-10 16:17:26.732','2020-06-10 16:17:26.732','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','8be1ba14-7795-4a55-a1c3-1d9ef4b2ddea')
 ,('9b492be5-78a5-4e80-92bf-357a009c59f3','Alle löschen','2020-06-10 16:17:26.741','2020-06-10 16:17:26.741','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','f0839b8b-2e4e-4b43-888b-faf4a49e491e')
+,('df9ca87e-fb82-4b4a-abb0-6dc444a8a94e','Sie sind momentan offline','2020-06-10 16:17:26.757','2020-06-10 16:17:26.757','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','0a8774a5-721b-4bd2-96ff-6b18ced73781')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('df9ca87e-fb82-4b4a-abb0-6dc444a8a94e','Sie sind momentan offline','2020-06-10 16:17:26.757','2020-06-10 16:17:26.757','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','0a8774a5-721b-4bd2-96ff-6b18ced73781')
-,('75555c6d-d43e-4c6f-9324-f226ee03f54c','Bitte überprüfen Sie Ihre Internetverbindung und versuchen Sie es erneut.','2020-06-10 16:17:26.766','2020-06-10 16:17:26.766','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','6b6f8ab5-5760-4319-a8a3-d7388aa70270')
+('75555c6d-d43e-4c6f-9324-f226ee03f54c','Bitte überprüfen Sie Ihre Internetverbindung und versuchen Sie es erneut.','2020-06-10 16:17:26.766','2020-06-10 16:17:26.766','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','6b6f8ab5-5760-4319-a8a3-d7388aa70270')
 ,('12cb3df8-897b-411f-889a-1fb02c8b0c57','Neu','2020-06-10 16:17:26.789','2020-06-10 16:17:26.789','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','57b4b4fc-d701-4d1f-8a82-8ae48b8f3cae')
 ,('3fb291ce-5c72-4e6b-b84b-72a02ce749a3','Vorauswahl','2020-06-10 16:17:26.802','2020-06-10 16:17:26.802','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','85df6841-7b7d-428a-8227-d3cef23ae588')
 ,('96d28530-b0da-4442-a281-3604095f1aa6','Interview','2020-06-10 16:17:26.817','2020-06-10 16:17:26.817','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','5164c5fe-836a-40c3-8beb-67de31d5f39a')
@@ -1477,10 +1649,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('a0ce0a47-b5f3-41ae-b482-0e70745ff0cc','Eingestellt','2020-06-10 16:17:26.860','2020-06-10 16:17:26.860','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','41ce1cb3-5ad4-4e83-bb92-6d0b0a7d4601')
 ,('b65048d2-cd4c-45d2-8171-ae66976b526f','Abgesagt','2020-06-10 16:17:26.876','2020-06-10 16:17:26.876','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','bd45489c-8b1a-4a1d-afa8-1a768844be9a')
 ,('e8c54aae-6694-4810-8d92-3f2c74f7e519','Neuer Status: {{a}}','2020-06-10 16:17:26.894','2020-06-10 16:17:26.894','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','a64915f5-1fc3-4c1f-ba6c-c409959cc2e3')
+,('1ccaa449-c005-49a0-b00e-ae520bd3ae2d','Absagekorb','2020-06-10 16:17:26.910','2020-06-10 16:17:26.910','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','bcb7e5ad-472c-4532-89f9-fa9fb8c2e2d8')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('1ccaa449-c005-49a0-b00e-ae520bd3ae2d','Absagekorb','2020-06-10 16:17:26.910','2020-06-10 16:17:26.910','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','bcb7e5ad-472c-4532-89f9-fa9fb8c2e2d8')
-,('77435788-f34b-459b-bc67-fd72391026eb','Pausiert','2020-06-10 16:17:26.925','2020-06-10 16:17:26.925','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','88ccabc8-afd6-4aa1-bf8e-6b1105473d64')
+('77435788-f34b-459b-bc67-fd72391026eb','Pausiert','2020-06-10 16:17:26.925','2020-06-10 16:17:26.925','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','88ccabc8-afd6-4aa1-bf8e-6b1105473d64')
 ,('20acc4a7-28ba-4dc7-a485-71b272a7418a','Neuer Status: Beworben','2020-06-10 16:17:26.944','2020-06-10 16:17:26.944','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','5f9881db-6aaa-4b16-8531-64abd9bde4e9')
 ,('c79cbeee-d33b-48af-a854-513bce6ec867','Neuer Status: Vorauswahl','2020-06-10 16:17:26.959','2020-06-10 16:17:26.959','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','f6db2ef2-a1b0-4b5d-9fee-3b71a9411345')
 ,('d906a85e-6e0f-4995-9559-ff5e385a885b','Neuer Status: Interview','2020-06-10 16:17:26.976','2020-06-10 16:17:26.976','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','14a7a94a-c843-471b-a631-53653e22c9d0')
@@ -1489,10 +1661,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('030d1e60-c9c2-43e4-930f-481bae46ac38','Neuer Status: Eingestellt','2020-06-10 16:17:27.019','2020-06-10 16:17:27.019','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','0ce6711b-8bc3-4043-b6bd-531f6e86f01c')
 ,('d88ae128-d4ca-4a1a-b7e2-86df05a15aa2','Neuer Status: Abgelehnt','2020-06-10 16:17:27.034','2020-06-10 16:17:27.034','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','91a77d96-d47f-49dd-9313-5ae002156e23')
 ,('d2c7c583-344d-4dd3-b46d-a042735b0257','Neuer Status: {{a}}','2020-06-10 16:17:27.050','2020-06-10 16:17:27.050','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','904a1ff5-99b8-4a29-8def-9b52884330d5')
+,('ad762a9a-3135-4192-bcdc-8679c7fb9bf2','To-dos','2020-06-10 16:17:27.068','2020-06-10 16:17:27.068','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','650749f0-2d4e-42f7-b5df-72bd9869a647')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('ad762a9a-3135-4192-bcdc-8679c7fb9bf2','To-dos','2020-06-10 16:17:27.068','2020-06-10 16:17:27.068','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','650749f0-2d4e-42f7-b5df-72bd9869a647')
-,('3c7bc0b7-22d3-40f9-8355-91bc5081e669','Jobs','2020-06-10 16:17:27.077','2020-06-10 16:17:27.077','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','f17de69e-cf85-40dc-bad2-d05c6e1c717d')
+('3c7bc0b7-22d3-40f9-8355-91bc5081e669','Jobs','2020-06-10 16:17:27.077','2020-06-10 16:17:27.077','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','f17de69e-cf85-40dc-bad2-d05c6e1c717d')
 ,('bb57ce77-7af5-4a78-85d1-01150ca2b825','Applications','2020-06-10 16:17:27.087','2020-06-10 16:17:27.087','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','dc01e0e4-62b4-438a-bf63-990a87cba3ea')
 ,('3df9fc58-4b51-4c85-abd0-dc6550f8cfc8','Team Chats','2020-06-10 16:17:27.096','2020-06-10 16:17:27.096','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','486bbee4-67f6-4be5-8ec9-d5fe4fd60498')
 ,('a3b5f39a-8377-40c5-a009-65f2ea64fb2c','Settings','2020-06-10 16:17:27.105','2020-06-10 16:17:27.105','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','f98bdcb7-67bb-4146-b4de-e46c3223751c')
@@ -1501,10 +1673,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('1225d5e0-1e15-43f4-a285-6f659b175369','Your are currently offline','2020-06-10 16:17:27.132','2020-06-10 16:17:27.132','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','fcbeb512-832f-47e2-b4f6-bd47794a54a9')
 ,('dd8b237b-0a72-4aa3-a622-fb98743072b6','Please go online and request this file one more time','2020-06-10 16:17:27.141','2020-06-10 16:17:27.141','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','7b74dbb0-81c6-468e-b174-4c67760f58c1')
 ,('faf23b69-c8b3-49a4-8e2f-6b56c44e579b','Rejection Bin','2020-06-10 16:17:27.150','2020-06-10 16:17:27.150','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','2492f444-5ad0-44ad-9e54-c7071be74e53')
+,('0a1883b4-43bd-40ee-8af4-288ad749d73c','Second Chance','2020-06-10 16:17:27.159','2020-06-10 16:17:27.159','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','4b6eb31a-2080-417f-9187-92f9937adb7f')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('0a1883b4-43bd-40ee-8af4-288ad749d73c','Second Chance','2020-06-10 16:17:27.159','2020-06-10 16:17:27.159','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','4b6eb31a-2080-417f-9187-92f9937adb7f')
-,('1e2e95b2-76e2-445e-afe9-7e8e4a2eab09','Dismiss','2020-06-10 16:17:27.168','2020-06-10 16:17:27.168','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','ba32fa3b-f09d-47a2-914a-ab9cf8357f4d')
+('1e2e95b2-76e2-445e-afe9-7e8e4a2eab09','Dismiss','2020-06-10 16:17:27.168','2020-06-10 16:17:27.168','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','ba32fa3b-f09d-47a2-914a-ab9cf8357f4d')
 ,('be433309-6439-4671-af2d-28ce81251e77','Server Error!','2020-06-10 16:17:27.178','2020-06-10 16:17:27.178','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','ad7cdfaa-d1e0-4d51-8ba2-68b4f2fcf590')
 ,('058d862c-4a52-42d0-beac-1d8b237e78bc','English','2020-06-10 16:17:27.206','2020-06-10 16:17:27.206','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','ea045290-caa9-4c77-bd94-5433efcb8ff0')
 ,('8133744e-a9d1-4570-8e54-f5b5803c1b35','Englisch','2020-06-10 16:17:27.215','2020-06-10 16:17:27.215','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','a4294de2-deba-4ddd-9a5d-e4ca72d8c2c0')
@@ -1513,10 +1685,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('adebd1f7-dd23-4657-97bb-f676a445f808','en','2020-06-10 16:17:27.242','2020-06-10 16:17:27.242','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','971cd13d-d520-4e43-a056-72fa55c6f71c')
 ,('a0c83124-3962-4bed-b77d-b622bdf29563','Date & Time','2020-06-10 16:17:27.252','2020-06-10 16:17:27.252','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','0a8774a5-721b-4bd2-96ff-6b18ced73781')
 ,('17b0233c-1d11-441f-8b19-a5910cba7b70','Done','2020-06-10 16:17:27.270','2020-06-10 16:17:27.270','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','bbbfac4c-e1b0-47e9-86bb-c6c8d7c84daa')
+,('045f69bc-d0a8-4365-be94-757cd8f8c861','Today','2020-06-10 16:17:27.280','2020-06-10 16:17:27.280','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','e98e867a-90be-44a0-8168-0e920062eeab')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('045f69bc-d0a8-4365-be94-757cd8f8c861','Today','2020-06-10 16:17:27.280','2020-06-10 16:17:27.280','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','e98e867a-90be-44a0-8168-0e920062eeab')
-,('58c54999-2d89-44ca-830b-eb9a09b78f00','Tomorrow','2020-06-10 16:17:27.289','2020-06-10 16:17:27.289','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','9ca1ba5d-4d46-491a-bc49-91a180671f39')
+('58c54999-2d89-44ca-830b-eb9a09b78f00','Tomorrow','2020-06-10 16:17:27.289','2020-06-10 16:17:27.289','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','9ca1ba5d-4d46-491a-bc49-91a180671f39')
 ,('c7d87cd1-01f4-44a5-92cb-a168a39dfc9e','Duration','2020-06-10 16:17:27.297','2020-06-10 16:17:27.297','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','b9623da4-0154-4879-afb8-19ccc6f30858')
 ,('008a931a-fc92-4535-b619-972a990b239a','Minutes','2020-06-10 16:17:27.305','2020-06-10 16:17:27.305','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','8508f0d2-2f89-4a88-a827-c406c1bde9bc')
 ,('7e0fe630-8f24-408e-92a6-4ec02d840bbf','Hours','2020-06-10 16:17:27.314','2020-06-10 16:17:27.314','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','9d0cbc22-beee-4c12-8194-1ec1ab77e3c4')
@@ -1525,10 +1697,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('7379a0c2-8d43-49d7-9e8b-1002c8c68b18','HH','2020-06-10 16:17:27.340','2020-06-10 16:17:27.340','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','f08a9ab3-e91e-412e-a087-9cc66f6b4b31')
 ,('317a8f2f-11e7-4056-b6f0-1169cc6f30da','mm','2020-06-10 16:17:27.348','2020-06-10 16:17:27.348','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','2d0be6af-b945-4e19-bfe7-b9e7c47734cb')
 ,('f6164b46-57a0-485a-9543-eb1274c5fbdf','{{minutes}} minutes','2020-06-10 16:17:27.357','2020-06-10 16:17:27.357','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','c29ae2bf-b3c3-4360-aede-a47cc3f8091f')
+,('c3ff5452-d06b-4b6e-8953-667a30c5b293','Date & Time','2020-06-10 16:17:27.369','2020-06-10 16:17:27.369','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','0a8774a5-721b-4bd2-96ff-6b18ced73781')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('c3ff5452-d06b-4b6e-8953-667a30c5b293','Date & Time','2020-06-10 16:17:27.369','2020-06-10 16:17:27.369','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','0a8774a5-721b-4bd2-96ff-6b18ced73781')
-,('b17f0c1d-02aa-464a-a8c7-ebfd91897b4c','Cancel','2020-06-10 16:17:27.378','2020-06-10 16:17:27.378','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','17c0a33e-317c-4b9c-9f42-97fd13c5465b')
+('b17f0c1d-02aa-464a-a8c7-ebfd91897b4c','Cancel','2020-06-10 16:17:27.378','2020-06-10 16:17:27.378','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','17c0a33e-317c-4b9c-9f42-97fd13c5465b')
 ,('7a4dad23-295a-418a-912f-8c8f97fe3e62','Done','2020-06-10 16:17:27.385','2020-06-10 16:17:27.385','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','bbbfac4c-e1b0-47e9-86bb-c6c8d7c84daa')
 ,('3eced192-04ed-462f-a296-4a425d563d59','Today','2020-06-10 16:17:27.394','2020-06-10 16:17:27.394','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','e98e867a-90be-44a0-8168-0e920062eeab')
 ,('947d68dd-6d01-4e94-ab32-756c225a29cc','Tomorrow','2020-06-10 16:17:27.404','2020-06-10 16:17:27.404','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','9ca1ba5d-4d46-491a-bc49-91a180671f39')
@@ -1537,10 +1709,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('39d1b3d4-dd20-474f-b01e-6f354841264e','Hours','2020-06-10 16:17:27.431','2020-06-10 16:17:27.431','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','9d0cbc22-beee-4c12-8194-1ec1ab77e3c4')
 ,('11ed1408-93ab-4003-858a-24154a81dff1','Appointment dates are invalid','2020-06-10 16:17:27.443','2020-06-10 16:17:27.443','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','54d91116-77b8-4e72-b883-d81e400089f6')
 ,('1b88c6c8-37a6-457c-bfe4-328e993bf7f8','ddd MMM DD','2020-06-10 16:17:27.452','2020-06-10 16:17:27.452','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','03f8bb6f-8ecc-4ce1-81b3-0eb685e6dfd5')
+,('35ddfb65-443c-4fa3-9f49-06271711922a','HH','2020-06-10 16:17:27.460','2020-06-10 16:17:27.460','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','f08a9ab3-e91e-412e-a087-9cc66f6b4b31')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('35ddfb65-443c-4fa3-9f49-06271711922a','HH','2020-06-10 16:17:27.460','2020-06-10 16:17:27.460','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','f08a9ab3-e91e-412e-a087-9cc66f6b4b31')
-,('cef3b09d-888e-4a48-b40e-9fbc9c0ddbea','mm','2020-06-10 16:17:27.468','2020-06-10 16:17:27.468','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','2d0be6af-b945-4e19-bfe7-b9e7c47734cb')
+('cef3b09d-888e-4a48-b40e-9fbc9c0ddbea','mm','2020-06-10 16:17:27.468','2020-06-10 16:17:27.468','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','2d0be6af-b945-4e19-bfe7-b9e7c47734cb')
 ,('a05dfc3f-16d1-4a85-a9b7-4591c535a387','{{minutes}} minutes','2020-06-10 16:17:27.477','2020-06-10 16:17:27.477','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','c29ae2bf-b3c3-4360-aede-a47cc3f8091f')
 ,('a82f8807-25c1-44f6-a040-4de9564bc521','Are you sure you want to move this application to {{x}}?','2020-06-10 16:17:27.487','2020-06-10 16:17:27.487','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','66c1a93b-7c8f-4ba3-a935-b9dc1b29e0f8')
 ,('30579da7-73ff-4754-be01-b799385bc0ba','You''re just one step away from a new hire!
@@ -1551,10 +1723,10 @@ When will {{x}} start?','2020-06-10 16:17:27.497','2020-06-10 16:17:27.497','c02
 ,('6efe613e-54c1-4712-9d23-68fbc07bb929','Send an Email','2020-06-10 16:17:27.523','2020-06-10 16:17:27.523','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','3b51bfbb-57e2-4ea2-b638-bb8365055f1a')
 ,('1a20e87a-4c9a-4f8d-a0f9-77424950c253','Schedule an Interview','2020-06-10 16:17:27.532','2020-06-10 16:17:27.532','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','1ee2f90c-3323-4604-a920-36bfdff939f9')
 ,('94fbe9a4-d92c-4677-9d1a-1af2ea6dde05','Yes, Hire','2020-06-10 16:17:27.541','2020-06-10 16:17:27.541','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','aad9146a-ecb5-4806-8efe-090aac5f82b1')
+,('7d19b4bd-ffdf-4625-8c56-a36360c9f43e','Continue','2020-06-10 16:17:27.553','2020-06-10 16:17:27.553','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','33c287a9-aca5-4ccb-a131-1aa63679c9f8')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('7d19b4bd-ffdf-4625-8c56-a36360c9f43e','Continue','2020-06-10 16:17:27.553','2020-06-10 16:17:27.553','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','33c287a9-aca5-4ccb-a131-1aa63679c9f8')
-,('3f53a581-3c11-4605-8120-3d5c882f9ffc','New','2020-06-10 16:17:27.562','2020-06-10 16:17:27.562','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','0de37f11-a315-4bee-b9e5-0f028cfd79d8')
+('3f53a581-3c11-4605-8120-3d5c882f9ffc','New','2020-06-10 16:17:27.562','2020-06-10 16:17:27.562','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','0de37f11-a315-4bee-b9e5-0f028cfd79d8')
 ,('9913f701-58de-4793-954f-bb590a280c49','Short','2020-06-10 16:17:27.571','2020-06-10 16:17:27.571','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','f8a03a5e-ccce-47dc-946a-7e03f7d80cbf')
 ,('f0cddd22-31be-4feb-9b92-35a6dc216d41','Interview','2020-06-10 16:17:27.581','2020-06-10 16:17:27.581','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','217716c4-d568-4a09-84d1-e654fa7b3773')
 ,('b0b02430-fdff-4e5d-87cc-799fb4a94181','Offer','2020-06-10 16:17:27.603','2020-06-10 16:17:27.603','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','9a64ebef-bcb9-406a-bf6c-3322629def71')
@@ -1563,10 +1735,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('de64c1ab-9d0d-4175-9e63-614a34c30946','You''re about to reject this application. Would you like to:','2020-06-10 16:17:27.638','2020-06-10 16:17:27.638','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','bc06e206-8257-4273-878e-4d0fb4301d43')
 ,('3b2c3f0e-05bf-40b4-b7e4-b70435ebfd56','Rejected','2020-06-10 16:17:27.647','2020-06-10 16:17:27.647','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','cf0d661b-345c-4028-ba8b-9cd94b0404d9')
 ,('52222cfd-e46a-40d6-85e4-3df9421bf341','Change application step','2020-06-10 16:17:27.660','2020-06-10 16:17:27.660','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','c207b249-7d11-49f1-a7fd-7f35dd7ef48c')
+,('aa4e113a-2126-40dd-b11c-6e3f531ba1dc','New','2020-06-10 16:17:27.668','2020-06-10 16:17:27.668','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','0de37f11-a315-4bee-b9e5-0f028cfd79d8')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('aa4e113a-2126-40dd-b11c-6e3f531ba1dc','New','2020-06-10 16:17:27.668','2020-06-10 16:17:27.668','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','0de37f11-a315-4bee-b9e5-0f028cfd79d8')
-,('39934295-f4f7-4d18-9cdd-8371639a0c8f','ShortList','2020-06-10 16:17:27.678','2020-06-10 16:17:27.678','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','f8a03a5e-ccce-47dc-946a-7e03f7d80cbf')
+('39934295-f4f7-4d18-9cdd-8371639a0c8f','ShortList','2020-06-10 16:17:27.678','2020-06-10 16:17:27.678','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','f8a03a5e-ccce-47dc-946a-7e03f7d80cbf')
 ,('6479a499-ec02-463f-b9cf-e08bac318226','Interview','2020-06-10 16:17:27.693','2020-06-10 16:17:27.693','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','217716c4-d568-4a09-84d1-e654fa7b3773')
 ,('c6f41ca2-a62c-497e-b9cc-cc9908d6e675','Offer','2020-06-10 16:17:27.701','2020-06-10 16:17:27.701','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','9a64ebef-bcb9-406a-bf6c-3322629def71')
 ,('a44e4e63-4679-413d-998e-368abd506e37','Onboarding','2020-06-10 16:17:27.717','2020-06-10 16:17:27.717','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','b0bcf3a1-39bb-44b0-8c29-fc13bafcbd0b')
@@ -1575,10 +1747,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('bd8bfde7-9d3d-42df-877f-1aa73b081f90','Please check your internet connection and try again.','2020-06-10 16:17:27.749','2020-06-10 16:17:27.749','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','6b6f8ab5-5760-4319-a8a3-d7388aa70270')
 ,('35379e97-e2f1-4828-9858-c07cfb98d856','There is no available steps','2020-06-10 16:17:27.758','2020-06-10 16:17:27.758','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','c15f5d1a-0219-46f2-8a61-f841a35c04c0')
 ,('784a556b-b690-45ff-adaa-08cb64998b49','Change application step','2020-06-10 16:17:27.769','2020-06-10 16:17:27.769','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','d90c69cf-8cae-4f4e-8e38-af0312dfc86c')
+,('99f895a9-a1e9-4bef-9be8-d56def708fbe','Move to Rejection Bin','2020-06-10 16:17:27.780','2020-06-10 16:17:27.780','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','2492f444-5ad0-44ad-9e54-c7071be74e53')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('99f895a9-a1e9-4bef-9be8-d56def708fbe','Move to Rejection Bin','2020-06-10 16:17:27.780','2020-06-10 16:17:27.780','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','2492f444-5ad0-44ad-9e54-c7071be74e53')
-,('77edae9b-78fa-452f-b101-e1d17455fe08','Second Chance','2020-06-10 16:17:27.792','2020-06-10 16:17:27.792','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','70ef40e2-8719-4ec3-b362-82a2855f5310')
+('77edae9b-78fa-452f-b101-e1d17455fe08','Second Chance','2020-06-10 16:17:27.792','2020-06-10 16:17:27.792','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','70ef40e2-8719-4ec3-b362-82a2855f5310')
 ,('e4b46418-4882-4f14-87a9-55e8828c434b','Pause','2020-06-10 16:17:27.801','2020-06-10 16:17:27.801','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','d9570970-f54f-4c23-aba3-c8e117801f1b')
 ,('851b9c87-47c6-4a3e-bb62-c6bc1b8b533f','Revert back to "New"','2020-06-10 16:17:27.811','2020-06-10 16:17:27.811','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','a36a604b-4817-4410-bc1a-0ea8110d83b3')
 ,('79ea7a2b-a780-4c64-9352-85e598b18515','Short','2020-06-10 16:17:27.824','2020-06-10 16:17:27.824','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','f8a03a5e-ccce-47dc-946a-7e03f7d80cbf')
@@ -1587,10 +1759,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('68abeb1b-e4f2-4eae-862a-5f5404627c6b','Onboarding','2020-06-10 16:17:27.851','2020-06-10 16:17:27.851','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','b0bcf3a1-39bb-44b0-8c29-fc13bafcbd0b')
 ,('3a13f759-f010-48f3-a2bf-1156fddde0ca','Hire','2020-06-10 16:17:27.861','2020-06-10 16:17:27.861','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','130cdebb-9f0e-46ff-96e0-c702a3538427')
 ,('ac1de418-1fbe-48e4-b49d-1d6441251a5c','Reject','2020-06-10 16:17:27.871','2020-06-10 16:17:27.871','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','bd7487fd-d437-4304-9e79-cbcfb56d5170')
+,('c221079d-38cd-4093-92cd-bf32106de3fa','Are you sure you want to move to rejection bin?','2020-06-10 16:17:27.881','2020-06-10 16:17:27.881','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','02fce22b-5ad6-4b3c-9733-6d91e034b714')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('c221079d-38cd-4093-92cd-bf32106de3fa','Are you sure you want to move to rejection bin?','2020-06-10 16:17:27.881','2020-06-10 16:17:27.881','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','02fce22b-5ad6-4b3c-9733-6d91e034b714')
-,('6c170aa2-f7ac-414b-ac20-4f48e2b52580','Yes','2020-06-10 16:17:27.890','2020-06-10 16:17:27.890','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','d92869c0-3473-4d7d-8e06-aa821fe5ca8c')
+('6c170aa2-f7ac-414b-ac20-4f48e2b52580','Yes','2020-06-10 16:17:27.890','2020-06-10 16:17:27.890','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','d92869c0-3473-4d7d-8e06-aa821fe5ca8c')
 ,('205c44a0-debb-4194-8c67-21044b7cb40d','Cancel','2020-06-10 16:17:27.904','2020-06-10 16:17:27.904','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','64b1350e-8f50-4951-9648-0fdacc85399d')
 ,('e1fc3857-c6f6-4302-938d-03d5f624488a','Move to {{a}}','2020-06-10 16:17:27.915','2020-06-10 16:17:27.915','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','9a054f34-1aa4-4a40-89d7-4b46c32c71a3')
 ,('0651b465-947f-42fa-8c06-ee17a9278e70','Send Reminder','2020-06-10 16:17:27.925','2020-06-10 16:17:27.925','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','e91f70e2-3e69-4725-8f7e-c5d307800684')
@@ -1599,10 +1771,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('e226824e-5c1a-43c5-9988-e4e3e393dd3e','Introducing Emails','2020-06-10 16:17:27.960','2020-06-10 16:17:27.960','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','cd7c1b1f-fe02-402a-8966-3aa9526e09b4')
 ,('58de7eb9-326d-4fbb-a5b1-c3ad71081093','You can now easily manage your messages within the app','2020-06-10 16:17:27.969','2020-06-10 16:17:27.969','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','e94573bc-3088-4509-81a5-7f5ffc999995')
 ,('e9fbf394-87ec-4f80-bd5e-02a79f870d02','Email Templates','2020-06-10 16:17:27.978','2020-06-10 16:17:27.978','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','28c06c60-0e99-49e3-a53a-062d64793269')
+,('a6f7fbde-34ec-40c4-9e1d-b651f9aad42a','Respond to the applicant faster with your templates','2020-06-10 16:17:27.992','2020-06-10 16:17:27.992','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','940eb736-f31e-4ab7-b39d-f862ffa838bf')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('a6f7fbde-34ec-40c4-9e1d-b651f9aad42a','Respond to the applicant faster with your templates','2020-06-10 16:17:27.992','2020-06-10 16:17:27.992','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','940eb736-f31e-4ab7-b39d-f862ffa838bf')
-,('745c159d-08f3-4d15-b961-7f01b7479c6e','Next','2020-06-10 16:17:28.003','2020-06-10 16:17:28.003','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','f0e72f02-a84b-4847-a7d4-304dab0fdd36')
+('745c159d-08f3-4d15-b961-7f01b7479c6e','Next','2020-06-10 16:17:28.003','2020-06-10 16:17:28.003','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','f0e72f02-a84b-4847-a7d4-304dab0fdd36')
 ,('15725bb8-ab27-4464-bc25-cf259a845fd4','Done','2020-06-10 16:17:28.013','2020-06-10 16:17:28.013','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','bbbfac4c-e1b0-47e9-86bb-c6c8d7c84daa')
 ,('3421f150-a8ef-4f9f-bf68-a397b372d963','Skip','2020-06-10 16:17:28.023','2020-06-10 16:17:28.023','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','7ade9c62-4368-4fe2-85e2-fdf2c3b03f5c')
 ,('e1bf332e-1ff3-40d4-bb23-c0106cfc2245','How do you rate {{x}}?','2020-06-10 16:17:28.036','2020-06-10 16:17:28.036','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','0a8774a5-721b-4bd2-96ff-6b18ced73781')
@@ -1611,10 +1783,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('e88a3a0e-ffb0-4ed6-9118-00d13dee3077','Submit','2020-06-10 16:17:28.067','2020-06-10 16:17:28.067','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','a0e452ce-9e93-4b75-b881-042f1cfc66be')
 ,('43f247a7-b74f-4a87-a5e7-006623e7869b','Please summarize your feedback','2020-06-10 16:17:28.078','2020-06-10 16:17:28.078','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','dfede26c-5760-4ba7-b387-a27d6a848fd0')
 ,('47d9b55f-24c3-44ad-8876-d5bf92554fab','This comment is also visible in Team Chat','2020-06-10 16:17:28.089','2020-06-10 16:17:28.089','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','86e1e9b5-de97-422a-8269-2c5f33f25b87')
+,('8d099bc3-a840-4435-8bf2-259bb588f0f0','You have no connection to the internet. But don''t worry, your changes will be transmitted as soon as you are connected again','2020-06-10 16:17:28.100','2020-06-10 16:17:28.100','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','dc1467be-1a8d-43d6-991f-0e0fca314b0d')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('8d099bc3-a840-4435-8bf2-259bb588f0f0','You have no connection to the internet. But don''t worry, your changes will be transmitted as soon as you are connected again','2020-06-10 16:17:28.100','2020-06-10 16:17:28.100','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','dc1467be-1a8d-43d6-991f-0e0fca314b0d')
-,('91ca238e-e2a7-4e5f-a486-d98234322b08','Your are currently offline','2020-06-10 16:17:28.110','2020-06-10 16:17:28.110','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','fcbeb512-832f-47e2-b4f6-bd47794a54a9')
+('91ca238e-e2a7-4e5f-a486-d98234322b08','Your are currently offline','2020-06-10 16:17:28.110','2020-06-10 16:17:28.110','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','fcbeb512-832f-47e2-b4f6-bd47794a54a9')
 ,('b7e61454-69cb-467b-8a9f-5331262332b9','Your decision will be posted when you are online again','2020-06-10 16:17:28.119','2020-06-10 16:17:28.119','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','7b74dbb0-81c6-468e-b174-4c67760f58c1')
 ,('9645a75c-7b30-4b0c-ba28-c95ab2958ff3','Rated','2020-06-10 16:17:28.128','2020-06-10 16:17:28.128','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','a59b9887-d8ac-42cc-a983-ed1b9785b6f7')
 ,('65dc1452-b106-4386-bb7a-10cd557c649e','Yes','2020-06-10 16:17:28.137','2020-06-10 16:17:28.137','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','17a3b619-d4f6-4720-a486-6bedb45503db')
@@ -1623,10 +1795,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('9dff49b3-b820-42c3-80b6-98b627f6afd8','Unable to rate','2020-06-10 16:17:28.168','2020-06-10 16:17:28.168','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','b19e1fe8-0217-46ea-894a-034d5e3dbf63')
 ,('61116983-33fe-4639-9dac-22230831c513','Please choose a rejection reason','2020-06-10 16:17:28.187','2020-06-10 16:17:28.187','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','0a8774a5-721b-4bd2-96ff-6b18ced73781')
 ,('d69309b3-17c0-4f26-8f2b-4aec7c9c52cd','Submit','2020-06-10 16:17:28.199','2020-06-10 16:17:28.199','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','a0e452ce-9e93-4b75-b881-042f1cfc66be')
+,('eccfa84d-7783-4aca-a014-3dcf4b9a5aec','Moved to rejection bin','2020-06-10 16:17:28.210','2020-06-10 16:17:28.210','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','cbd9a0c4-952c-414c-a21d-3fb78389e17e')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('eccfa84d-7783-4aca-a014-3dcf4b9a5aec','Moved to rejection bin','2020-06-10 16:17:28.210','2020-06-10 16:17:28.210','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','cbd9a0c4-952c-414c-a21d-3fb78389e17e')
-,('f4340b49-ff5b-4e66-adb5-927a8e0448d5','Unable to move to the rejection bin','2020-06-10 16:17:28.219','2020-06-10 16:17:28.219','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','09b5bf5c-0a9e-4a19-907d-0141a9542b5c')
+('f4340b49-ff5b-4e66-adb5-927a8e0448d5','Unable to move to the rejection bin','2020-06-10 16:17:28.219','2020-06-10 16:17:28.219','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','09b5bf5c-0a9e-4a19-907d-0141a9542b5c')
 ,('cb861623-e707-4b2e-b0e7-5306427548a1','Moved from rejection bin','2020-06-10 16:17:28.230','2020-06-10 16:17:28.230','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','3cad16df-e0a9-44b9-b4ff-389f19bf86f7')
 ,('6b36e1ee-8e85-45f6-af54-d1defb201971','Unable to move out of the rejection bin','2020-06-10 16:17:28.239','2020-06-10 16:17:28.239','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','7d0c6b87-9cba-45f7-ab15-9e0040792894')
 ,('cc40bd62-4f97-4923-8b70-433d9e1e0ee3','Are you sure you want to move to rejection bin?','2020-06-10 16:17:28.250','2020-06-10 16:17:28.250','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','02fce22b-5ad6-4b3c-9733-6d91e034b714')
@@ -1635,10 +1807,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('5b1d7170-8866-4b3d-970b-e048f8d2fd5a','Cancel','2020-06-10 16:17:28.287','2020-06-10 16:17:28.287','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','64b1350e-8f50-4951-9648-0fdacc85399d')
 ,('ad6543c4-abad-43ae-9ec9-d2920b036301','Rejection bin','2020-06-10 16:17:28.298','2020-06-10 16:17:28.298','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','13271e8b-fce9-4a07-b2eb-59a9a4c80bfc')
 ,('1715cd6f-fee3-4ac2-bfc1-3aa950a2ddfd','Second Chance','2020-06-10 16:17:28.308','2020-06-10 16:17:28.308','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','70ef40e2-8719-4ec3-b362-82a2855f5310')
+,('1abe5218-cc70-467e-93f2-9074477f6ae8','Are you sure you want to give this applicant a second chance?','2020-06-10 16:17:28.319','2020-06-10 16:17:28.319','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','db2de653-751f-4a8d-8381-e43b0617a19c')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('1abe5218-cc70-467e-93f2-9074477f6ae8','Are you sure you want to give this applicant a second chance?','2020-06-10 16:17:28.319','2020-06-10 16:17:28.319','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','db2de653-751f-4a8d-8381-e43b0617a19c')
-,('68239d50-de3a-475c-9a10-477dc8430998','Please choose a rejection reason','2020-06-10 16:17:28.332','2020-06-10 16:17:28.332','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','111aaaec-2a6d-40bd-b578-fde782fd0c56')
+('68239d50-de3a-475c-9a10-477dc8430998','Please choose a rejection reason','2020-06-10 16:17:28.332','2020-06-10 16:17:28.332','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','111aaaec-2a6d-40bd-b578-fde782fd0c56')
 ,('98b200ba-c67f-424a-8b7a-9b88bece57c2','Submit','2020-06-10 16:17:28.343','2020-06-10 16:17:28.343','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','a0e452ce-9e93-4b75-b881-042f1cfc66be')
 ,('beee5fb5-1668-48f8-908b-5743236dc50b','Are you sure you want to
 sign out?','2020-06-10 16:17:28.358','2020-06-10 16:17:28.358','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','9c8197f0-baea-4b95-bd2b-f7ff4a0a273c')
@@ -1648,10 +1820,10 @@ sign out?','2020-06-10 16:17:28.358','2020-06-10 16:17:28.358','c0285db9-c7a5-4f
 ,('2139eb6c-d399-455b-9eb8-66633f737b10','Reschedule interview','2020-06-10 16:17:28.401','2020-06-10 16:17:28.401','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','999299c0-88b0-48b3-80a4-fc6cb583da41')
 ,('1f0c3df8-85ee-4e82-b936-b2db419a606f','Cancel interview','2020-06-10 16:17:28.418','2020-06-10 16:17:28.418','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','17c0a33e-317c-4b9c-9f42-97fd13c5465b')
 ,('62212fc9-b060-4a73-ab25-9c363edd0c21','Confirm interview','2020-06-10 16:17:28.429','2020-06-10 16:17:28.429','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','6888bec2-df90-40d0-9a24-fc70de1e1400')
+,('8fcc86e0-31c3-4379-bf5c-7ec03810fbbc','Interview is cancelled','2020-06-10 16:17:28.437','2020-06-10 16:17:28.437','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','b6018e5a-ca1c-4323-812f-cc1a2f3519a1')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('8fcc86e0-31c3-4379-bf5c-7ec03810fbbc','Interview is cancelled','2020-06-10 16:17:28.437','2020-06-10 16:17:28.437','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','b6018e5a-ca1c-4323-812f-cc1a2f3519a1')
-,('6b1794ec-7940-49fb-ab3b-7a27140b0813','Interview is confirmed','2020-06-10 16:17:28.447','2020-06-10 16:17:28.447','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','b794acdd-0e97-4704-8bd1-9b300fb0ed93')
+('6b1794ec-7940-49fb-ab3b-7a27140b0813','Interview is confirmed','2020-06-10 16:17:28.447','2020-06-10 16:17:28.447','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','b794acdd-0e97-4704-8bd1-9b300fb0ed93')
 ,('3f2031b7-23c2-4c0c-b46a-efd8f084e854','Send Reminder','2020-06-10 16:17:28.458','2020-06-10 16:17:28.458','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','c0fe40b5-4f7f-40f6-a1ea-b3269138ec49')
 ,('5aa0cdd8-90bb-487f-a908-9d66aea99a24','Decline','2020-06-10 16:17:28.466','2020-06-10 16:17:28.466','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','9dbee921-c464-4aa9-8917-073cc726ee44')
 ,('3d6ddbaf-4437-43c8-93d6-6d8c773af656','Reschedule appoinment','2020-06-10 16:17:28.474','2020-06-10 16:17:28.474','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','c9577941-8855-4a5d-879e-f66437b34c1d')
@@ -1660,10 +1832,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('bea490c4-63c4-4028-8f0b-80d2d89212d0','No','2020-06-10 16:17:28.505','2020-06-10 16:17:28.505','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','64b1350e-8f50-4951-9648-0fdacc85399d')
 ,('a4fdb8d2-8427-48a0-b5a5-095ab8308bff','Offer is declined','2020-06-10 16:17:28.516','2020-06-10 16:17:28.516','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','9a4621dc-ee9f-4581-aa58-8a655ac4de4d')
 ,('9917be48-b57d-49fb-b492-0b90027310e8','English','2020-06-10 16:17:28.529','2020-06-10 16:17:28.529','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','ea045290-caa9-4c77-bd94-5433efcb8ff0')
+,('6fa18926-ba0e-46fc-8a74-ce258d42dcc5','German','2020-06-10 16:17:28.540','2020-06-10 16:17:28.540','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','a4294de2-deba-4ddd-9a5d-e4ca72d8c2c0')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('6fa18926-ba0e-46fc-8a74-ce258d42dcc5','German','2020-06-10 16:17:28.540','2020-06-10 16:17:28.540','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','a4294de2-deba-4ddd-9a5d-e4ca72d8c2c0')
-,('fb889f2c-1c3c-4925-ae15-fcc4c57fa728','Polish','2020-06-10 16:17:28.555','2020-06-10 16:17:28.555','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','918fdb99-de69-4375-bb8b-e7a4fb10593a')
+('fb889f2c-1c3c-4925-ae15-fcc4c57fa728','Polish','2020-06-10 16:17:28.555','2020-06-10 16:17:28.555','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','918fdb99-de69-4375-bb8b-e7a4fb10593a')
 ,('e4c95304-2210-475d-8e46-8b75b661285d','Spanish','2020-06-10 16:17:28.564','2020-06-10 16:17:28.564','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','a5c948eb-ee0e-4874-adb6-c1df45dffc49')
 ,('1f806813-dde2-49f6-a53c-37228a1a292b','French','2020-06-10 16:17:28.577','2020-06-10 16:17:28.577','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','f551b1f1-843e-453f-a41d-ed55cbb1fa0d')
 ,('f729b9d2-f3d2-4922-9573-87b3543f48d6','Italian','2020-06-10 16:17:28.587','2020-06-10 16:17:28.587','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','ee232141-842d-4fca-9c86-12bb7268af96')
@@ -1672,10 +1844,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('011fa233-1ee7-4529-bbdf-f2a06f2a1f89','Dutch','2020-06-10 16:17:28.616','2020-06-10 16:17:28.616','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','bd6ce1cb-923c-4831-9d5c-25c9ec939da5')
 ,('3177cbf5-0a33-4952-98a1-f50fd638420f','Portuguese','2020-06-10 16:17:28.626','2020-06-10 16:17:28.626','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','2b6b3ebc-bc27-40a2-a5fb-7bb56573b0e5')
 ,('69dbb081-808e-4be4-80a6-63724ae49d0f','Swedish','2020-06-10 16:17:28.636','2020-06-10 16:17:28.636','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','fbcc52ae-ae45-483c-8d27-adeb3c6b48ee')
+,('b0d648f6-da13-4b74-872f-16581878f5d0','Chinese','2020-06-10 16:17:28.646','2020-06-10 16:17:28.646','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','ebf20f20-bcb1-44f0-9f40-69b72c84401a')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('b0d648f6-da13-4b74-872f-16581878f5d0','Chinese','2020-06-10 16:17:28.646','2020-06-10 16:17:28.646','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','ebf20f20-bcb1-44f0-9f40-69b72c84401a')
-,('4bbc79ee-9d11-42f5-a66f-65b0249ca825','Template','2020-06-10 16:17:28.657','2020-06-10 16:17:28.657','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','0a8774a5-721b-4bd2-96ff-6b18ced73781')
+('4bbc79ee-9d11-42f5-a66f-65b0249ca825','Template','2020-06-10 16:17:28.657','2020-06-10 16:17:28.657','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','0a8774a5-721b-4bd2-96ff-6b18ced73781')
 ,('546b14f9-3e98-47f1-adc8-3fb256fefc33','Cancel','2020-06-10 16:17:28.666','2020-06-10 16:17:28.666','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','17c0a33e-317c-4b9c-9f42-97fd13c5465b')
 ,('608131e3-6092-4518-a4f7-356e1f5ff4e4','Done','2020-06-10 16:17:28.675','2020-06-10 16:17:28.675','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','bbbfac4c-e1b0-47e9-86bb-c6c8d7c84daa')
 ,('ecee4aad-0e65-419e-951e-350fbdd291d8','Language','2020-06-10 16:17:28.687','2020-06-10 16:17:28.687','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','a0925053-ddfb-45be-975c-70ad961690d7')
@@ -1684,12 +1856,13 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('f30ddcc3-205e-4f03-ae72-d6f13feeb05a','Filled content will be replaced to this template','2020-06-10 16:17:28.715','2020-06-10 16:17:28.715','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','004c13ac-ab4e-458c-89ee-d64be64205e8')
 ,('d76c0516-e3e7-48f7-a4e4-ef022169d259','Invite to interview?','2020-06-10 16:17:28.727','2020-06-10 16:17:28.727','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','0a8774a5-721b-4bd2-96ff-6b18ced73781')
 ,('2bf016d6-78ea-4bcf-bedd-c9493330d568','Respond via comment','2020-06-10 16:17:28.736','2020-06-10 16:17:28.736','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','3947fab6-3dfd-4f55-80d0-a0872d304a28')
+,('c1bf5cbe-06a7-4934-9e02-e096c58e6fc4','Submit','2020-06-10 16:17:28.745','2020-06-10 16:17:28.745','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','a0e452ce-9e93-4b75-b881-042f1cfc66be')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('c1bf5cbe-06a7-4934-9e02-e096c58e6fc4','Submit','2020-06-10 16:17:28.745','2020-06-10 16:17:28.745','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','a0e452ce-9e93-4b75-b881-042f1cfc66be')
-,('be4e4c18-03a0-4ad3-9c23-12cccbe62966','Please summarize your feedback','2020-06-10 16:17:28.753','2020-06-10 16:17:28.753','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','dfede26c-5760-4ba7-b387-a27d6a848fd0')
+('be4e4c18-03a0-4ad3-9c23-12cccbe62966','Please summarize your feedback','2020-06-10 16:17:28.753','2020-06-10 16:17:28.753','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','dfede26c-5760-4ba7-b387-a27d6a848fd0')
 ,('d0ffbf3f-1237-495e-b430-733b32d076f1','This comment is also visible in Team Chat','2020-06-10 16:17:28.762','2020-06-10 16:17:28.762','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','86e1e9b5-de97-422a-8269-2c5f33f25b87')
 ,('f5c6e1f2-85c8-419a-9184-9911712679ab','You are currently offline','2020-06-10 16:17:28.774','2020-06-10 16:17:28.774','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','fcbeb512-832f-47e2-b4f6-bd47794a54a9')
+,('16e59767-1a4d-4e50-b156-6aa85da300c3','Tak','2020-06-10 16:17:42.303','2020-06-10 16:17:42.303','0c12577b-360b-4843-a86e-39c129047b0b','d92869c0-3473-4d7d-8e06-aa821fe5ca8c')
 ,('85b835b1-01e0-494a-87dc-468cc3ec9f33','Your decision will be posted when you are online again','2020-06-10 16:17:28.784','2020-06-10 16:17:28.784','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','7b74dbb0-81c6-468e-b174-4c67760f58c1')
 ,('dc6f17e5-abd7-481f-afad-b3d4148613bd','Voted','2020-06-10 16:17:28.794','2020-06-10 16:17:28.794','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','2f3ebd50-1429-43f2-92bd-4381df0360b8')
 ,('d09f6df2-c272-48cc-8def-48b429bea2a2','Unable to vote','2020-06-10 16:17:28.806','2020-06-10 16:17:28.806','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','72d5b7a9-5e2b-4764-831e-74b08f82102d')
@@ -1862,14 +2035,15 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('796b49ac-9c70-4f1f-8fa4-41d1bc75c1eb','Team Chats','2020-06-10 16:17:30.092','2020-06-10 16:17:30.092','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','0a8774a5-721b-4bd2-96ff-6b18ced73781')
 ,('8aec39b4-eaa0-4ebe-bb3e-05e56f7be934','Search for names','2020-06-10 16:17:30.100','2020-06-10 16:17:30.100','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','2d84282c-de52-492a-a55b-469d769e12ae')
 ,('e63d23e6-5a77-4db1-b02d-7c2519be2a4f','You','2020-06-10 16:17:30.110','2020-06-10 16:17:30.110','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','6522da59-7cdc-4fcd-9e36-2e51893d8e7f')
+,('7f7d56f0-5c06-4961-94f3-463c98a61da0','Unread on top','2020-06-10 16:17:30.789','2020-06-10 16:17:30.789','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','54b964b9-1538-40db-ad99-0cb2e6607e8c')
 ,('06ddddb7-8845-4761-b08a-e51a91551657','There are no Team Chats about applications in the application workflow now.','2020-06-10 16:17:30.118','2020-06-10 16:17:30.118','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','48941d31-784a-4568-9b1f-95d729d83a31')
 ,('93581499-e928-4edb-8480-26f92cba9e59','There are no messages with words you are looking for.','2020-06-10 16:17:30.126','2020-06-10 16:17:30.126','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','9cc63a82-99d5-40d4-bd3a-b22993ec6b2f')
 ,('41d1bc8c-7863-4fa5-ab62-436e000c65e4','Write a message...','2020-06-10 16:17:30.137','2020-06-10 16:17:30.137','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','26135bff-077a-4839-9d14-89c2f6e1af3c')
 ,('18bf8ac8-e38d-4c13-b0de-7e27a352108c','Send','2020-06-10 16:17:30.146','2020-06-10 16:17:30.146','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','674edb43-c461-470b-874c-b23e334de223')
-,('bc7657b6-60b6-447c-8d33-b15748710900','You are currently offline','2020-06-10 16:17:30.154','2020-06-10 16:17:30.154','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','fcbeb512-832f-47e2-b4f6-bd47794a54a9')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('8cfefd73-5790-4ebf-a491-672b84d6e3cf','You have no connection to the internet. But don''t worry, your messages will be sent as soon as you are connected again','2020-06-10 16:17:30.164','2020-06-10 16:17:30.164','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','7b74dbb0-81c6-468e-b174-4c67760f58c1')
+('bc7657b6-60b6-447c-8d33-b15748710900','You are currently offline','2020-06-10 16:17:30.154','2020-06-10 16:17:30.154','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','fcbeb512-832f-47e2-b4f6-bd47794a54a9')
+,('8cfefd73-5790-4ebf-a491-672b84d6e3cf','You have no connection to the internet. But don''t worry, your messages will be sent as soon as you are connected again','2020-06-10 16:17:30.164','2020-06-10 16:17:30.164','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','7b74dbb0-81c6-468e-b174-4c67760f58c1')
 ,('37c4bfa8-d59a-4531-93c4-4a58b45840d6',' • Edited','2020-06-10 16:17:30.172','2020-06-10 16:17:30.172','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','5df4b335-752c-463b-8e10-4e4d1364e038')
 ,('770e8f3e-69d9-4455-afba-ec4ccf3cb366','Today','2020-06-10 16:17:30.181','2020-06-10 16:17:30.181','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','e98e867a-90be-44a0-8168-0e920062eeab')
 ,('28237983-9bd6-479a-8f1e-f27b707fcd79','Yesterday','2020-06-10 16:17:30.192','2020-06-10 16:17:30.192','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','8d8f7ea7-4142-4ed5-aaca-d4804895ff95')
@@ -1878,10 +2052,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('f1dd3cd2-7e0b-4cbc-a8bc-46f68676b000','Emails','2020-06-10 16:17:30.223','2020-06-10 16:17:30.223','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','aa9880ad-adf3-408c-ac01-860e5efbe2f1')
 ,('f4336d2e-8efd-4313-954f-508b096891fd','No emails yet','2020-06-10 16:17:30.233','2020-06-10 16:17:30.233','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','12bbd105-5313-429e-bd53-3657e5140cb3')
 ,('1198156f-9ff5-4e0d-a259-117c1460e23a','Inbox','2020-06-10 16:17:30.241','2020-06-10 16:17:30.241','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','aee04cae-72d7-44b1-b512-85f12a552c82')
-,('269b433d-eef2-47a7-8bcb-f3e88d7c1259','Sent','2020-06-10 16:17:30.252','2020-06-10 16:17:30.252','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','92464967-b899-4215-8b2b-29c701fd84c4')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('5256b58b-b86d-47e2-a07e-29118f42587a','Unread on top','2020-06-10 16:17:30.260','2020-06-10 16:17:30.260','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','54b964b9-1538-40db-ad99-0cb2e6607e8c')
+('269b433d-eef2-47a7-8bcb-f3e88d7c1259','Sent','2020-06-10 16:17:30.252','2020-06-10 16:17:30.252','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','92464967-b899-4215-8b2b-29c701fd84c4')
+,('5256b58b-b86d-47e2-a07e-29118f42587a','Unread on top','2020-06-10 16:17:30.260','2020-06-10 16:17:30.260','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','54b964b9-1538-40db-ad99-0cb2e6607e8c')
 ,('02b5e269-cd9a-4590-a8b0-df3d6d0370b7','Newest on top','2020-06-10 16:17:30.269','2020-06-10 16:17:30.269','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','7f54009b-7f11-426d-a8d7-fad3cdb2ff79')
 ,('7c77af7c-9149-4e2a-876e-7a5918c30c9b','Oldest on top','2020-06-10 16:17:30.277','2020-06-10 16:17:30.277','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','395c815f-fbd4-40fc-b2fd-22597ac2d433')
 ,('b2619bc7-a280-4aeb-9276-b5fa38132095','Welcome, ','2020-06-10 16:17:30.294','2020-06-10 16:17:30.294','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','be487c3b-2a95-4ccd-ae34-6be21a949719')
@@ -1890,10 +2064,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('710907ac-b059-4202-b253-ebbb4e357513','Check application status','2020-06-10 16:17:30.318','2020-06-10 16:17:30.318','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','470e168b-6a7e-4fff-a4a5-8545079036f4')
 ,('131ada17-3dc3-4d12-9208-9c207d8761c5','Unread Emails','2020-06-10 16:17:30.327','2020-06-10 16:17:30.327','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','d122b07d-67c5-40bf-807a-4733f2bf44f7')
 ,('1fce1cfa-2d37-4681-94c2-bd2d149b7430','Today','2020-06-10 16:17:30.337','2020-06-10 16:17:30.337','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','a511d36e-f92d-4b39-84f1-aa0a3ae4ae0c')
-,('26c75c4f-5522-4cd2-b01f-97b67d121254','This week','2020-06-10 16:17:30.347','2020-06-10 16:17:30.347','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','106975ab-fd8b-40e0-8c4a-17f3e662fd3e')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('44c16af2-a519-4c17-ae63-23bff5dca741','1 upcoming interview today','2020-06-10 16:17:30.355','2020-06-10 16:17:30.355','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','66ac706f-6580-40b4-9878-1d6169c1bcfd')
+('26c75c4f-5522-4cd2-b01f-97b67d121254','This week','2020-06-10 16:17:30.347','2020-06-10 16:17:30.347','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','106975ab-fd8b-40e0-8c4a-17f3e662fd3e')
+,('44c16af2-a519-4c17-ae63-23bff5dca741','1 upcoming interview today','2020-06-10 16:17:30.355','2020-06-10 16:17:30.355','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','66ac706f-6580-40b4-9878-1d6169c1bcfd')
 ,('7a9a425b-5511-4147-99f4-75413dca838a','1 upcoming interview this week','2020-06-10 16:17:30.364','2020-06-10 16:17:30.364','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','96f5807b-013f-4fbe-b596-2febeaf27216')
 ,('b3705cfc-5276-4381-a25b-1c3bf01bd580','Recently visited jobs','2020-06-10 16:17:30.373','2020-06-10 16:17:30.373','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','74434668-3bee-4669-aee2-2682e98d567d')
 ,('d9520b07-222a-480c-afb9-b95ec52fd3c2','Latest activity','2020-06-10 16:17:30.384','2020-06-10 16:17:30.384','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','872a2475-f857-4a2f-8800-798eeaea4d74')
@@ -1902,10 +2076,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('49fac94b-e7b6-4041-a612-3f02412c061a','No jobs','2020-06-10 16:17:30.411','2020-06-10 16:17:30.411','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','50e71887-3062-4f3f-9a41-7d83373c9261')
 ,('5957dfb9-7098-4aa8-b503-b72b214c5070','Try again','2020-06-10 16:17:30.419','2020-06-10 16:17:30.419','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','a191caaf-f72a-4336-8a07-e4e24104139c')
 ,('0425cfd9-a0fd-4afd-abb1-efc8563f4992','Applications','2020-06-10 16:17:30.431','2020-06-10 16:17:30.431','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','ed0c6c08-e9ab-49b3-bbe0-8345b8f4b690')
-,('915e83f6-417e-4a31-9dd7-645d00cf6989','No upcoming interviews today','2020-06-10 16:17:30.440','2020-06-10 16:17:30.440','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','1a782fb3-bf3b-4354-a204-9fc9539c93ed')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('aceb9fd1-f041-4ef3-861b-ce951407d01c','{{count}} upcoming interviews today','2020-06-10 16:17:30.449','2020-06-10 16:17:30.449','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','7e9039d3-6a89-4d06-bb3d-32a2c4b3cdfd')
+('915e83f6-417e-4a31-9dd7-645d00cf6989','No upcoming interviews today','2020-06-10 16:17:30.440','2020-06-10 16:17:30.440','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','1a782fb3-bf3b-4354-a204-9fc9539c93ed')
+,('aceb9fd1-f041-4ef3-861b-ce951407d01c','{{count}} upcoming interviews today','2020-06-10 16:17:30.449','2020-06-10 16:17:30.449','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','7e9039d3-6a89-4d06-bb3d-32a2c4b3cdfd')
 ,('018ba2a1-594a-410c-ac68-442524154e11','No upcoming interviews this week','2020-06-10 16:17:30.465','2020-06-10 16:17:30.465','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','dab89db3-3932-430c-bd66-a398da84f05d')
 ,('0b4679ca-7f23-4b85-b8c7-7452e052dea8','{{count}} upcoming interviews this week','2020-06-10 16:17:30.475','2020-06-10 16:17:30.475','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','e0d73462-5009-4106-a0ef-9757519a23f7')
 ,('9d9a0300-4a25-4219-9986-b0b880e777cc','To-dos','2020-06-10 16:17:30.487','2020-06-10 16:17:30.487','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','0a8774a5-721b-4bd2-96ff-6b18ced73781')
@@ -1914,10 +2088,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('c3d9313d-e6f3-4ebb-a968-0b71665b42b8','Go to Job list.','2020-06-10 16:17:30.520','2020-06-10 16:17:30.520','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','045b19aa-0fab-4662-afad-56db73acccf5')
 ,('5d2e54c9-48d9-4ed6-ac27-59bb0e653a56','Invite to interview?','2020-06-10 16:17:30.529','2020-06-10 16:17:30.529','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','236abe16-e4f6-4f2d-b871-87ff979a9808')
 ,('245ca2f6-1d5c-44a4-beff-b08fc79909ef','Rate an application','2020-06-10 16:17:30.538','2020-06-10 16:17:30.538','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','209c4edd-3876-413d-a780-dafa27fd0a86')
-,('5b70c490-9c10-469f-a2b2-1dfcfef6357a','Upcoming Interview','2020-06-10 16:17:30.552','2020-06-10 16:17:30.552','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','72050ea4-d10c-43cf-9f39-a420714b6c37')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('c11746d2-fea0-4706-9bbf-e375248da0d7','Upcoming Interview','2020-06-10 16:17:30.561','2020-06-10 16:17:30.561','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','7c3346b6-aa2b-47bb-83b0-3a15ba4fa721')
+('5b70c490-9c10-469f-a2b2-1dfcfef6357a','Upcoming Interview','2020-06-10 16:17:30.552','2020-06-10 16:17:30.552','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','72050ea4-d10c-43cf-9f39-a420714b6c37')
+,('c11746d2-fea0-4706-9bbf-e375248da0d7','Upcoming Interview','2020-06-10 16:17:30.561','2020-06-10 16:17:30.561','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','7c3346b6-aa2b-47bb-83b0-3a15ba4fa721')
 ,('91437c07-85b9-42ce-9b00-7af25dee0cd4','Pending thumb voting','2020-06-10 16:17:30.574','2020-06-10 16:17:30.574','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','16895f21-62c0-4d13-afbb-22a2d34a6e2e')
 ,('6a67bb96-c517-4f05-9179-3b77ef543913','Pending rating','2020-06-10 16:17:30.584','2020-06-10 16:17:30.584','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','a2f55647-c712-4ba3-b332-4fc2293a5ac6')
 ,('9706c85f-8972-43b2-8778-5ad01b42aa06','Check Application Status','2020-06-10 16:17:30.592','2020-06-10 16:17:30.592','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','695185d8-74cb-4208-a900-d13f735221a4')
@@ -1926,10 +2100,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('0a038866-d826-4e10-a211-d9195e2bde7f','A Job Ad is Expired','2020-06-10 16:17:30.618','2020-06-10 16:17:30.618','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','d14ef13e-cb23-4547-a464-148215bb2866')
 ,('80ec0e24-7b70-49cf-bdda-e47063ef2b45','No types activated!','2020-06-10 16:17:30.625','2020-06-10 16:17:30.625','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','583b437f-e805-498e-babd-b753ad2e7cd7')
 ,('2166be1f-7f5a-40de-b256-e86b2de03704','Your opinion is needed!','2020-06-10 16:17:30.633','2020-06-10 16:17:30.633','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','08531c41-fa14-4719-99ab-318c05963114')
-,('7c544a1b-f1a1-4266-9712-4943d4b93740','Please take a moment to provide feedback in our short survey.','2020-06-10 16:17:30.640','2020-06-10 16:17:30.640','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','a24a8627-5c3a-4d59-9624-520d3c10fd91')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('ee092686-e3f9-4479-ba43-266ae0453308','Start Survey','2020-06-10 16:17:30.648','2020-06-10 16:17:30.648','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','8fccf0b6-b504-40f7-bb35-f7ec94556038')
+('7c544a1b-f1a1-4266-9712-4943d4b93740','Please take a moment to provide feedback in our short survey.','2020-06-10 16:17:30.640','2020-06-10 16:17:30.640','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','a24a8627-5c3a-4d59-9624-520d3c10fd91')
+,('ee092686-e3f9-4479-ba43-266ae0453308','Start Survey','2020-06-10 16:17:30.648','2020-06-10 16:17:30.648','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','8fccf0b6-b504-40f7-bb35-f7ec94556038')
 ,('526ca09c-45be-411c-9caf-98f0c142bbf9','Not now','2020-06-10 16:17:30.655','2020-06-10 16:17:30.655','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','ecdb2c54-a5c4-4d97-9e09-d8b07926a38f')
 ,('cfc64546-2109-40ad-a529-cd3b00063e11','Survey','2020-06-10 16:17:30.664','2020-06-10 16:17:30.664','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','79884ca9-e100-496c-8b9d-61cd53d14034')
 ,('5c87ac90-cce7-470f-929e-58f993957a05','Please choose a passcode','2020-06-10 16:17:30.673','2020-06-10 16:17:30.673','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','2b0bcd6c-9c30-488d-951f-333c088021fb')
@@ -1938,15 +2112,14 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('5d7ff6f2-9c0a-49e0-b77b-4ba1b019c1ed','You are now ready!','2020-06-10 16:17:30.701','2020-06-10 16:17:30.701','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','ca6afc0d-f89d-40a4-8050-67612c303a04')
 ,('dc8a397a-525e-4707-b0d9-5e68fdad4720','Please secure the sensitive app data by setting a passcode','2020-06-10 16:17:30.711','2020-06-10 16:17:30.711','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','30271789-e48e-48c1-bb7f-666564671a97')
 ,('6b91e277-6deb-42a5-bb59-b06b20a87a96','Ok','2020-06-10 16:17:30.720','2020-06-10 16:17:30.720','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','f24cbf9b-7810-4de6-90ab-3e4fdf7a8c86')
-,('cefcab46-1515-40f6-853a-3ddc43e4141f','Search for names','2020-06-10 16:17:30.732','2020-06-10 16:17:30.732','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','2d84282c-de52-492a-a55b-469d769e12ae')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('5adff402-e30b-413c-a60a-4a1db2a98e8a','Email','2020-06-10 16:17:30.740','2020-06-10 16:17:30.740','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','d05377c4-435d-4ddf-b58c-594b230a9e14')
+('cefcab46-1515-40f6-853a-3ddc43e4141f','Search for names','2020-06-10 16:17:30.732','2020-06-10 16:17:30.732','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','2d84282c-de52-492a-a55b-469d769e12ae')
+,('5adff402-e30b-413c-a60a-4a1db2a98e8a','Email','2020-06-10 16:17:30.740','2020-06-10 16:17:30.740','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','d05377c4-435d-4ddf-b58c-594b230a9e14')
 ,('1ef5e98e-5d35-42de-bbae-d69c733f246a','Emails','2020-06-10 16:17:30.750','2020-06-10 16:17:30.750','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','aa9880ad-adf3-408c-ac01-860e5efbe2f1')
 ,('d6302fc4-a75a-4382-a4bd-51a85e11389c','No emails yet','2020-06-10 16:17:30.760','2020-06-10 16:17:30.760','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','12bbd105-5313-429e-bd53-3657e5140cb3')
 ,('60011779-134e-48de-ac45-0d27bfe1e788','Inbox','2020-06-10 16:17:30.768','2020-06-10 16:17:30.768','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','aee04cae-72d7-44b1-b512-85f12a552c82')
 ,('e9d33fe3-4ab9-466c-a514-dade8bf000e7','Sent','2020-06-10 16:17:30.777','2020-06-10 16:17:30.777','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','92464967-b899-4215-8b2b-29c701fd84c4')
-,('7f7d56f0-5c06-4961-94f3-463c98a61da0','Unread on top','2020-06-10 16:17:30.789','2020-06-10 16:17:30.789','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','54b964b9-1538-40db-ad99-0cb2e6607e8c')
 ,('abd63a65-857d-40ae-aecd-2d4c5b42202e','Newest on top','2020-06-10 16:17:30.800','2020-06-10 16:17:30.800','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','7f54009b-7f11-426d-a8d7-fad3cdb2ff79')
 ,('99f8f633-ba9b-44bb-861b-9894ff804603','Oldest on top','2020-06-10 16:17:30.809','2020-06-10 16:17:30.809','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','395c815f-fbd4-40fc-b2fd-22597ac2d433')
 ,('0df26b16-a575-4b3b-b594-6fb30c7268ae','See More','2020-06-10 16:17:30.820','2020-06-10 16:17:30.820','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','114994a9-d760-4c22-85d0-1448838dc4c1')
@@ -2546,15 +2719,17 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('96e322f8-3619-456b-847e-38f8126d0c98','https://www.softgarden.io/company/data-protection-notice-for-softgarden-products/','2020-06-10 16:17:35.871','2020-06-10 16:17:35.871','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','d3af4e74-833d-404f-90bb-39c57b6132b8')
 ,('93ea15a5-4a6f-46c3-b6b5-8cb7517ac29f','https://www.softgarden.io/company/terms/','2020-06-10 16:17:35.880','2020-06-10 16:17:35.880','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','171bf735-8e6a-4b43-b255-4bb73bae6d07')
 ,('9a0f84b0-bdb5-4ae5-b590-2127529b3067','Las bibliotecas que usamos','2020-06-10 16:17:35.890','2020-06-10 16:17:35.890','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','e59f13f4-0229-426e-9020-b4519f3d379c')
+,('a451cc58-f83a-4f85-98b2-b2a1ec476735','Programe otro','2020-06-10 16:17:36.479','2020-06-10 16:17:36.479','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','0ffcc331-9cce-4ea7-9cca-6edb2844394a')
+,('160eac3a-b46c-4e5b-9e16-989aaeeb56b2','Esperando respuesta','2020-06-10 16:17:36.487','2020-06-10 16:17:36.487','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','4ccbafbd-c02d-4985-8e37-6cbb7a24cc21')
 ,('2516335c-19ec-48d7-8f45-19536597bb68','La siguiente lista de software de terceros puede estar contenida en partes de la aplicación softgarden. Agradecemos a la comunidad de código abierto sus contribuciones.','2020-06-10 16:17:35.900','2020-06-10 16:17:35.900','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','33a36fed-3438-4075-8ced-4e4fffd691b5')
 ,('cfdd72be-3186-4854-b349-461895b9b094','Notificar un problema','2020-06-10 16:17:35.910','2020-06-10 16:17:35.910','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','b3d1ef39-d516-4690-bfe2-786b106ef9f5')
 ,('03ab7ac8-41b6-4bb2-b714-9d4450f9cbf8','¿Notificar un problema?','2020-06-10 16:17:35.922','2020-06-10 16:17:35.922','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','be6b7486-534b-47ef-9c77-7d3453821a37')
 ,('4bdf3e42-fb72-44b9-8830-382d14bd3187','No','2020-06-10 16:17:35.929','2020-06-10 16:17:35.929','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','64b1350e-8f50-4951-9648-0fdacc85399d')
-,('c35926d6-c0d9-4f5f-898d-3536a2b52d7e','Sí','2020-06-10 16:17:35.937','2020-06-10 16:17:35.937','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','d92869c0-3473-4d7d-8e06-aa821fe5ca8c')
-,('d74b0794-d712-4423-b6e0-936b49d3e1f8','Aplicaciones','2020-06-10 16:17:35.948','2020-06-10 16:17:35.948','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','0a8774a5-721b-4bd2-96ff-6b18ced73781')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('078bd3ed-c620-4eed-84ed-601376c24f80','Búsqueda por nombres, títulos o lugares','2020-06-10 16:17:35.956','2020-06-10 16:17:35.956','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','2d84282c-de52-492a-a55b-469d769e12ae')
+('c35926d6-c0d9-4f5f-898d-3536a2b52d7e','Sí','2020-06-10 16:17:35.937','2020-06-10 16:17:35.937','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','d92869c0-3473-4d7d-8e06-aa821fe5ca8c')
+,('d74b0794-d712-4423-b6e0-936b49d3e1f8','Aplicaciones','2020-06-10 16:17:35.948','2020-06-10 16:17:35.948','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','0a8774a5-721b-4bd2-96ff-6b18ced73781')
+,('078bd3ed-c620-4eed-84ed-601376c24f80','Búsqueda por nombres, títulos o lugares','2020-06-10 16:17:35.956','2020-06-10 16:17:35.956','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','2d84282c-de52-492a-a55b-469d769e12ae')
 ,('04ac765d-931f-4906-94df-6233941979cb','Papelera de rechazos','2020-06-10 16:17:35.964','2020-06-10 16:17:35.964','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','13271e8b-fce9-4a07-b2eb-59a9a4c80bfc')
 ,('7468617f-d99b-43eb-9894-ded49d31a6fb','Segunda oportunidad','2020-06-10 16:17:35.972','2020-06-10 16:17:35.972','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','70ef40e2-8719-4ec3-b362-82a2855f5310')
 ,('ed41bb17-0fca-4429-8df7-cc6dc3dc12b8','No hay aplicaciones en el flujo de trabajo de la aplicación.','2020-06-10 16:17:35.978','2020-06-10 16:17:35.978','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','35bb7f80-c09c-4686-b631-77a013ea0e75')
@@ -2565,11 +2740,11 @@ de rechazos','2020-06-10 16:17:35.994','2020-06-10 16:17:35.994','a4aaf22b-6090-
 ,('8694b38c-f119-4e92-8134-b455a763bb11','Segunda
 oportunidad','2020-06-10 16:17:36.002','2020-06-10 16:17:36.002','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','4b6eb31a-2080-417f-9187-92f9937adb7f')
 ,('5dae59e4-81f8-4f8f-9cd2-6f76e6f645dd','Más','2020-06-10 16:17:36.009','2020-06-10 16:17:36.009','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','d5447ac5-7736-48fe-a201-68d00a947659')
-,('f34707a8-1ffa-4048-beb3-110198fdf749','Se detuvo en {{a}}','2020-06-10 16:17:36.020','2020-06-10 16:17:36.020','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','b73868c7-9ede-43e1-a635-f202daddec50')
-,('e30b4b1f-8ecd-4bf2-bda3-0de882fa8f53','La oferta fue enviada en {{date}}','2020-06-10 16:17:36.026','2020-06-10 16:17:36.026','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','3aac5fdc-aea7-4945-bad5-08f2e900296b')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('657adb71-fee6-4d20-ac85-c9ba6dc92555','Contratado el {{day}} {{date}}','2020-06-10 16:17:36.034','2020-06-10 16:17:36.034','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','b0da7047-b19e-471c-acf7-12ec574cad57')
+('f34707a8-1ffa-4048-beb3-110198fdf749','Se detuvo en {{a}}','2020-06-10 16:17:36.020','2020-06-10 16:17:36.020','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','b73868c7-9ede-43e1-a635-f202daddec50')
+,('e30b4b1f-8ecd-4bf2-bda3-0de882fa8f53','La oferta fue enviada en {{date}}','2020-06-10 16:17:36.026','2020-06-10 16:17:36.026','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','3aac5fdc-aea7-4945-bad5-08f2e900296b')
+,('657adb71-fee6-4d20-ac85-c9ba6dc92555','Contratado el {{day}} {{date}}','2020-06-10 16:17:36.034','2020-06-10 16:17:36.034','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','b0da7047-b19e-471c-acf7-12ec574cad57')
 ,('3dff2a76-334c-46b5-823c-4e0c89783564','Día de inicio {{day}} {{date}}','2020-06-10 16:17:36.041','2020-06-10 16:17:36.041','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','a241d4f3-a77b-4e9d-af58-20288b7c1c0c')
 ,('6d73b5ea-830e-47dc-9e84-b32b6e681b98','D MM, YYYY','2020-06-10 16:17:36.050','2020-06-10 16:17:36.050','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','e6bc0f44-9e75-4c0d-b3fb-9861aed6d346')
 ,('24075799-bc86-446f-a70d-536f91944c7c','Oferta aceptada en ','2020-06-10 16:17:36.058','2020-06-10 16:17:36.058','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','aeb35b68-9a70-4c10-b2ce-4fe8f0b64d76')
@@ -2577,11 +2752,11 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('ba077765-c501-43be-a2a9-a0762aae540e','ddd MMM DD, YYYY','2020-06-10 16:17:36.072','2020-06-10 16:17:36.072','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','0f0f4203-9107-4712-a679-1a6a5a9705d9')
 ,('68382b44-c5f0-4f9a-b4bc-1f54f09881f5','ddd, MMM DD • HH:mm','2020-06-10 16:17:36.079','2020-06-10 16:17:36.079','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','84b6c80b-01a2-4655-9451-91a770e36fae')
 ,('db7d3634-55be-4d0b-a893-b63bcb15974f','Los correos electrónicos solo están disponibles cuando está conectado.','2020-06-10 16:17:36.088','2020-06-10 16:17:36.088','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','c2dbda92-a2e5-46db-85e0-01cc58b152af')
-,('358c1a89-8c22-40d1-84ef-6d5916c25824','TAREAS','2020-06-10 16:17:36.098','2020-06-10 16:17:36.098','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','f214c412-8902-4426-9f14-b2fceb7ef33f')
-,('a34c1052-fa7f-4e0f-a9ed-2f777743f213','DESCRIPCIÓN DE LA APLICACIÓN','2020-06-10 16:17:36.105','2020-06-10 16:17:36.105','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','644b60af-5c46-4e07-b857-3df03c31d6b8')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('0894602f-4705-4d9b-88f1-cb00cfe9133b','TAGS','2020-06-10 16:17:36.113','2020-06-10 16:17:36.113','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','5d9744ed-100e-4c91-b498-2befa0230ca3')
+('358c1a89-8c22-40d1-84ef-6d5916c25824','TAREAS','2020-06-10 16:17:36.098','2020-06-10 16:17:36.098','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','f214c412-8902-4426-9f14-b2fceb7ef33f')
+,('a34c1052-fa7f-4e0f-a9ed-2f777743f213','DESCRIPCIÓN DE LA APLICACIÓN','2020-06-10 16:17:36.105','2020-06-10 16:17:36.105','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','644b60af-5c46-4e07-b857-3df03c31d6b8')
+,('0894602f-4705-4d9b-88f1-cb00cfe9133b','TAGS','2020-06-10 16:17:36.113','2020-06-10 16:17:36.113','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','5d9744ed-100e-4c91-b498-2befa0230ca3')
 ,('41ed7317-e51a-413b-8f37-a2fd64e9ca00','ADJUNTOS','2020-06-10 16:17:36.122','2020-06-10 16:17:36.122','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','82a47841-8ab3-456c-9449-151adf3e7ed3')
 ,('3bccd986-9084-4d6e-b375-8627e8200f44','ACTUALIZACIONES DE LA APLICACIÓN','2020-06-10 16:17:36.134','2020-06-10 16:17:36.134','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','be00c368-8109-4310-9fcf-1b8627911905')
 ,('80e0bae6-31a1-4d10-85a1-2b3743b8bdd5','Su voto','2020-06-10 16:17:36.142','2020-06-10 16:17:36.142','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','d0cd184b-2507-49f0-a071-859d9f24ddbd')
@@ -2589,11 +2764,11 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('0dc8cea1-a8c4-442e-b046-4f078756413d','Sin voto con pulgar','2020-06-10 16:17:36.156','2020-06-10 16:17:36.156','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','804afffc-ad53-42b7-8096-181969082ae7')
 ,('27646222-c1ae-49a6-9cfd-5bf2f1f2a72a','Editar','2020-06-10 16:17:36.163','2020-06-10 16:17:36.163','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','d1be4854-8db7-4081-8c25-25465d36120b')
 ,('b95a719b-5a63-4b0d-af9f-73695b259d18','Preguntas','2020-06-10 16:17:36.171','2020-06-10 16:17:36.171','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','7f1a7ae8-a318-45da-a84c-35cbf9808915')
-,('7f7ef42a-b28d-48e3-a576-10cef5a0db28','Carta de presentación','2020-06-10 16:17:36.178','2020-06-10 16:17:36.178','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','97bf4237-a390-45e7-aba3-3a41164ccce7')
-,('09244e3c-5ce3-4b4f-8f03-1f6f51dd124f','Currículum','2020-06-10 16:17:36.186','2020-06-10 16:17:36.186','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','4a22320c-9b19-4d3d-a3e1-7f94f298e9c6')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('faa035ee-60ee-448b-b2f2-4766f74c0056','Ver todos como archivo PDF','2020-06-10 16:17:36.196','2020-06-10 16:17:36.196','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','a115ab9a-50e9-4025-ab02-213aabdec330')
+('7f7ef42a-b28d-48e3-a576-10cef5a0db28','Carta de presentación','2020-06-10 16:17:36.178','2020-06-10 16:17:36.178','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','97bf4237-a390-45e7-aba3-3a41164ccce7')
+,('09244e3c-5ce3-4b4f-8f03-1f6f51dd124f','Currículum','2020-06-10 16:17:36.186','2020-06-10 16:17:36.186','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','4a22320c-9b19-4d3d-a3e1-7f94f298e9c6')
+,('faa035ee-60ee-448b-b2f2-4766f74c0056','Ver todos como archivo PDF','2020-06-10 16:17:36.196','2020-06-10 16:17:36.196','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','a115ab9a-50e9-4025-ab02-213aabdec330')
 ,('f5c54466-9690-4624-b865-6fa61b511d5c','Votar','2020-06-10 16:17:36.206','2020-06-10 16:17:36.206','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','0698b174-2d48-4a24-bd86-c2cbabf19294')
 ,('e8015a15-80ba-4e5f-a260-f11e28a5df9d','Calificar','2020-06-10 16:17:36.214','2020-06-10 16:17:36.214','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','086798da-9a38-4b68-8145-32946908501f')
 ,('d5dc54d3-8427-4475-8f13-36d2a9a339d8','¿Invitar a una entrevista?','2020-06-10 16:17:36.223','2020-06-10 16:17:36.223','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','6150699f-6291-49b7-99fe-6cb422304d17')
@@ -2601,11 +2776,11 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('b924b0e7-e07f-4190-9ee5-6d7ccc216110','Está desconectado','2020-06-10 16:17:36.243','2020-06-10 16:17:36.243','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','fcbeb512-832f-47e2-b4f6-bd47794a54a9')
 ,('949e8621-0820-4c49-a4c3-23550eb21abe','Por favor, conéctese y vuelva a solicitar este archivo','2020-06-10 16:17:36.252','2020-06-10 16:17:36.252','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','7b74dbb0-81c6-468e-b174-4c67760f58c1')
 ,('64cabc63-ee58-4b34-a146-a74952e0a156','Aún no ha votado','2020-06-10 16:17:36.261','2020-06-10 16:17:36.261','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','f5927aa7-6bcb-4c96-ba40-0f44d4844844')
-,('3c6e2f06-3ac7-47fd-a117-72dceedceb9d','Ver','2020-06-10 16:17:36.270','2020-06-10 16:17:36.270','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','880884f0-9726-4dad-b5e6-07499d00dd23')
-,('87cd144e-91f6-4f61-8883-23fdb7cc0e12','Votos del equipo','2020-06-10 16:17:36.279','2020-06-10 16:17:36.279','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','a296b9f9-74c5-4c27-9a97-8b0075454993')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('59c3a37b-0d43-4fb9-8502-40e5c79d02c7','Está desconectado','2020-06-10 16:17:36.287','2020-06-10 16:17:36.287','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','df296d17-3eda-4123-b535-a164f2d84cec')
+('3c6e2f06-3ac7-47fd-a117-72dceedceb9d','Ver','2020-06-10 16:17:36.270','2020-06-10 16:17:36.270','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','880884f0-9726-4dad-b5e6-07499d00dd23')
+,('87cd144e-91f6-4f61-8883-23fdb7cc0e12','Votos del equipo','2020-06-10 16:17:36.279','2020-06-10 16:17:36.279','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','a296b9f9-74c5-4c27-9a97-8b0075454993')
+,('59c3a37b-0d43-4fb9-8502-40e5c79d02c7','Está desconectado','2020-06-10 16:17:36.287','2020-06-10 16:17:36.287','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','df296d17-3eda-4123-b535-a164f2d84cec')
 ,('317ce575-933c-4bb9-bef9-8bd0ccba418c','Por favor, conéctese y vuelva a solicitar este archivo','2020-06-10 16:17:36.294','2020-06-10 16:17:36.294','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','32d9a0b6-ad5a-4899-a6d2-4e560ca18245')
 ,('194dcf56-82b8-48b6-851d-6eb997627f62','Calificaciones del equipo','2020-06-10 16:17:36.303','2020-06-10 16:17:36.303','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','f995ea19-d216-404a-843f-9c18131521d5')
 ,('d68d12e1-8c2d-4241-a16d-b30e5c80046e','Tu calificación','2020-06-10 16:17:36.312','2020-06-10 16:17:36.312','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','d1942c5a-ad56-40b6-a191-ef1c8c9ec275')
@@ -2613,11 +2788,11 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('d56e7761-37e6-46f1-a108-f4bcdf8e914c','{{count}} Calificaciones','2020-06-10 16:17:36.330','2020-06-10 16:17:36.330','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','6c585adf-7914-4a21-9ff7-7731126d787a')
 ,('2992d875-42ee-4516-926b-d795a69ade60','Indeciso','2020-06-10 16:17:36.339','2020-06-10 16:17:36.339','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','8588c8bf-0632-4746-b77e-8563ed21d827')
 ,('a076bfc7-1427-4cd2-b581-6d4b61ac3873','Contrataría a este candidato','2020-06-10 16:17:36.347','2020-06-10 16:17:36.347','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','18b5d460-6afe-41c9-b65e-7ca313b181af')
-,('85f17b18-fb83-404a-b26f-53602da92c16','No contrataría a este candidato','2020-06-10 16:17:36.356','2020-06-10 16:17:36.356','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','e1fb5b39-54e5-454b-b5b2-218e19b3696c')
-,('eb9ff3aa-633a-499f-bd7b-5390b2e3e621','No calificado','2020-06-10 16:17:36.369','2020-06-10 16:17:36.369','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','f253ea97-bbf7-490b-94e4-112a55a3d521')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('fb328176-75f3-4f0e-879c-c8f3a3002d70','Detalles de la aplicación','2020-06-10 16:17:36.378','2020-06-10 16:17:36.378','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','1d027d18-972b-4a1a-8747-43f0e9b3f49a')
+('85f17b18-fb83-404a-b26f-53602da92c16','No contrataría a este candidato','2020-06-10 16:17:36.356','2020-06-10 16:17:36.356','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','e1fb5b39-54e5-454b-b5b2-218e19b3696c')
+,('eb9ff3aa-633a-499f-bd7b-5390b2e3e621','No calificado','2020-06-10 16:17:36.369','2020-06-10 16:17:36.369','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','f253ea97-bbf7-490b-94e4-112a55a3d521')
+,('fb328176-75f3-4f0e-879c-c8f3a3002d70','Detalles de la aplicación','2020-06-10 16:17:36.378','2020-06-10 16:17:36.378','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','1d027d18-972b-4a1a-8747-43f0e9b3f49a')
 ,('1e3127b0-525c-48c6-8668-529a7c606f88','Email','2020-06-10 16:17:36.387','2020-06-10 16:17:36.387','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','d05377c4-435d-4ddf-b58c-594b230a9e14')
 ,('94686980-0b52-4e8b-b501-8cd167934a99','Teléfono','2020-06-10 16:17:36.396','2020-06-10 16:17:36.396','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','b0d58993-3bf7-48bb-8abf-dbf604b88967')
 ,('701de916-2a28-42d1-bd54-17135dc53c13','Movido de la papelera de rechazados','2020-06-10 16:17:36.406','2020-06-10 16:17:36.406','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','3cad16df-e0a9-44b9-b4ff-389f19bf86f7')
@@ -2626,14 +2801,12 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 eliminarlo?','2020-06-10 16:17:36.426','2020-06-10 16:17:36.426','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','02fce22b-5ad6-4b3c-9733-6d91e034b714')
 ,('9b059661-0a2c-4c8c-b923-070854c285e8','Sí','2020-06-10 16:17:36.435','2020-06-10 16:17:36.435','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','d92869c0-3473-4d7d-8e06-aa821fe5ca8c')
 ,('39545f34-6c0c-4c99-ba37-b6a2b473d0ca','Cancelar','2020-06-10 16:17:36.443','2020-06-10 16:17:36.443','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','64b1350e-8f50-4951-9648-0fdacc85399d')
-,('27607051-112d-4375-a106-993fb0395ff3','Cancelar','2020-06-10 16:17:36.453','2020-06-10 16:17:36.453','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','17c0a33e-317c-4b9c-9f42-97fd13c5465b')
-,('476f0741-a1ea-4d85-a36a-1cecc78282b8','¿Dar una segunda oportunidad?','2020-06-10 16:17:36.463','2020-06-10 16:17:36.463','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','b2e53602-5cf8-4828-9e0e-129969a12c57')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('2222062e-62db-4d2a-b6f9-ad4b3d56a9dc','Oferta','2020-06-10 16:17:41.388','2020-06-10 16:17:41.388','0c12577b-360b-4843-a86e-39c129047b0b','9a64ebef-bcb9-406a-bf6c-3322629def71')
+('27607051-112d-4375-a106-993fb0395ff3','Cancelar','2020-06-10 16:17:36.453','2020-06-10 16:17:36.453','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','17c0a33e-317c-4b9c-9f42-97fd13c5465b')
+,('476f0741-a1ea-4d85-a36a-1cecc78282b8','¿Dar una segunda oportunidad?','2020-06-10 16:17:36.463','2020-06-10 16:17:36.463','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','b2e53602-5cf8-4828-9e0e-129969a12c57')
+,('2222062e-62db-4d2a-b6f9-ad4b3d56a9dc','Oferta','2020-06-10 16:17:41.388','2020-06-10 16:17:41.388','0c12577b-360b-4843-a86e-39c129047b0b','9a64ebef-bcb9-406a-bf6c-3322629def71')
 ,('402fe72d-6196-468f-9835-99129372d566','Entrevista no programada','2020-06-10 16:17:36.471','2020-06-10 16:17:36.471','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','2b09b1d0-c2f5-47ee-b108-ee5f86ce44a8')
-,('a451cc58-f83a-4f85-98b2-b2a1ec476735','Programe otro','2020-06-10 16:17:36.479','2020-06-10 16:17:36.479','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','0ffcc331-9cce-4ea7-9cca-6edb2844394a')
-,('160eac3a-b46c-4e5b-9e16-989aaeeb56b2','Esperando respuesta','2020-06-10 16:17:36.487','2020-06-10 16:17:36.487','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','4ccbafbd-c02d-4985-8e37-6cbb7a24cc21')
 ,('b669beec-4a27-4af4-b3a6-ab9bd5f3c90d','Confirmar','2020-06-10 16:17:36.495','2020-06-10 16:17:36.495','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','5224a046-e396-4267-ae00-1492356f60b2')
 ,('1b12a07c-d18c-454f-a18c-15a401ac6759','Programa','2020-06-10 16:17:36.506','2020-06-10 16:17:36.506','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','610d087b-65b4-4a10-af33-1eabc50ef912')
 ,('0b6213d0-9878-4f0a-ab78-a2ea81b747e8','Movido a {{a}}','2020-06-10 16:17:36.514','2020-06-10 16:17:36.514','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','9a054f34-1aa4-4a40-89d7-4b46c32c71a3')
@@ -2716,6 +2889,7 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
 ('79c99cf2-64d2-4194-94b6-c7699dcf1e57','Esta semana','2020-06-10 16:17:37.129','2020-06-10 16:17:37.129','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','106975ab-fd8b-40e0-8c4a-17f3e662fd3e')
 ,('7f1fae8f-da8b-4393-87a6-b108cc4ffa87','Hoy 1 entrevista próxima','2020-06-10 16:17:37.140','2020-06-10 16:17:37.140','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','66ac706f-6580-40b4-9878-1d6169c1bcfd')
+,('136749a9-88ca-41a4-9c3e-ebf87004c516','Bueno','2020-06-10 16:17:39.746','2020-06-10 16:17:39.746','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','a7e4746d-3ac8-46d2-9b34-c8f5cd642fe8')
 ,('cc85efe9-206f-4400-a150-fb0fe9fcd20a','1 entrevista próxima esta semana','2020-06-10 16:17:37.149','2020-06-10 16:17:37.149','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','96f5807b-013f-4fbe-b596-2febeaf27216')
 ,('63dae4ee-48f9-4efb-be40-03648e806ee9','Empleos visitados recientemente','2020-06-10 16:17:37.159','2020-06-10 16:17:37.159','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','74434668-3bee-4669-aee2-2682e98d567d')
 ,('bf9cb153-d528-46f6-aedc-6f35523aad0a','Última actividad','2020-06-10 16:17:37.168','2020-06-10 16:17:37.168','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','872a2475-f857-4a2f-8800-798eeaea4d74')
@@ -2723,10 +2897,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('3ae7b723-d532-4b8f-9339-d822ea075901','No hay entrevistas próximas por ahora','2020-06-10 16:17:37.185','2020-06-10 16:17:37.185','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','844dadd9-884a-4605-b842-2835793f7fd3')
 ,('ffb588fa-20d4-4650-9dff-9c4e331cb191','Ningún empleo por ahora','2020-06-10 16:17:37.197','2020-06-10 16:17:37.197','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','50e71887-3062-4f3f-9a41-7d83373c9261')
 ,('995a4dea-8d3f-4f93-ae72-6e34f69467e3','Prueba de nuevo','2020-06-10 16:17:37.207','2020-06-10 16:17:37.207','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','a191caaf-f72a-4336-8a07-e4e24104139c')
-,('8cb28579-a5df-4612-8a9c-bdd62962277f','Solicitudes','2020-06-10 16:17:37.216','2020-06-10 16:17:37.216','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','ed0c6c08-e9ab-49b3-bbe0-8345b8f4b690')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('260bfd60-a2d7-4e49-8281-93ed17bac9d7','Ninguna entrevista próxima hoy','2020-06-10 16:17:37.224','2020-06-10 16:17:37.224','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','1a782fb3-bf3b-4354-a204-9fc9539c93ed')
+('8cb28579-a5df-4612-8a9c-bdd62962277f','Solicitudes','2020-06-10 16:17:37.216','2020-06-10 16:17:37.216','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','ed0c6c08-e9ab-49b3-bbe0-8345b8f4b690')
+,('260bfd60-a2d7-4e49-8281-93ed17bac9d7','Ninguna entrevista próxima hoy','2020-06-10 16:17:37.224','2020-06-10 16:17:37.224','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','1a782fb3-bf3b-4354-a204-9fc9539c93ed')
 ,('666d3dd2-8628-445e-9a6b-7aec031fcfb3','Hoy {{count}} entrevistas próximas','2020-06-10 16:17:37.233','2020-06-10 16:17:37.233','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','7e9039d3-6a89-4d06-bb3d-32a2c4b3cdfd')
 ,('20e42c29-ae56-49cd-ab21-48bdeee850d7','Ninguna entrevista próxima esta semana','2020-06-10 16:17:37.243','2020-06-10 16:17:37.243','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','dab89db3-3932-430c-bd66-a398da84f05d')
 ,('6e8d64cf-6038-4e83-a5fd-4a6f81375928','{{count}} entrevistas próximas esta semana','2020-06-10 16:17:37.253','2020-06-10 16:17:37.253','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','e0d73462-5009-4106-a0ef-9757519a23f7')
@@ -2735,10 +2909,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('bcc6063b-7a3a-4468-b3ea-7da4f4e43b9c','Parece que por ahora no tiene Tareas activas.','2020-06-10 16:17:37.282','2020-06-10 16:17:37.282','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','0d171e37-28ce-46cf-bcee-1f85bb33a01e')
 ,('f7f5f56e-8aa1-4bea-9da1-6ba04357561b','Ir a la lista de puestos de trabajo.','2020-06-10 16:17:37.297','2020-06-10 16:17:37.297','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','045b19aa-0fab-4662-afad-56db73acccf5')
 ,('03ece7ff-a794-4762-84c4-7570ef1c89fd','¿Invitar a la entrevista?','2020-06-10 16:17:37.306','2020-06-10 16:17:37.306','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','236abe16-e4f6-4f2d-b871-87ff979a9808')
-,('02a1a39e-5d5f-4587-96fa-0d2731b149c1','Calificar una solicitud','2020-06-10 16:17:37.314','2020-06-10 16:17:37.314','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','209c4edd-3876-413d-a780-dafa27fd0a86')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('da5f73b9-6bc8-47df-b46a-88ce2b539be9','Próxima entrevista','2020-06-10 16:17:37.324','2020-06-10 16:17:37.324','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','72050ea4-d10c-43cf-9f39-a420714b6c37')
+('02a1a39e-5d5f-4587-96fa-0d2731b149c1','Calificar una solicitud','2020-06-10 16:17:37.314','2020-06-10 16:17:37.314','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','209c4edd-3876-413d-a780-dafa27fd0a86')
+,('da5f73b9-6bc8-47df-b46a-88ce2b539be9','Próxima entrevista','2020-06-10 16:17:37.324','2020-06-10 16:17:37.324','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','72050ea4-d10c-43cf-9f39-a420714b6c37')
 ,('84d11b4c-5932-470f-bf95-ec23138fbd1f','Próxima entrevista','2020-06-10 16:17:37.334','2020-06-10 16:17:37.334','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','7c3346b6-aa2b-47bb-83b0-3a15ba4fa721')
 ,('44c74ddf-790a-4de2-b615-dfa49a987a7d','Pendiente de voto con pulgar','2020-06-10 16:17:37.343','2020-06-10 16:17:37.343','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','16895f21-62c0-4d13-afbb-22a2d34a6e2e')
 ,('2c64c666-3965-48c8-baca-36ea81f823cb','Calificación pendiente','2020-06-10 16:17:37.352','2020-06-10 16:17:37.352','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','a2f55647-c712-4ba3-b332-4fc2293a5ac6')
@@ -2747,10 +2921,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('6ca20f32-be67-4dda-aaa0-39e4c6fc5b50','Revisar la oferta de trabajo','2020-06-10 16:17:37.384','2020-06-10 16:17:37.384','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','41746333-c895-4e1f-9edb-023fb4b6209d')
 ,('443e5c27-7ff1-4d66-80e8-15ed85876105','Una oferta de empleo ha expirado','2020-06-10 16:17:37.393','2020-06-10 16:17:37.393','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','d14ef13e-cb23-4547-a464-148215bb2866')
 ,('3643bc77-7e32-427e-a393-46f8f4dae6bb','¡No se han activado los tipos!','2020-06-10 16:17:37.402','2020-06-10 16:17:37.402','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','583b437f-e805-498e-babd-b753ad2e7cd7')
-,('fe082285-1830-4190-9a82-630a5413efad','¡Tu opinión es necesario!','2020-06-10 16:17:37.421','2020-06-10 16:17:37.421','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','08531c41-fa14-4719-99ab-318c05963114')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('df1815c6-88ed-402a-92fa-8d762d68600d','Por favor toma un momento y danos tu feedback en una corta encuesta.','2020-06-10 16:17:37.431','2020-06-10 16:17:37.431','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','a24a8627-5c3a-4d59-9624-520d3c10fd91')
+('fe082285-1830-4190-9a82-630a5413efad','¡Tu opinión es necesario!','2020-06-10 16:17:37.421','2020-06-10 16:17:37.421','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','08531c41-fa14-4719-99ab-318c05963114')
+,('df1815c6-88ed-402a-92fa-8d762d68600d','Por favor toma un momento y danos tu feedback en una corta encuesta.','2020-06-10 16:17:37.431','2020-06-10 16:17:37.431','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','a24a8627-5c3a-4d59-9624-520d3c10fd91')
 ,('33b5a4d5-341d-4caa-964f-d38765f792e5','Empieza la encuesta','2020-06-10 16:17:37.440','2020-06-10 16:17:37.440','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','8fccf0b6-b504-40f7-bb35-f7ec94556038')
 ,('4e178353-c2d1-4d2d-88e3-09a374654757','No ahora','2020-06-10 16:17:37.447','2020-06-10 16:17:37.447','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','ecdb2c54-a5c4-4d97-9e09-d8b07926a38f')
 ,('d1cd981f-42ad-4947-af05-551717141c72','Encuesta','2020-06-10 16:17:37.455','2020-06-10 16:17:37.455','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','79884ca9-e100-496c-8b9d-61cd53d14034')
@@ -2759,10 +2933,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('a343f42b-6c8d-4494-a8a5-6d4f28232426','Contraseña no válida. Por favor prueba otra vez','2020-06-10 16:17:37.493','2020-06-10 16:17:37.493','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','8230ade8-21bf-4dd1-9c7b-04dd6befecec')
 ,('c7a366b3-2574-476a-843c-695b117e21b2','¡Ahora ya está listo!','2020-06-10 16:17:37.502','2020-06-10 16:17:37.502','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','ca6afc0d-f89d-40a4-8050-67612c303a04')
 ,('a5697366-ec0f-4a13-b2a9-4dee5f3a809f','Por favor, asegure los datos sensibles de la aplicación estableciendo un código de acceso','2020-06-10 16:17:37.512','2020-06-10 16:17:37.512','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','30271789-e48e-48c1-bb7f-666564671a97')
-,('53c1a6cc-e776-4046-a473-6239f4d86eca','Ok','2020-06-10 16:17:37.522','2020-06-10 16:17:37.522','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','f24cbf9b-7810-4de6-90ab-3e4fdf7a8c86')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('28fa3aba-494c-4380-a988-989ecbfa71e4','Búsqueda por nombres','2020-06-10 16:17:37.533','2020-06-10 16:17:37.533','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','2d84282c-de52-492a-a55b-469d769e12ae')
+('53c1a6cc-e776-4046-a473-6239f4d86eca','Ok','2020-06-10 16:17:37.522','2020-06-10 16:17:37.522','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','f24cbf9b-7810-4de6-90ab-3e4fdf7a8c86')
+,('28fa3aba-494c-4380-a988-989ecbfa71e4','Búsqueda por nombres','2020-06-10 16:17:37.533','2020-06-10 16:17:37.533','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','2d84282c-de52-492a-a55b-469d769e12ae')
 ,('ddd2df9e-ccf3-49e1-b837-82aeb68abf09','Correo electrónico','2020-06-10 16:17:37.542','2020-06-10 16:17:37.542','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','d05377c4-435d-4ddf-b58c-594b230a9e14')
 ,('2caec155-3a9a-4f84-9289-b06be009076e','Correos electrónicos','2020-06-10 16:17:37.551','2020-06-10 16:17:37.551','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','aa9880ad-adf3-408c-ac01-860e5efbe2f1')
 ,('0058bd2c-3fed-4f53-94e3-c453c6f5464d','Aún no hay correos electrónicos','2020-06-10 16:17:37.561','2020-06-10 16:17:37.561','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','12bbd105-5313-429e-bd53-3657e5140cb3')
@@ -2771,10 +2945,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('b2393f96-389d-4ef0-b95f-b70b82cdb6e6','No leído en la parte superior','2020-06-10 16:17:37.587','2020-06-10 16:17:37.587','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','54b964b9-1538-40db-ad99-0cb2e6607e8c')
 ,('994e39ce-892e-4753-aa31-38c97dc66f93','Lo más reciente en la parte superior','2020-06-10 16:17:37.595','2020-06-10 16:17:37.595','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','7f54009b-7f11-426d-a8d7-fad3cdb2ff79')
 ,('c62585d1-08ce-4c32-990d-1151b13b4a0a','Lo más antiguo en la parte superior','2020-06-10 16:17:37.605','2020-06-10 16:17:37.605','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','395c815f-fbd4-40fc-b2fd-22597ac2d433')
-,('191a2a1d-b6d9-4d66-a473-8a1669292bd1','Ver más','2020-06-10 16:17:37.617','2020-06-10 16:17:37.617','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','114994a9-d760-4c22-85d0-1448838dc4c1')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('6f19d43c-749b-441c-91c5-c8180248d7f3','Ver menos','2020-06-10 16:17:37.629','2020-06-10 16:17:37.629','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','e01befcc-ee20-4c00-a8ef-ac1c8101ca94')
+('191a2a1d-b6d9-4d66-a473-8a1669292bd1','Ver más','2020-06-10 16:17:37.617','2020-06-10 16:17:37.617','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','114994a9-d760-4c22-85d0-1448838dc4c1')
+,('6f19d43c-749b-441c-91c5-c8180248d7f3','Ver menos','2020-06-10 16:17:37.629','2020-06-10 16:17:37.629','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','e01befcc-ee20-4c00-a8ef-ac1c8101ca94')
 ,('e390de6f-cc74-4074-bd25-f85d7081847a','A','2020-06-10 16:17:37.638','2020-06-10 16:17:37.638','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','4d5d26a0-1297-4638-aa0b-0260f3338a64')
 ,('99854622-c1e4-4773-a457-0076d36e6881','CC','2020-06-10 16:17:37.646','2020-06-10 16:17:37.646','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','fd257e34-f643-403d-bae4-a3195ff29cd6')
 ,('ecd4c533-fad4-4b09-ba61-1db24b98f0ff','BCC','2020-06-10 16:17:37.656','2020-06-10 16:17:37.656','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','fc147222-f0c0-48d0-b4fd-20b8b971278f')
@@ -2783,10 +2957,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('14bf00af-5e16-455f-8b35-2a0298007672','Tu correo electrónico será enviado cuando vuelvas a estar en línea.','2020-06-10 16:17:37.683','2020-06-10 16:17:37.683','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','1455a67f-aa79-4376-9a7a-1c4809cf3143')
 ,('be478625-3934-4144-b037-fe78628bba40','Este mensaje está disponible en formato de texto y en formato HTML pero, por razones de seguridad, actualmente solo se muestra en texto. Para los remitentes de confianza, puede decidir si activa el formato HTML','2020-06-10 16:17:37.693','2020-06-10 16:17:37.693','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','ee25cd7b-983f-4639-8d67-8979c05ba8ea')
 ,('cf957dc3-d032-4a29-a172-a7b0c0027e1a','MMMM DD, YYYY, hh:mm a','2020-06-10 16:17:37.705','2020-06-10 16:17:37.705','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','cc9eec4c-4639-4d4e-ae33-58e17709f85e')
-,('f2930ff2-8c76-44a5-98c9-917dc0fc71f2','Sistema de correo electrónico','2020-06-10 16:17:37.712','2020-06-10 16:17:37.712','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','88dbe438-5427-4444-a8a1-01960979ea30')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('70982809-dc1d-4de8-bedf-f975febf2a05','Responder','2020-06-10 16:17:37.720','2020-06-10 16:17:37.720','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','7f99867f-6bb1-4d13-b999-91eacce95e03')
+('f2930ff2-8c76-44a5-98c9-917dc0fc71f2','Sistema de correo electrónico','2020-06-10 16:17:37.712','2020-06-10 16:17:37.712','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','88dbe438-5427-4444-a8a1-01960979ea30')
+,('70982809-dc1d-4de8-bedf-f975febf2a05','Responder','2020-06-10 16:17:37.720','2020-06-10 16:17:37.720','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','7f99867f-6bb1-4d13-b999-91eacce95e03')
 ,('0b38d086-9636-496c-9f28-f58436e2f2f4','Resp. a todos','2020-06-10 16:17:37.728','2020-06-10 16:17:37.728','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','679b8371-8e9d-4757-ac2a-a241d704023c')
 ,('20f2fc8b-5c1d-4ccc-99aa-29553ecce513','Reenviar','2020-06-10 16:17:37.739','2020-06-10 16:17:37.739','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','6b9153b2-f3c0-4423-b26f-28046711b6df')
 ,('4fda224a-c830-4264-bf4d-8af7cf84b396','Escribió :','2020-06-10 16:17:37.751','2020-06-10 16:17:37.751','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','e5be7d93-f884-41d0-86f8-328b4710be5d')
@@ -2795,10 +2969,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('23358df9-1dcf-41ee-95a4-c98dfe416f35','Correo electrónico','2020-06-10 16:17:37.772','2020-06-10 16:17:37.772','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','d05377c4-435d-4ddf-b58c-594b230a9e14')
 ,('f7efc6a0-4fa7-4dcb-bb29-ed6c3507bc67','Correos electrónicos','2020-06-10 16:17:37.780','2020-06-10 16:17:37.780','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','aa9880ad-adf3-408c-ac01-860e5efbe2f1')
 ,('9bb1a2d9-8299-4242-bd4b-84db73a619c5','Aún no hay correos electrónicos','2020-06-10 16:17:37.788','2020-06-10 16:17:37.788','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','12bbd105-5313-429e-bd53-3657e5140cb3')
-,('be56397e-c684-418b-ad1e-93ca7174aa24','Anónima','2020-06-10 16:17:37.796','2020-06-10 16:17:37.796','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','88dbe438-5427-4444-a8a1-01960979ea30')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('802fab2c-0b3e-4127-b049-8442d386fc19','Enviando...','2020-06-10 16:17:37.804','2020-06-10 16:17:37.804','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','23d7dda0-529e-49c8-b2fe-6b25522af399')
+('be56397e-c684-418b-ad1e-93ca7174aa24','Anónima','2020-06-10 16:17:37.796','2020-06-10 16:17:37.796','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','88dbe438-5427-4444-a8a1-01960979ea30')
+,('802fab2c-0b3e-4127-b049-8442d386fc19','Enviando...','2020-06-10 16:17:37.804','2020-06-10 16:17:37.804','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','23d7dda0-529e-49c8-b2fe-6b25522af399')
 ,('b54f10d5-c393-4c54-a34a-f17a2636d531','A:','2020-06-10 16:17:37.813','2020-06-10 16:17:37.813','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','4d5d26a0-1297-4638-aa0b-0260f3338a64')
 ,('ba751ea9-e676-4564-a56a-c5e87f53778e','Más','2020-06-10 16:17:37.821','2020-06-10 16:17:37.821','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','d5447ac5-7736-48fe-a201-68d00a947659')
 ,('fb9c7c6d-7ec2-40b2-99b4-1a0f3e3796af','Con copia:','2020-06-10 16:17:37.828','2020-06-10 16:17:37.828','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','fd257e34-f643-403d-bae4-a3195ff29cd6')
@@ -2807,10 +2981,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('03ebc203-e1ab-43e4-ae72-4562b33dc9f3','Adjuntar archivo','2020-06-10 16:17:37.854','2020-06-10 16:17:37.854','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','18464e95-4a24-4bd0-83c5-702143c84454')
 ,('cf951fd6-08eb-4b56-a047-e30a86b8bb54','Usar plantilla','2020-06-10 16:17:37.865','2020-06-10 16:17:37.865','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','554fe922-75e8-4961-a1fb-0a1d1682143b')
 ,('948e0389-5fac-463b-bed7-aa9650df56a3','¿Estás seguro que quieres salir?','2020-06-10 16:17:37.874','2020-06-10 16:17:37.874','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','09252c4d-b47d-4a39-9753-8d2060948848')
-,('0469953d-1148-4f32-b5ce-c75b031fdbd0','Filled data will be lost','2020-06-10 16:17:37.883','2020-06-10 16:17:37.883','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','2ecb3495-794a-4b9e-9548-112495769ca0')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('e0e5fd65-d711-415b-a2e4-56aed8e33145','Email enviado','2020-06-10 16:17:37.894','2020-06-10 16:17:37.894','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','92464967-b899-4215-8b2b-29c701fd84c4')
+('0469953d-1148-4f32-b5ce-c75b031fdbd0','Filled data will be lost','2020-06-10 16:17:37.883','2020-06-10 16:17:37.883','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','2ecb3495-794a-4b9e-9548-112495769ca0')
+,('e0e5fd65-d711-415b-a2e4-56aed8e33145','Email enviado','2020-06-10 16:17:37.894','2020-06-10 16:17:37.894','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','92464967-b899-4215-8b2b-29c701fd84c4')
 ,('e95d8e7c-edce-449e-9170-68b5d39f9eaa','Email enviado fallidamente','2020-06-10 16:17:37.901','2020-06-10 16:17:37.901','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','72b763ee-2e5f-4e0f-b273-6a49ac28c663')
 ,('c8ff777a-5456-4f5d-bb1e-0ac0ec1c91ae','Email incorrecto','2020-06-10 16:17:37.911','2020-06-10 16:17:37.911','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','19051f16-3e89-46ce-9ec2-75fe8d029d5a')
 ,('c950512d-116a-4d2e-b9c4-ab34c7c0da88','Este archivo excede el límite permitido de 10 MB','2020-06-10 16:17:37.920','2020-06-10 16:17:37.920','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','ce032782-507f-4b7c-ba73-f85b21b785f0')
@@ -2819,10 +2993,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('ef6a7e90-9b9c-4ea0-9425-0d4b01ad3090','Cancelar','2020-06-10 16:17:37.947','2020-06-10 16:17:37.947','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','17c0a33e-317c-4b9c-9f42-97fd13c5465b')
 ,('6210bb18-b3ab-4cd8-b652-640af8cd1a64','Sí, salir','2020-06-10 16:17:37.955','2020-06-10 16:17:37.955','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','b5739c32-f4c2-482c-8292-69abcbaf3881')
 ,('f2fb74b7-240a-4066-82d1-bb558e528331','Asunto vacío','2020-06-10 16:17:37.964','2020-06-10 16:17:37.964','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','3ec08bba-127e-469b-9d05-307e5dc6e826')
-,('1e8bb0b5-4456-4375-b5c3-9c641e48c481','¿Deseas enviar el mensaje sin asunto?','2020-06-10 16:17:37.974','2020-06-10 16:17:37.974','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','964a325a-bad9-4d73-be1a-e44ee8ff495c')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('decbe55e-244f-43ca-b7c3-a1647138f713','Sí, enviar','2020-06-10 16:17:37.984','2020-06-10 16:17:37.984','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','bcd626d5-baba-46fe-9a1e-1b16b9401935')
+('1e8bb0b5-4456-4375-b5c3-9c641e48c481','¿Deseas enviar el mensaje sin asunto?','2020-06-10 16:17:37.974','2020-06-10 16:17:37.974','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','964a325a-bad9-4d73-be1a-e44ee8ff495c')
+,('decbe55e-244f-43ca-b7c3-a1647138f713','Sí, enviar','2020-06-10 16:17:37.984','2020-06-10 16:17:37.984','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','bcd626d5-baba-46fe-9a1e-1b16b9401935')
 ,('a8215b07-6659-4902-abae-3cfc9982c5b1','El correo electrónico será enviado en línea','2020-06-10 16:17:37.993','2020-06-10 16:17:37.993','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','1455a67f-aa79-4376-9a7a-1c4809cf3143')
 ,('1f951ab4-b103-4f81-a7a2-60b07f493b4a','Filtros','2020-06-10 16:17:38.006','2020-06-10 16:17:38.006','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','417d67e1-cb0e-4dd1-a920-1fd988b41400')
 ,('d0d9c769-f0f3-417e-a71e-635739147c54','Estado Tarea','2020-06-10 16:17:38.016','2020-06-10 16:17:38.016','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','e8c1a191-9f49-45d6-8dea-2e09e295ab26')
@@ -2831,10 +3005,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('148b25c0-856e-47c9-8393-10632da20aac','Ubicación','2020-06-10 16:17:38.046','2020-06-10 16:17:38.046','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','43005d71-dbda-4d36-b63b-6525a8a3b564')
 ,('737614ec-ba18-458e-8c7f-cd7d3d8ee40b','Tags','2020-06-10 16:17:38.056','2020-06-10 16:17:38.056','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','48ff20f1-ad06-4d94-9083-1b9e2a0522c3')
 ,('8b09ea1a-5383-4c05-9470-11c87b13d011','Eliminar todo','2020-06-10 16:17:38.066','2020-06-10 16:17:38.066','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','f0839b8b-2e4e-4b43-888b-faf4a49e491e')
-,('e613cb30-c7de-4cae-a01b-7ccf8a88f9ac','FILTROS ADICIONALES','2020-06-10 16:17:38.077','2020-06-10 16:17:38.077','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','a66cca28-9895-4860-98b9-db709190d122')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('519ddf60-56fb-4e25-908f-08e6b47d446f','Mostrar todos los puestos de trabajo a los que tengo acceso','2020-06-10 16:17:38.087','2020-06-10 16:17:38.087','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','2315b11f-0495-40bb-adbb-6c9b593b524e')
+('e613cb30-c7de-4cae-a01b-7ccf8a88f9ac','FILTROS ADICIONALES','2020-06-10 16:17:38.077','2020-06-10 16:17:38.077','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','a66cca28-9895-4860-98b9-db709190d122')
+,('519ddf60-56fb-4e25-908f-08e6b47d446f','Mostrar todos los puestos de trabajo a los que tengo acceso','2020-06-10 16:17:38.087','2020-06-10 16:17:38.087','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','2315b11f-0495-40bb-adbb-6c9b593b524e')
 ,('706048fe-f2f1-4c73-836f-91ab55681703','Papelera de rechazos','2020-06-10 16:17:38.096','2020-06-10 16:17:38.096','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','13271e8b-fce9-4a07-b2eb-59a9a4c80bfc')
 ,('172d8e39-0b13-4a62-8cf4-51d16a8222cb','Solicitudes pausadas','2020-06-10 16:17:38.104','2020-06-10 16:17:38.104','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','4c275149-d1e6-4174-b007-d89f7f3a6e1e')
 ,('962ab6a2-c2db-4ced-9a8d-0b071ed2fb20','Su búsqueda','2020-06-10 16:17:38.113','2020-06-10 16:17:38.113','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','b37ad9eb-7345-4b87-a1d1-565396a4c397')
@@ -2843,10 +3017,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('cafbdb41-59e9-40e2-b541-8c958a67dfbd','Mis recordatorios','2020-06-10 16:17:38.142','2020-06-10 16:17:38.142','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','52cc84a8-2111-4665-9f25-f91691f7de29')
 ,('39e0b3f2-9c8c-4490-91f8-2c59d4ed243e','Este filtro está desactivado porque está en Puestos de Trabajo.','2020-06-10 16:17:38.151','2020-06-10 16:17:38.151','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','f67276a9-0281-4dcc-87e0-8898ebf40144')
 ,('fd4f2db8-2d9a-4f10-971a-2f656ac2ae64','Todavía no es compatible.','2020-06-10 16:17:38.160','2020-06-10 16:17:38.160','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','9a0d54dd-ad69-462e-8aaa-52dee46abffd')
-,('05507c58-a541-44b6-bcab-7765541e94f0','Paso de solicitud','2020-06-10 16:17:38.173','2020-06-10 16:17:38.173','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','4138f5e2-baa7-48e9-bbcb-6dafac432a99')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('341797bc-c9b1-410d-88fc-e3d315e290e5','Puesto de trabajo','2020-06-10 16:17:38.182','2020-06-10 16:17:38.182','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','1abdaaa5-0e17-41ab-a897-e31512b2d349')
+('05507c58-a541-44b6-bcab-7765541e94f0','Paso de solicitud','2020-06-10 16:17:38.173','2020-06-10 16:17:38.173','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','4138f5e2-baa7-48e9-bbcb-6dafac432a99')
+,('341797bc-c9b1-410d-88fc-e3d315e290e5','Puesto de trabajo','2020-06-10 16:17:38.182','2020-06-10 16:17:38.182','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','1abdaaa5-0e17-41ab-a897-e31512b2d349')
 ,('4cf56306-fd1a-4c51-8fa7-cb8f3ad34638','Ubicación','2020-06-10 16:17:38.191','2020-06-10 16:17:38.191','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','43005d71-dbda-4d36-b63b-6525a8a3b564')
 ,('89733f46-bfc7-4a4b-976a-c739ab198ae5','Sin especificar','2020-06-10 16:17:38.205','2020-06-10 16:17:38.205','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','51ca77f9-42b6-4df3-8ac9-97a29bb04b13')
 ,('dde6002e-35ba-4b70-b5cf-6ed232b18937','Limpiar','2020-06-10 16:17:38.216','2020-06-10 16:17:38.216','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','f0839b8b-2e4e-4b43-888b-faf4a49e491e')
@@ -2855,10 +3029,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('875bd07b-d98c-40bc-bcab-8d9a712ce89d','Estado del recordatorio','2020-06-10 16:17:38.253','2020-06-10 16:17:38.253','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','6368d265-bfa5-42e9-9dca-ee7c3052246c')
 ,('1328aba4-c7ce-4930-b1bc-5cd2eb2f6a22','Fecha del recordatorio','2020-06-10 16:17:38.265','2020-06-10 16:17:38.265','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','caef76e4-c7d1-4d73-83e0-eb51cabb72b5')
 ,('a6a23a41-fdb2-4f6d-ac7f-efbb66bdd796','Mis recordatorios','2020-06-10 16:17:38.276','2020-06-10 16:17:38.276','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','52cc84a8-2111-4665-9f25-f91691f7de29')
-,('b8536c24-ff81-4d0a-b11d-c02157e600ca','Tarea','2020-06-10 16:17:38.285','2020-06-10 16:17:38.285','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','9f29f54f-b149-496e-a308-c5e9c8b4e449')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('aecfc837-c121-4061-bc3e-3e2932f36531','Hecho','2020-06-10 16:17:38.299','2020-06-10 16:17:38.299','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','74ca3a02-7b57-436e-99d6-4c2897b20c68')
+('b8536c24-ff81-4d0a-b11d-c02157e600ca','Tarea','2020-06-10 16:17:38.285','2020-06-10 16:17:38.285','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','9f29f54f-b149-496e-a308-c5e9c8b4e449')
+,('aecfc837-c121-4061-bc3e-3e2932f36531','Hecho','2020-06-10 16:17:38.299','2020-06-10 16:17:38.299','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','74ca3a02-7b57-436e-99d6-4c2897b20c68')
 ,('87568ee8-07ee-4891-91d6-7ecabf98c878','Desestimado','2020-06-10 16:17:38.315','2020-06-10 16:17:38.315','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','15fb1d7c-5b55-4780-a200-29186c4631f4')
 ,('0383b600-26aa-4f9f-b60a-9f9e66cc275e','En cualquier momento','2020-06-10 16:17:38.327','2020-06-10 16:17:38.327','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','2ed95280-3ef7-42e0-8757-216d228584f9')
 ,('a7e96150-1b84-4efc-bdb0-ce354f0799e7','Últimas 24 horas','2020-06-10 16:17:38.334','2020-06-10 16:17:38.334','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','f5b9edb1-f0c4-4b16-9fb2-b41a37aaf7cf')
@@ -2867,10 +3041,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('a64b3a8e-c760-4db7-a1af-8193b220f572','Pendiente de voto con pulgar','2020-06-10 16:17:38.373','2020-06-10 16:17:38.373','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','236abe16-e4f6-4f2d-b871-87ff979a9808')
 ,('edf64cb6-d4cd-4d75-b852-0d9415fe69a1','Calificar una solicitud','2020-06-10 16:17:38.382','2020-06-10 16:17:38.382','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','209c4edd-3876-413d-a780-dafa27fd0a86')
 ,('7126a4d4-8da0-4b0c-842e-45ef08f6e4f8','Próxima entrevista','2020-06-10 16:17:38.393','2020-06-10 16:17:38.393','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','72050ea4-d10c-43cf-9f39-a420714b6c37')
-,('6d35b548-5893-4990-af02-75d62e738063','Revisar el estado de la solicitud','2020-06-10 16:17:38.405','2020-06-10 16:17:38.405','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','695185d8-74cb-4208-a900-d13f735221a4')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('a9c7f6f9-e046-4f9d-a1fd-1694f967db73','Confirmar entrevista','2020-06-10 16:17:38.417','2020-06-10 16:17:38.417','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','283ceb3a-c29a-41ae-8a46-fa893448a16a')
+('6d35b548-5893-4990-af02-75d62e738063','Revisar el estado de la solicitud','2020-06-10 16:17:38.405','2020-06-10 16:17:38.405','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','695185d8-74cb-4208-a900-d13f735221a4')
+,('a9c7f6f9-e046-4f9d-a1fd-1694f967db73','Confirmar entrevista','2020-06-10 16:17:38.417','2020-06-10 16:17:38.417','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','283ceb3a-c29a-41ae-8a46-fa893448a16a')
 ,('9761db45-ed09-47ff-b606-a8b9748e40e9','Programar una entrevista','2020-06-10 16:17:38.430','2020-06-10 16:17:38.430','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','058cbe78-e18c-4dac-b684-9621d1a5d80b')
 ,('5d5327d7-15e5-4f87-9b0a-fc04eb823b81','Localización','2020-06-10 16:17:38.439','2020-06-10 16:17:38.439','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','3e06a2ce-b3d0-497c-9e7d-574c2d9da2d8')
 ,('295582df-c043-403d-b0ac-2620cad5d4a4','Redactar email...','2020-06-10 16:17:38.447','2020-06-10 16:17:38.447','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','8ae033ca-9c0d-4f0a-a91a-5f23f9d8d1e2')
@@ -2878,11 +3052,12 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('5624e4d6-ba82-464a-a4e3-67340afe862d','Día y hora','2020-06-10 16:17:38.466','2020-06-10 16:17:38.466','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','09afd2a1-d662-4ce4-ae8e-ac41839a524f')
 ,('4eb7b32b-fb7c-4422-a60e-76b5ebb73dd6','MMM DD, HH:mm','2020-06-10 16:17:38.476','2020-06-10 16:17:38.476','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','7952399c-1556-4a96-8a39-eb5994e95a6f')
 ,('6e501dcb-01cd-43f8-8633-85b75397f130','HH:mm','2020-06-10 16:17:38.488','2020-06-10 16:17:38.488','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','da113252-f0a6-4c36-9f0c-da54c9378f3a')
-,('c13b26d0-e7d6-4761-97e7-297e55948012','Redactar un email...','2020-06-10 16:17:38.506','2020-06-10 16:17:38.506','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','a59c857b-aeb4-459f-b305-49d364b7f7aa')
-,('886489bc-0641-4fe9-8830-71857e2bf15c','Movido a la entrevista','2020-06-10 16:17:38.515','2020-06-10 16:17:38.515','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','cfec1654-fed4-4b60-8f92-369b259b6273')
+,('b7670ba2-42e7-4d22-bb81-bd46beeded4c','Nie','2020-06-10 16:17:42.315','2020-06-10 16:17:42.315','0c12577b-360b-4843-a86e-39c129047b0b','64b1350e-8f50-4951-9648-0fdacc85399d')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('b5c95828-4c64-4326-9ac6-558304624aa7','Aplicación de correo electrónico: ','2020-06-10 16:17:38.525','2020-06-10 16:17:38.525','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','6bbb8a68-fd8f-499d-850f-9ca504bada8c')
+('c13b26d0-e7d6-4761-97e7-297e55948012','Redactar un email...','2020-06-10 16:17:38.506','2020-06-10 16:17:38.506','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','a59c857b-aeb4-459f-b305-49d364b7f7aa')
+,('886489bc-0641-4fe9-8830-71857e2bf15c','Movido a la entrevista','2020-06-10 16:17:38.515','2020-06-10 16:17:38.515','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','cfec1654-fed4-4b60-8f92-369b259b6273')
+,('b5c95828-4c64-4326-9ac6-558304624aa7','Aplicación de correo electrónico: ','2020-06-10 16:17:38.525','2020-06-10 16:17:38.525','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','6bbb8a68-fd8f-499d-850f-9ca504bada8c')
 ,('f3d936dd-cb66-4a6f-8dfc-080ca0e125e9','Cita perdida','2020-06-10 16:17:38.532','2020-06-10 16:17:38.532','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','bd6c2ce4-d412-4a9d-b5a3-15573857c367')
 ,('9431cd95-d4f4-42ba-ad5a-c70f5a43b3a5','La entrevista está programada','2020-06-10 16:17:38.543','2020-06-10 16:17:38.543','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','70a19873-e82e-4021-bd93-90d0a8758267')
 ,('0d24fa83-8a06-4399-9038-72305b7122c6','Revisar y discutir
@@ -2892,12 +3067,12 @@ Incluso sin estar conectado.','2020-06-10 16:17:38.556','2020-06-10 16:17:38.556
 ,('71dabdb4-3c80-419f-9697-13095bc8ec21','Chat de equipo','2020-06-10 16:17:38.573','2020-06-10 16:17:38.573','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','d04f7a9d-5c34-4fd7-a13e-607931a1b4e4')
 ,('a4ea9c16-0f7b-48cf-8437-6dbb5f8c3615','Saltar','2020-06-10 16:17:38.580','2020-06-10 16:17:38.580','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','59d31645-a677-4d88-80d1-c6f6d2cd4846')
 ,('71d40378-a4d7-4a69-bd1c-3ddd495b6edf','','2020-06-10 16:17:38.591','2020-06-10 16:17:38.591','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','290383a0-23cb-46e0-b9d9-bd76dec6d7bc')
-,('44093f11-0569-42bb-8996-cc2778127f19','Vote a quién deberá ser invitado a la
-entrevista.','2020-06-10 16:17:38.600','2020-06-10 16:17:38.600','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','649aa749-e9b3-4427-a4f9-06b4b4cb1154')
-,('fe11bc9c-e481-486d-b053-bd5cd2e22233','Discuta las aplicaciones inmediatamente.','2020-06-10 16:17:38.609','2020-06-10 16:17:38.609','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','71dcd81f-e233-44e2-b1c6-83cdca96551c')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('ecdc3804-d9e1-4f34-97db-3ba806b867a8','Comenzar','2020-06-10 16:17:38.617','2020-06-10 16:17:38.617','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','c445b15a-9256-4829-8c5b-1ec1360e7dbe')
+('44093f11-0569-42bb-8996-cc2778127f19','Vote a quién deberá ser invitado a la
+entrevista.','2020-06-10 16:17:38.600','2020-06-10 16:17:38.600','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','649aa749-e9b3-4427-a4f9-06b4b4cb1154')
+,('fe11bc9c-e481-486d-b053-bd5cd2e22233','Discuta las aplicaciones inmediatamente.','2020-06-10 16:17:38.609','2020-06-10 16:17:38.609','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','71dcd81f-e233-44e2-b1c6-83cdca96551c')
+,('ecdc3804-d9e1-4f34-97db-3ba806b867a8','Comenzar','2020-06-10 16:17:38.617','2020-06-10 16:17:38.617','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','c445b15a-9256-4829-8c5b-1ec1360e7dbe')
 ,('97b91c9b-8b2e-40d6-bdcf-e536f8a2a6ad','Continuar','2020-06-10 16:17:38.626','2020-06-10 16:17:38.626','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','ef33eebb-4545-4a97-8369-9055b50ffc3f')
 ,('cdbbbcf8-c612-4199-b566-e3dd72abdd8b','Puestos de trabajo','2020-06-10 16:17:38.640','2020-06-10 16:17:38.640','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','0a8774a5-721b-4bd2-96ff-6b18ced73781')
 ,('f6201165-1ecf-401e-9107-df596ffb3f1f','Aplicaciones','2020-06-10 16:17:38.648','2020-06-10 16:17:38.648','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','ed0c6c08-e9ab-49b3-bbe0-8345b8f4b690')
@@ -2906,11 +3081,11 @@ Para crear un nuevo puesto de trabajo, utilice softgarden ATS o ponte en contact
 ,('a5395b89-fdc2-4a0c-ab87-374730c59e68','Búsqueda por puestos de trabajo','2020-06-10 16:17:38.665','2020-06-10 16:17:38.665','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','2d84282c-de52-492a-a55b-469d769e12ae')
 ,('066841af-901b-4c32-ba89-99a66134ad8d','Ver anuncio de trabajo ','2020-06-10 16:17:38.682','2020-06-10 16:17:38.682','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','d3e8e288-4864-4e8f-b4c3-4d870ce7306b')
 ,('0d657a54-d430-4d02-8e29-11f4643db309','Ver el equipo de reclutamiento','2020-06-10 16:17:38.691','2020-06-10 16:17:38.691','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','14e2f62e-4348-47c8-8c81-09a625addc7f')
-,('ef4424a8-e9c0-4349-a8fe-336859c36031','APLICACIÓN','2020-06-10 16:17:38.702','2020-06-10 16:17:38.702','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','1b331e75-b8d5-487b-ae50-971d3be4bd3d')
-,('0c5a3506-ff46-4964-b161-0a6503e36dd7','Trabajo','2020-06-10 16:17:38.712','2020-06-10 16:17:38.712','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','ece5fc0b-e0db-4e5e-bb37-1c24bcb56579')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('0ebe152b-b96b-4c67-80ea-fbf4b06235c0','Está desconectado','2020-06-10 16:17:38.720','2020-06-10 16:17:38.720','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','df296d17-3eda-4123-b535-a164f2d84cec')
+('ef4424a8-e9c0-4349-a8fe-336859c36031','APLICACIÓN','2020-06-10 16:17:38.702','2020-06-10 16:17:38.702','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','1b331e75-b8d5-487b-ae50-971d3be4bd3d')
+,('0c5a3506-ff46-4964-b161-0a6503e36dd7','Trabajo','2020-06-10 16:17:38.712','2020-06-10 16:17:38.712','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','ece5fc0b-e0db-4e5e-bb37-1c24bcb56579')
+,('0ebe152b-b96b-4c67-80ea-fbf4b06235c0','Está desconectado','2020-06-10 16:17:38.720','2020-06-10 16:17:38.720','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','df296d17-3eda-4123-b535-a164f2d84cec')
 ,('7ea2a1e9-ed8d-4459-bfc7-8eef3930dc5d','Por favor, conéctese y vuelva a solicitar este archivo','2020-06-10 16:17:38.731','2020-06-10 16:17:38.731','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','32d9a0b6-ad5a-4899-a6d2-4e560ca18245')
 ,('4a7200d4-14ec-4062-b93a-11a94ec407f3','Recruiting Team','2020-06-10 16:17:38.741','2020-06-10 16:17:38.741','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','8903d4b2-a941-4285-a73a-8ca59435d257')
 ,('00253f34-18d6-49c7-a323-f6d53942820f','Nuevo','2020-06-10 16:17:38.750','2020-06-10 16:17:38.750','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','0de37f11-a315-4bee-b9e5-0f028cfd79d8')
@@ -2918,11 +3093,11 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('69f9213d-b9fd-4b64-9c19-f4d55db12c47','APLICACIONES','2020-06-10 16:17:38.771','2020-06-10 16:17:38.771','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','736d9da6-f4e3-48c1-8dc6-e33da7ba22f7')
 ,('2cceb405-8c5c-4f76-bd6f-72a91850de56','Idioma','2020-06-10 16:17:38.788','2020-06-10 16:17:38.788','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','a0925053-ddfb-45be-975c-70ad961690d7')
 ,('bbc13d5e-f685-4120-8771-3e6c4f13a821','Cancelar','2020-06-10 16:17:38.797','2020-06-10 16:17:38.797','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','17c0a33e-317c-4b9c-9f42-97fd13c5465b')
-,('79d6cedd-9240-4da3-86d1-4e7b1551c450','Hecho','2020-06-10 16:17:38.806','2020-06-10 16:17:38.806','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','bbbfac4c-e1b0-47e9-86bb-c6c8d7c84daa')
-,('805a2a32-07b2-4609-91bf-17ebcd17e0f9','Introduzca su código de acceso','2020-06-10 16:17:38.818','2020-06-10 16:17:38.818','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','e9aff1fb-82c8-415d-9170-911d67eacc33')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('cbb6fd75-a2a8-4e0b-8c4b-9b32baa8c1aa','1 intento fallido','2020-06-10 16:17:38.828','2020-06-10 16:17:38.828','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','2879d3cb-ef5f-4de1-b534-a51c7fa6259e')
+('79d6cedd-9240-4da3-86d1-4e7b1551c450','Hecho','2020-06-10 16:17:38.806','2020-06-10 16:17:38.806','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','bbbfac4c-e1b0-47e9-86bb-c6c8d7c84daa')
+,('805a2a32-07b2-4609-91bf-17ebcd17e0f9','Introduzca su código de acceso','2020-06-10 16:17:38.818','2020-06-10 16:17:38.818','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','e9aff1fb-82c8-415d-9170-911d67eacc33')
+,('cbb6fd75-a2a8-4e0b-8c4b-9b32baa8c1aa','1 intento fallido','2020-06-10 16:17:38.828','2020-06-10 16:17:38.828','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','2879d3cb-ef5f-4de1-b534-a51c7fa6259e')
 ,('4210ab2d-a1dd-49cc-bf24-9823408e1bb8','Bloqueado durante {{a}} segundos','2020-06-10 16:17:38.838','2020-06-10 16:17:38.838','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','698134b4-67e9-4b13-bcf0-5208d5efb93d')
 ,('04161e7c-6e64-4f25-95ec-2880bcadc121','Cancelar','2020-06-10 16:17:38.847','2020-06-10 16:17:38.847','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','17c0a33e-317c-4b9c-9f42-97fd13c5465b')
 ,('a5f34495-6dd8-4096-a148-badb4e8cca95','Iniciar sesión con Touch ID','2020-06-10 16:17:38.855','2020-06-10 16:17:38.855','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','46774a29-efb3-42a4-b203-727905a96d44')
@@ -2930,11 +3105,11 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('d55d66ac-c2b5-4280-ac15-34110506e58b','Por favor, autentifique o cancele para el código pin','2020-06-10 16:17:38.874','2020-06-10 16:17:38.874','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','a94fdd50-58e7-4293-862e-f72aa70f2e63')
 ,('a378a4af-c566-40cd-babc-8cb62ed86c52','¿Ha olvidado el código de acceso?','2020-06-10 16:17:38.882','2020-06-10 16:17:38.882','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','04922079-ae4a-431c-98d8-909eee7e629c')
 ,('4cd9cdd8-91c7-44c1-a260-288ab19a11a5','Para restablecer su contraseña debe cerrar la sesión.','2020-06-10 16:17:38.891','2020-06-10 16:17:38.891','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','f98fae6b-960a-4c69-87ad-60299ca69c9c')
-,('3ae0adb7-39b8-469e-8544-581b876aff2e','Cerrar sesión','2020-06-10 16:17:38.899','2020-06-10 16:17:38.899','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','b6603dd5-8c2e-4866-be99-76bfe58d3610')
-,('c22372c4-7a08-4e88-8879-3611f0fd3743','Autentificación Requerida','2020-06-10 16:17:38.908','2020-06-10 16:17:38.908','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','ab58d790-edac-4ea9-b555-ac5334763c17')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('f9d64ba2-81d9-46f5-b8ce-470f1e819530','Toca el sensor','2020-06-10 16:17:38.921','2020-06-10 16:17:38.921','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','7bdfcd9b-c463-47ec-846c-adb68a787473')
+('3ae0adb7-39b8-469e-8544-581b876aff2e','Cerrar sesión','2020-06-10 16:17:38.899','2020-06-10 16:17:38.899','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','b6603dd5-8c2e-4866-be99-76bfe58d3610')
+,('c22372c4-7a08-4e88-8879-3611f0fd3743','Autentificación Requerida','2020-06-10 16:17:38.908','2020-06-10 16:17:38.908','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','ab58d790-edac-4ea9-b555-ac5334763c17')
+,('f9d64ba2-81d9-46f5-b8ce-470f1e819530','Toca el sensor','2020-06-10 16:17:38.921','2020-06-10 16:17:38.921','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','7bdfcd9b-c463-47ec-846c-adb68a787473')
 ,('68fd9214-6e6d-4bf6-8e8d-5a0814de116f','Demasiados intentos, usa el código de acceso','2020-06-10 16:17:38.931','2020-06-10 16:17:38.931','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','7dbc50d8-07a0-4b7f-a9ec-1d50a4ebf4ec')
 ,('8c84a71f-5d16-4cc9-96fa-8a3a08518fee','','2020-06-10 16:17:38.944','2020-06-10 16:17:38.944','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','d6e9c57c-899d-45f2-ae93-a3a3259f862a')
 ,('4d26a038-7e40-4f43-9d5d-85b0f93e8d81','{{count}} Intentos fallidos del código de acceso','2020-06-10 16:17:38.954','2020-06-10 16:17:38.954','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','734c890c-48a7-4ef3-87de-a7aaf2708d6b')
@@ -2942,11 +3117,11 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('6dc7efa8-a423-405c-878b-1a2944850398','Correo electrónico o nombre de usuario','2020-06-10 16:17:38.978','2020-06-10 16:17:38.978','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','1bd9b935-6d1f-4fb5-bf35-f47feec64e4d')
 ,('b773d5e1-2ad3-4741-86b5-46e84beb2dc1','Contraseña','2020-06-10 16:17:38.986','2020-06-10 16:17:38.986','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','4f2a1448-453a-401b-8e1f-c63634830997')
 ,('3b23b3ae-2471-44cc-a058-325965e52276','La App para los Reclutadores','2020-06-10 16:17:38.994','2020-06-10 16:17:38.994','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','2fb284a8-5e7d-4a4d-ba4c-800c9495c21f')
-,('9c8f17c3-f7d1-4eeb-a45c-f9ee83af5150','Iniciar sesión','2020-06-10 16:17:39.001','2020-06-10 16:17:39.001','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','b66addce-ff00-4f58-91dd-7ac3a80f7ab5')
-,('b97f93c4-da06-406f-95f1-3d8ceb5eed48','¿Ha olvidado su contraseña?','2020-06-10 16:17:39.012','2020-06-10 16:17:39.012','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','27a7dfe5-b3c6-49d7-aed3-8c003202e618')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('c1420076-a54e-4f3d-9937-e69b6680d2f1','Más acerca de los sistemas de seguimiento de la aplicación softgarden','2020-06-10 16:17:39.021','2020-06-10 16:17:39.021','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','5b59d12c-f89c-4068-b346-0a9c8cc12798')
+('9c8f17c3-f7d1-4eeb-a45c-f9ee83af5150','Iniciar sesión','2020-06-10 16:17:39.001','2020-06-10 16:17:39.001','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','b66addce-ff00-4f58-91dd-7ac3a80f7ab5')
+,('b97f93c4-da06-406f-95f1-3d8ceb5eed48','¿Ha olvidado su contraseña?','2020-06-10 16:17:39.012','2020-06-10 16:17:39.012','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','27a7dfe5-b3c6-49d7-aed3-8c003202e618')
+,('c1420076-a54e-4f3d-9937-e69b6680d2f1','Más acerca de los sistemas de seguimiento de la aplicación softgarden','2020-06-10 16:17:39.021','2020-06-10 16:17:39.021','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','5b59d12c-f89c-4068-b346-0a9c8cc12798')
 ,('a0ba035d-86ed-4712-921e-42fdfb1e2aee','Más información sobre la contratación electrónica softgarden','2020-06-10 16:17:39.030','2020-06-10 16:17:39.030','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','2330e420-6aed-4e39-9557-c28a55a1d33f')
 ,('94883fd9-679e-4178-8641-fffad09cfaf0','Elija paso','2020-06-10 16:17:39.039','2020-06-10 16:17:39.039','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','a501df3e-b88f-407a-bee7-31332a989797')
 ,('75d8151c-cbfc-4bf8-bed6-5020d388cf5e','Seleccionado: ','2020-06-10 16:17:39.047','2020-06-10 16:17:39.047','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','54a63b48-6876-43db-8453-5402bb638886')
@@ -2955,95 +3130,94 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('772e1dc7-1384-4fe7-aea0-c3e1c7aa6b8f','¿Es usted un candidato?','2020-06-10 16:17:39.074','2020-06-10 16:17:39.074','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','8501707c-6866-4f35-9467-70d4be59a022')
 ,('fb2e29c9-0130-4cef-b32c-5522bfced21b','Esta aplicación es exclusiva para los reclutadores (empleadores).
 El inicio de sesión para los solicitantes está en la página web softgarden.','2020-06-10 16:17:39.081','2020-06-10 16:17:39.081','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','b60576b9-9947-406f-afd3-13dd6003a6af')
-,('0df10fb8-f68b-4060-ab43-a04de97062dc','https://www.softgarden.io/?utm_medium=app&utm_source=iOS','2020-06-10 16:17:39.089','2020-06-10 16:17:39.089','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','dcf97d39-bab3-4c95-9ce2-2e23a9d2d13a')
-,('51972db7-7c6e-4ea3-bec1-0e3b5a025a66','https://network.softgarden.io/#/landing?utm_medium=app&utm_source=iOS','2020-06-10 16:17:39.098','2020-06-10 16:17:39.098','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','10db4375-13f5-44f9-a3a0-8da8cc5cf5e4')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('4810e6dc-a9c6-4596-ad9c-a872a3d450ef','https://app.softgarden.io/just-hire/lostpassword?utm_medium=app&utm_source=iOS','2020-06-10 16:17:39.107','2020-06-10 16:17:39.107','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','a93f00ef-b0c6-4ea7-9619-56601b529f7c')
+('0df10fb8-f68b-4060-ab43-a04de97062dc','https://www.softgarden.io/?utm_medium=app&utm_source=iOS','2020-06-10 16:17:39.089','2020-06-10 16:17:39.089','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','dcf97d39-bab3-4c95-9ce2-2e23a9d2d13a')
+,('51972db7-7c6e-4ea3-bec1-0e3b5a025a66','https://network.softgarden.io/#/landing?utm_medium=app&utm_source=iOS','2020-06-10 16:17:39.098','2020-06-10 16:17:39.098','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','10db4375-13f5-44f9-a3a0-8da8cc5cf5e4')
+,('4810e6dc-a9c6-4596-ad9c-a872a3d450ef','https://app.softgarden.io/just-hire/lostpassword?utm_medium=app&utm_source=iOS','2020-06-10 16:17:39.107','2020-06-10 16:17:39.107','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','a93f00ef-b0c6-4ea7-9619-56601b529f7c')
+,('9f839836-8320-4885-bc8d-34f9756fc8de','Satisfactorio','2020-06-10 16:17:39.756','2020-06-10 16:17:39.756','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','0e329f70-8bd6-4dbd-ad23-293d48061398')
 ,('413657c6-23d9-4a42-9909-6f31c38d3d91','https://www.softgarden.io/?utm_medium=app&utm_source=Android','2020-06-10 16:17:39.115','2020-06-10 16:17:39.115','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','ab74829d-26f0-4f3b-ae79-c90f42dc8f77')
 ,('7c0d1bac-ea03-453b-8f7d-c02ad88bfb22','https://network.softgarden.io/#/landing?utm_medium=app&utm_source=Android','2020-06-10 16:17:39.123','2020-06-10 16:17:39.123','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','4e5a1dbe-89fa-4293-b0d0-4dcd38d230af')
 ,('64730974-9479-42d7-8823-fb593e0b0655','https://app.softgarden.io/just-hire/lostpassword?utm_medium=app&utm_source=Android','2020-06-10 16:17:39.132','2020-06-10 16:17:39.132','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','9de3b35b-9678-4eb9-b571-29aa6df700b7')
 ,('35c4fd47-e17c-46bc-9c59-8718bb711c69','Descargar','2020-06-10 16:17:39.144','2020-06-10 16:17:39.144','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','0a8774a5-721b-4bd2-96ff-6b18ced73781')
 ,('fce038c6-674c-4549-8e32-6c1ff54a56a7','Al aceptar, descargará este archivo a su dispositivo.','2020-06-10 16:17:39.155','2020-06-10 16:17:39.155','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','aa026bb7-6c24-4904-9ffb-47f74d10e6d1')
 ,('bb2ec6a1-104b-416f-a560-d5823565be10','Sí','2020-06-10 16:17:39.164','2020-06-10 16:17:39.164','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','d92869c0-3473-4d7d-8e06-aa821fe5ca8c')
-,('6f0e620e-dda2-4255-af9a-11f7ffdc33e2','Cancelar','2020-06-10 16:17:39.174','2020-06-10 16:17:39.174','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','17c0a33e-317c-4b9c-9f42-97fd13c5465b')
-,('47fbb369-8a8e-4f58-9ec8-9ce646df83d0','Equipo de reclutamiento','2020-06-10 16:17:39.188','2020-06-10 16:17:39.188','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','8903d4b2-a941-4285-a73a-8ca59435d257')
-,('f5a9ccd0-a985-4a52-95f3-603394ff6f50','Papelera de rechazos','2020-06-10 16:17:39.203','2020-06-10 16:17:39.203','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','0a8774a5-721b-4bd2-96ff-6b18ced73781')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('4118f45a-7a36-4aef-910f-be21eb17f706','Búsqueda por nombres, títulos o lugares','2020-06-10 16:17:39.211','2020-06-10 16:17:39.211','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','2d84282c-de52-492a-a55b-469d769e12ae')
+('6f0e620e-dda2-4255-af9a-11f7ffdc33e2','Cancelar','2020-06-10 16:17:39.174','2020-06-10 16:17:39.174','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','17c0a33e-317c-4b9c-9f42-97fd13c5465b')
+,('47fbb369-8a8e-4f58-9ec8-9ce646df83d0','Equipo de reclutamiento','2020-06-10 16:17:39.188','2020-06-10 16:17:39.188','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','8903d4b2-a941-4285-a73a-8ca59435d257')
+,('f5a9ccd0-a985-4a52-95f3-603394ff6f50','Papelera de rechazos','2020-06-10 16:17:39.203','2020-06-10 16:17:39.203','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','0a8774a5-721b-4bd2-96ff-6b18ced73781')
+,('4118f45a-7a36-4aef-910f-be21eb17f706','Búsqueda por nombres, títulos o lugares','2020-06-10 16:17:39.211','2020-06-10 16:17:39.211','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','2d84282c-de52-492a-a55b-469d769e12ae')
 ,('f08a2019-c250-436a-9cd6-3bda9ea3fb4f','Papelera de rechazos','2020-06-10 16:17:39.220','2020-06-10 16:17:39.220','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','13271e8b-fce9-4a07-b2eb-59a9a4c80bfc')
 ,('56a20066-1467-412f-8b95-1e1962d8b032','Segunda oportunidad','2020-06-10 16:17:39.228','2020-06-10 16:17:39.228','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','70ef40e2-8719-4ec3-b362-82a2855f5310')
 ,('ec9e7e8b-6c41-4b28-81c5-7e8caab49e30','No hay candidatos en la papelera de rechazados.','2020-06-10 16:17:39.238','2020-06-10 16:17:39.238','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','35bb7f80-c09c-4686-b631-77a013ea0e75')
 ,('70a94278-f99a-45b5-89d4-2e6b3322edfc','Identificador de la empresa','2020-06-10 16:17:39.250','2020-06-10 16:17:39.250','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','945fa727-9c57-4236-8270-231ea7eaca55')
 ,('83cd2a24-5047-4d50-b137-cea321fcee62','La aplicación para los equipos de reclutamiento','2020-06-10 16:17:39.260','2020-06-10 16:17:39.260','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','2fb284a8-5e7d-4a4d-ba4c-800c9495c21f')
 ,('ca464edc-1fd9-4460-b2ec-1dc6dc266cae','Iniciar sesión','2020-06-10 16:17:39.268','2020-06-10 16:17:39.268','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','b66addce-ff00-4f58-91dd-7ac3a80f7ab5')
-,('106776aa-3c6c-43b2-9421-fbe75188ed7b','Ok','2020-06-10 16:17:39.277','2020-06-10 16:17:39.277','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','896f055c-c19b-468e-8da7-a4ce848f03c5')
-,('e5763d4d-e335-4faa-8152-4807d34c816c','Error al iniciar sesión','2020-06-10 16:17:39.288','2020-06-10 16:17:39.288','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','c5cc9c2b-3f08-47c8-ba5a-d9115f0d20b6')
-,('1f3d19da-79d6-42e8-b64e-32c5e6579d10','Usted no puede estar conectado porque parece que no está conectado a internet','2020-06-10 16:17:39.296','2020-06-10 16:17:39.296','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','dc1467be-1a8d-43d6-991f-0e0fca314b0d')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('ef649314-b910-462a-9965-52ada1620c78','Inicie sesión sin SSO','2020-06-10 16:17:39.306','2020-06-10 16:17:39.306','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','90e2299a-b6f1-4a00-8596-467129929542')
+('106776aa-3c6c-43b2-9421-fbe75188ed7b','Ok','2020-06-10 16:17:39.277','2020-06-10 16:17:39.277','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','896f055c-c19b-468e-8da7-a4ce848f03c5')
+,('e5763d4d-e335-4faa-8152-4807d34c816c','Error al iniciar sesión','2020-06-10 16:17:39.288','2020-06-10 16:17:39.288','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','c5cc9c2b-3f08-47c8-ba5a-d9115f0d20b6')
+,('1f3d19da-79d6-42e8-b64e-32c5e6579d10','Usted no puede estar conectado porque parece que no está conectado a internet','2020-06-10 16:17:39.296','2020-06-10 16:17:39.296','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','dc1467be-1a8d-43d6-991f-0e0fca314b0d')
+,('ef649314-b910-462a-9965-52ada1620c78','Inicie sesión sin SSO','2020-06-10 16:17:39.306','2020-06-10 16:17:39.306','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','90e2299a-b6f1-4a00-8596-467129929542')
 ,('8a22a51b-bea4-40c7-98c9-e479f673944d','Iniciar sesión SSO','2020-06-10 16:17:39.314','2020-06-10 16:17:39.314','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','e5d0ce90-696c-4c02-b617-b0751d6c5521')
 ,('5e51f9c3-ee68-484c-93ee-9866b611747f','Ajustes','2020-06-10 16:17:39.325','2020-06-10 16:17:39.325','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','0a8774a5-721b-4bd2-96ff-6b18ced73781')
 ,('f044de85-1830-4e32-b44a-8870494256fc','SEGURIDAD','2020-06-10 16:17:39.334','2020-06-10 16:17:39.334','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','e5891856-53b9-41fe-b03d-697279ffce5c')
 ,('c5b45e38-dd6f-4b02-80c6-68662696bb2f','NOTIFICACIONES','2020-06-10 16:17:39.343','2020-06-10 16:17:39.343','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','f1d5d677-6178-432e-8ae8-f46c93da4802')
 ,('32b7590f-be2a-4419-8701-ed4b7303b6ad','GENERAL','2020-06-10 16:17:39.351','2020-06-10 16:17:39.351','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','d0f10494-6484-4c08-be45-ebefc0f67697')
 ,('ae1efd3b-44ef-4fef-999a-e31c1f87eedc','Mostrar los números de los puestos de trabajo','2020-06-10 16:17:39.359','2020-06-10 16:17:39.359','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','b95d305d-b4bf-4081-a44c-5bc70b611b1d')
-,('ae712550-df18-4a0f-bdfb-771331c5abea','Mostrar el recorrido del producto','2020-06-10 16:17:39.366','2020-06-10 16:17:39.366','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','12832b9b-bb02-4df8-a588-b2f8431f9188')
-,('7574f5f3-16d1-4846-8839-df791675285c','Cambiar código de acceso','2020-06-10 16:17:39.376','2020-06-10 16:17:39.376','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','b6b66c61-de8a-41a7-8670-ab5acd8bb45f')
-,('4d7974f4-400f-4e32-bb4b-c369e396128e','Bloqueo automático','2020-06-10 16:17:39.384','2020-06-10 16:17:39.384','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','7dc2b23a-4e7d-422a-9c74-28a9664939d2')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('23732919-a939-4540-9468-3762699d9073','Face ID / Touch ID','2020-06-10 16:17:39.393','2020-06-10 16:17:39.393','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','443ab63d-01ca-4171-9d3b-ec1517a62394')
+('ae712550-df18-4a0f-bdfb-771331c5abea','Mostrar el recorrido del producto','2020-06-10 16:17:39.366','2020-06-10 16:17:39.366','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','12832b9b-bb02-4df8-a588-b2f8431f9188')
+,('7574f5f3-16d1-4846-8839-df791675285c','Cambiar código de acceso','2020-06-10 16:17:39.376','2020-06-10 16:17:39.376','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','b6b66c61-de8a-41a7-8670-ab5acd8bb45f')
+,('4d7974f4-400f-4e32-bb4b-c369e396128e','Bloqueo automático','2020-06-10 16:17:39.384','2020-06-10 16:17:39.384','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','7dc2b23a-4e7d-422a-9c74-28a9664939d2')
+,('23732919-a939-4540-9468-3762699d9073','Face ID / Touch ID','2020-06-10 16:17:39.393','2020-06-10 16:17:39.393','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','443ab63d-01ca-4171-9d3b-ec1517a62394')
 ,('94669a40-3b8a-4a7a-9bab-ab2fdee685dd','Nuevas solicitudes para votar','2020-06-10 16:17:39.401','2020-06-10 16:17:39.401','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','83f78b19-8f52-4356-9bee-e58b62906f76')
 ,('ddb308b2-a358-43e2-8091-cf314b1601c8','Nueva aplicación para calificar','2020-06-10 16:17:39.410','2020-06-10 16:17:39.410','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','e53bb57b-4e70-492a-b2f6-6031eff34c20')
 ,('d7819d3f-1a55-4865-b2e1-c9e4f8557833','Nuevos comentarios','2020-06-10 16:17:39.424','2020-06-10 16:17:39.424','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','ec1f9707-dbac-4dbd-959b-146677c8d7d5')
 ,('1829a447-dc92-4081-8c0b-244f8a90a238','Nuevas actualizaciones de estado','2020-06-10 16:17:39.431','2020-06-10 16:17:39.431','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','2d9d282e-6867-42a3-b02c-26aec3320209')
 ,('fbeb358e-225f-4f3e-9830-58d5511dfb69','Nuevas menciones','2020-06-10 16:17:39.439','2020-06-10 16:17:39.439','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','0d7c33c8-2676-4c50-90f5-b69b32b36fe9')
 ,('9a769b6b-ac93-4582-9743-223e04fbb848','Aviso legal','2020-06-10 16:17:39.447','2020-06-10 16:17:39.447','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','188aab68-8bfa-46f0-bed8-77463b896869')
-,('1e7f041b-36a2-4d35-993c-e1f3542be9b5','Política de Privacidad','2020-06-10 16:17:39.455','2020-06-10 16:17:39.455','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','31a677e8-8b95-4829-bae2-58a004c55028')
-,('b47a6a72-fd3f-4a8d-9944-8e8285f9166f','Condiciones de uso','2020-06-10 16:17:39.464','2020-06-10 16:17:39.464','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','6b321c2a-fcf5-4194-b2ce-082da4ba0a5f')
-,('042f0e77-1169-4f17-9236-3183a3525792','Licencias','2020-06-10 16:17:39.473','2020-06-10 16:17:39.473','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','8d1fe0a4-58a9-4026-8c43-f569b8af87dd')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('5bd2e0f7-6a71-49c0-8ee1-ed7f952c20f1','Cerrar sesión','2020-06-10 16:17:39.481','2020-06-10 16:17:39.481','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','b6603dd5-8c2e-4866-be99-76bfe58d3610')
+('1e7f041b-36a2-4d35-993c-e1f3542be9b5','Política de Privacidad','2020-06-10 16:17:39.455','2020-06-10 16:17:39.455','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','31a677e8-8b95-4829-bae2-58a004c55028')
+,('b47a6a72-fd3f-4a8d-9944-8e8285f9166f','Condiciones de uso','2020-06-10 16:17:39.464','2020-06-10 16:17:39.464','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','6b321c2a-fcf5-4194-b2ce-082da4ba0a5f')
+,('042f0e77-1169-4f17-9236-3183a3525792','Licencias','2020-06-10 16:17:39.473','2020-06-10 16:17:39.473','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','8d1fe0a4-58a9-4026-8c43-f569b8af87dd')
+,('5bd2e0f7-6a71-49c0-8ee1-ed7f952c20f1','Cerrar sesión','2020-06-10 16:17:39.481','2020-06-10 16:17:39.481','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','b6603dd5-8c2e-4866-be99-76bfe58d3610')
 ,('0acc1495-a27a-4f2b-8e6c-35e4aceed7e2','Idioma','2020-06-10 16:17:39.490','2020-06-10 16:17:39.490','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','a0925053-ddfb-45be-975c-70ad961690d7')
 ,('366ad40e-62a2-4f89-8f52-d15056d591a9','Sobre nosotros','2020-06-10 16:17:39.497','2020-06-10 16:17:39.497','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','a2ed90db-37ac-4d62-89d2-0e2e59fcdd95')
 ,('6054ee62-b7de-421c-a9b3-387ce2ce7a80','https://www.softgarden.io/company/imprint/','2020-06-10 16:17:39.506','2020-06-10 16:17:39.506','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','cd927ee7-c197-4ece-9671-64cb61b4a39b')
 ,('f931d857-e98b-4fb6-8386-f85bdb6e73c1','https://www.softgarden.io/company/data-protection-notice-for-softgarden-products/','2020-06-10 16:17:39.515','2020-06-10 16:17:39.515','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','d3af4e74-833d-404f-90bb-39c57b6132b8')
 ,('fe79dcbc-0abb-4696-93b1-1a86b684a44c','https://www.softgarden.io/company/terms/','2020-06-10 16:17:39.526','2020-06-10 16:17:39.526','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','171bf735-8e6a-4b43-b255-4bb73bae6d07')
 ,('41ae3c08-81f6-4fd2-92fc-493e6ec7176c','Las bibliotecas que usamos','2020-06-10 16:17:39.535','2020-06-10 16:17:39.535','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','e59f13f4-0229-426e-9020-b4519f3d379c')
-,('7e315a40-8c23-44be-aa23-91a06a0a3616','La siguiente lista de software de terceros puede estar contenida en partes de la aplicación softgarden. Agradecemos a la comunidad de código abierto sus contribuciones.','2020-06-10 16:17:39.545','2020-06-10 16:17:39.545','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','33a36fed-3438-4075-8ced-4e4fffd691b5')
-,('5a8d6591-3090-4fc9-b6a1-27d31f3fc9f9','No se puede modificar el estado de notificación siguiente:','2020-06-10 16:17:39.554','2020-06-10 16:17:39.554','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','24e86fad-c8fc-489b-ba97-043d7fbc6672')
-,('85ec2249-005b-4e5c-8208-ef6418eb3907','Próxima entrevista','2020-06-10 16:17:39.565','2020-06-10 16:17:39.565','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','7cc204d6-ed61-4bfa-961a-e6e568280444')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('5488037f-9789-4e04-8738-a4450c1e70a1','Revisar el estado de la solicitud','2020-06-10 16:17:39.575','2020-06-10 16:17:39.575','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','84a1f4e9-e20a-47ea-8365-7ee25a8362f3')
+('7e315a40-8c23-44be-aa23-91a06a0a3616','La siguiente lista de software de terceros puede estar contenida en partes de la aplicación softgarden. Agradecemos a la comunidad de código abierto sus contribuciones.','2020-06-10 16:17:39.545','2020-06-10 16:17:39.545','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','33a36fed-3438-4075-8ced-4e4fffd691b5')
+,('5a8d6591-3090-4fc9-b6a1-27d31f3fc9f9','No se puede modificar el estado de notificación siguiente:','2020-06-10 16:17:39.554','2020-06-10 16:17:39.554','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','24e86fad-c8fc-489b-ba97-043d7fbc6672')
+,('85ec2249-005b-4e5c-8208-ef6418eb3907','Próxima entrevista','2020-06-10 16:17:39.565','2020-06-10 16:17:39.565','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','7cc204d6-ed61-4bfa-961a-e6e568280444')
+,('5488037f-9789-4e04-8738-a4450c1e70a1','Revisar el estado de la solicitud','2020-06-10 16:17:39.575','2020-06-10 16:17:39.575','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','84a1f4e9-e20a-47ea-8365-7ee25a8362f3')
 ,('0bef8030-e830-4fbb-be3f-ceeb6ad01f53','Confirmar entrevista','2020-06-10 16:17:39.584','2020-06-10 16:17:39.584','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','1fdcac0f-2287-4b4c-ac48-2ba7cc66517a')
 ,('d87acdea-8fb6-4102-b012-415c256bdf20','El correo del nuevo solicitante','2020-06-10 16:17:39.594','2020-06-10 16:17:39.594','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','fcb918bb-ca11-4efa-b0e3-7e3b211b0f20')
 ,('a79d020e-be2e-474f-99fd-88fed336be72','Calificaciones del equipo','2020-06-10 16:17:39.608','2020-06-10 16:17:39.608','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','058cbe78-e18c-4dac-b684-9621d1a5d80b')
 ,('1d73603a-835f-4aab-ae96-b611277117d6','BREVE DESCRIPCIÓN','2020-06-10 16:17:39.616','2020-06-10 16:17:39.616','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','c8b088f7-f8c3-4236-b1ea-b681a5d5dbc0')
 ,('76e754ee-9ead-41b5-873c-265c3aa8c0cc','VALORACIONES','2020-06-10 16:17:39.624','2020-06-10 16:17:39.624','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','7f50f201-2ed8-4052-9948-bf32c12f5723')
 ,('d6070253-1ea7-4ccf-b57e-79e3cfd52c89','Su voto','2020-06-10 16:17:39.632','2020-06-10 16:17:39.632','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','d0cd184b-2507-49f0-a071-859d9f24ddbd')
-,('d533f87c-8a77-4634-8256-725366152728','Su último comentario','2020-06-10 16:17:39.642','2020-06-10 16:17:39.642','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','1add9ecf-a8b8-4b65-94a9-e97f59daed1a')
-,('15b26b0b-2232-496d-a217-875e1b2bcd11','Sin voto con pulgar','2020-06-10 16:17:39.651','2020-06-10 16:17:39.651','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','804afffc-ad53-42b7-8096-181969082ae7')
-,('a1a9da87-6d03-4f49-97e8-0d139437ec53','Editar','2020-06-10 16:17:39.662','2020-06-10 16:17:39.662','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','d1be4854-8db7-4081-8c25-25465d36120b')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('3b94488b-c8b7-41f5-9358-c4468dd153eb','Contrataría','2020-06-10 16:17:39.674','2020-06-10 16:17:39.674','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','09ae5c0e-7b0b-4585-a74b-d097b8b13a32')
+('d533f87c-8a77-4634-8256-725366152728','Su último comentario','2020-06-10 16:17:39.642','2020-06-10 16:17:39.642','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','1add9ecf-a8b8-4b65-94a9-e97f59daed1a')
+,('15b26b0b-2232-496d-a217-875e1b2bcd11','Sin voto con pulgar','2020-06-10 16:17:39.651','2020-06-10 16:17:39.651','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','804afffc-ad53-42b7-8096-181969082ae7')
+,('a1a9da87-6d03-4f49-97e8-0d139437ec53','Editar','2020-06-10 16:17:39.662','2020-06-10 16:17:39.662','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','d1be4854-8db7-4081-8c25-25465d36120b')
+,('3b94488b-c8b7-41f5-9358-c4468dd153eb','Contrataría','2020-06-10 16:17:39.674','2020-06-10 16:17:39.674','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','09ae5c0e-7b0b-4585-a74b-d097b8b13a32')
 ,('9bfefab8-471b-4ad2-bb19-e491c3d49ffb','No contrataría','2020-06-10 16:17:39.683','2020-06-10 16:17:39.683','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','26005f64-4667-41c6-8a6a-ee77889eec1e')
 ,('64cb829b-6072-44b0-940a-15cc070c15c6','Indeciso','2020-06-10 16:17:39.692','2020-06-10 16:17:39.692','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','8588c8bf-0632-4746-b77e-8563ed21d827')
 ,('2085d6bc-4d59-4836-bfd3-bcca0d508b2d','Criterios de puntuación','2020-06-10 16:17:39.707','2020-06-10 16:17:39.707','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','b08f1ef7-4c39-4a44-b030-8beb11b1823d')
 ,('14a12053-b201-4cd2-9718-d352becbf7e1','No evaluado','2020-06-10 16:17:39.716','2020-06-10 16:17:39.716','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','f253ea97-bbf7-490b-94e4-112a55a3d521')
 ,('70f88fb6-aa48-4241-b692-8cb1781f6789','Muy bueno','2020-06-10 16:17:39.736','2020-06-10 16:17:39.736','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','b40e6bec-4cbc-4e37-b002-4a290ff77842')
-,('136749a9-88ca-41a4-9c3e-ebf87004c516','Bueno','2020-06-10 16:17:39.746','2020-06-10 16:17:39.746','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','a7e4746d-3ac8-46d2-9b34-c8f5cd642fe8')
-,('9f839836-8320-4885-bc8d-34f9756fc8de','Satisfactorio','2020-06-10 16:17:39.756','2020-06-10 16:17:39.756','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','0e329f70-8bd6-4dbd-ad23-293d48061398')
 ,('8c751cd7-5f79-4706-8a53-fccf9825c837','Suficiente','2020-06-10 16:17:39.765','2020-06-10 16:17:39.765','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','3be053ff-e609-434f-8e06-f8e4f9fabb85')
-,('7ed073db-f834-4513-be68-7d4136f89597','Inadecuado','2020-06-10 16:17:39.776','2020-06-10 16:17:39.776','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','5e0652ed-c946-4596-bdc9-1ed9787a311b')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('adc19ff8-ebda-4241-851d-dffd51db36a5','Insuficiente','2020-06-10 16:17:39.785','2020-06-10 16:17:39.785','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','e1d3ffd9-7c26-478b-8a75-0da0ef7919ca')
+('7ed073db-f834-4513-be68-7d4136f89597','Inadecuado','2020-06-10 16:17:39.776','2020-06-10 16:17:39.776','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','5e0652ed-c946-4596-bdc9-1ed9787a311b')
+,('adc19ff8-ebda-4241-851d-dffd51db36a5','Insuficiente','2020-06-10 16:17:39.785','2020-06-10 16:17:39.785','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','e1d3ffd9-7c26-478b-8a75-0da0ef7919ca')
 ,('89b31c7e-c049-4b5f-9434-10ef1402e2bd','1 Calificación','2020-06-10 16:17:39.796','2020-06-10 16:17:39.796','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','1df1c9f3-dd6c-4ab1-a57f-cc8de0a317fe')
 ,('db0bac7b-7d86-4093-9549-1eeca00031e2','{{count}} Calificaciones','2020-06-10 16:17:39.809','2020-06-10 16:17:39.809','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','6c585adf-7914-4a21-9ff7-7731126d787a')
 ,('40a15ebe-66e5-42ea-bb3e-29e02949cbb6','Contrataría a este candidato','2020-06-10 16:17:39.818','2020-06-10 16:17:39.818','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','18b5d460-6afe-41c9-b65e-7ca313b181af')
@@ -3052,10 +3226,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('3d9ba735-0c24-4dbe-853a-0b37769baf85','Votación con pulgar','2020-06-10 16:17:39.851','2020-06-10 16:17:39.851','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','599b2771-e6ee-4302-9edd-d2c71566239b')
 ,('642ff731-669c-467b-8834-7bc05f163403','Parece que por ahora no tiene Tareas activas.','2020-06-10 16:17:39.861','2020-06-10 16:17:39.861','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','0d171e37-28ce-46cf-bcee-1f85bb33a01e')
 ,('730e8ff5-987f-4c80-9f2c-3226037b71aa','Ir a la lista de puestos de trabajo.','2020-06-10 16:17:39.871','2020-06-10 16:17:39.871','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','045b19aa-0fab-4662-afad-56db73acccf5')
-,('fd51e8d6-033a-4efa-ab36-971b4f7d4d7a','¿Invitar a la entrevista?','2020-06-10 16:17:39.880','2020-06-10 16:17:39.880','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','236abe16-e4f6-4f2d-b871-87ff979a9808')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('595c6898-23aa-4ad1-916d-b4395c611044','Calificar una solicitud','2020-06-10 16:17:39.890','2020-06-10 16:17:39.890','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','209c4edd-3876-413d-a780-dafa27fd0a86')
+('fd51e8d6-033a-4efa-ab36-971b4f7d4d7a','¿Invitar a la entrevista?','2020-06-10 16:17:39.880','2020-06-10 16:17:39.880','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','236abe16-e4f6-4f2d-b871-87ff979a9808')
+,('595c6898-23aa-4ad1-916d-b4395c611044','Calificar una solicitud','2020-06-10 16:17:39.890','2020-06-10 16:17:39.890','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','209c4edd-3876-413d-a780-dafa27fd0a86')
 ,('3f0f3be0-4d33-4cc6-bca9-81bc3c9e9002','Próxima entrevista','2020-06-10 16:17:39.899','2020-06-10 16:17:39.899','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','72050ea4-d10c-43cf-9f39-a420714b6c37')
 ,('b151c764-bd6b-463b-9967-2002bf52af26','Próxima entrevista','2020-06-10 16:17:39.909','2020-06-10 16:17:39.909','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','7c3346b6-aa2b-47bb-83b0-3a15ba4fa721')
 ,('fd04936f-4004-4a2b-ab1f-d3de4465e271','Pendiente de voto con pulgar','2020-06-10 16:17:39.918','2020-06-10 16:17:39.918','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','16895f21-62c0-4d13-afbb-22a2d34a6e2e')
@@ -3064,10 +3238,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('8babf51d-e119-483a-baa5-4d2be63a2455','Confirmar entrevista','2020-06-10 16:17:39.954','2020-06-10 16:17:39.954','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','283ceb3a-c29a-41ae-8a46-fa893448a16a')
 ,('ce3268ff-57fd-45c9-89bc-fe078b77714f','Revisar la oferta de trabajo','2020-06-10 16:17:39.965','2020-06-10 16:17:39.965','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','41746333-c895-4e1f-9edb-023fb4b6209d')
 ,('1231143e-ec75-4905-88c4-2d3f67186ec8','Una oferta de empleo ha expirado','2020-06-10 16:17:39.975','2020-06-10 16:17:39.975','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','d14ef13e-cb23-4547-a464-148215bb2866')
-,('16be7b1a-86b2-4af0-8458-210300bc89a0','¡No se han activado los tipos!','2020-06-10 16:17:39.987','2020-06-10 16:17:39.987','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','583b437f-e805-498e-babd-b753ad2e7cd7')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('ec118e23-0c65-49a0-8596-505ef365a765','¡Tu opinión es necesario!','2020-06-10 16:17:39.997','2020-06-10 16:17:39.997','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','08531c41-fa14-4719-99ab-318c05963114')
+('16be7b1a-86b2-4af0-8458-210300bc89a0','¡No se han activado los tipos!','2020-06-10 16:17:39.987','2020-06-10 16:17:39.987','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','583b437f-e805-498e-babd-b753ad2e7cd7')
+,('ec118e23-0c65-49a0-8596-505ef365a765','¡Tu opinión es necesario!','2020-06-10 16:17:39.997','2020-06-10 16:17:39.997','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','08531c41-fa14-4719-99ab-318c05963114')
 ,('6a5474bf-6d20-4e67-bf90-12a16f584e01','Por favor toma un momento y danos tu feedback en una corta encuesta.','2020-06-10 16:17:40.007','2020-06-10 16:17:40.007','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','a24a8627-5c3a-4d59-9624-520d3c10fd91')
 ,('36281123-29c7-4488-9f7a-242ce3cc7962','Empieza la encuesta','2020-06-10 16:17:40.018','2020-06-10 16:17:40.018','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','8fccf0b6-b504-40f7-bb35-f7ec94556038')
 ,('76277739-a5f5-4c7f-bb2f-9e9bd84776ca','No ahora','2020-06-10 16:17:40.030','2020-06-10 16:17:40.030','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','ecdb2c54-a5c4-4d97-9e09-d8b07926a38f')
@@ -3076,10 +3250,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('67d2f6fe-ba25-4848-87a8-eaf25c5e0dec','Lo más reciente en la parte superior','2020-06-10 16:17:40.063','2020-06-10 16:17:40.063','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','7f54009b-7f11-426d-a8d7-fad3cdb2ff79')
 ,('fc707986-02e6-4458-8d2e-5a703626d061','Lo más antiguo en la parte superior','2020-06-10 16:17:40.075','2020-06-10 16:17:40.075','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','395c815f-fbd4-40fc-b2fd-22597ac2d433')
 ,('3e34fa98-4920-448b-87c1-09db4483fbed','Aviso legal','2020-06-10 16:17:40.089','2020-06-10 16:17:40.089','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','188aab68-8bfa-46f0-bed8-77463b896869')
-,('c48533c3-85ad-47ba-9ce2-429fd4bf4c0f','Política de privacidad','2020-06-10 16:17:40.099','2020-06-10 16:17:40.099','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','31a677e8-8b95-4829-bae2-58a004c55028')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('1522dd3b-1575-4d8c-9991-5c5351b8fca3','Términos de Uso','2020-06-10 16:17:40.110','2020-06-10 16:17:40.110','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','6b321c2a-fcf5-4194-b2ce-082da4ba0a5f')
+('c48533c3-85ad-47ba-9ce2-429fd4bf4c0f','Política de privacidad','2020-06-10 16:17:40.099','2020-06-10 16:17:40.099','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','31a677e8-8b95-4829-bae2-58a004c55028')
+,('1522dd3b-1575-4d8c-9991-5c5351b8fca3','Términos de Uso','2020-06-10 16:17:40.110','2020-06-10 16:17:40.110','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','6b321c2a-fcf5-4194-b2ce-082da4ba0a5f')
 ,('a197e217-edf2-4ed2-8c34-73b54700761e','Licencias','2020-06-10 16:17:40.122','2020-06-10 16:17:40.122','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','8d1fe0a4-58a9-4026-8c43-f569b8af87dd')
 ,('2c36bdb6-3b94-4792-9040-72dca65cb109','Votos','2020-06-10 16:17:40.134','2020-06-10 16:17:40.134','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','0a8774a5-721b-4bd2-96ff-6b18ced73781')
 ,('ff0bd267-c9af-4257-aebc-399793db3429','Aún no ha votado','2020-06-10 16:17:40.147','2020-06-10 16:17:40.147','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','083494ff-dd4a-42b1-a71d-726c76b6f8a2')
@@ -3091,10 +3265,10 @@ de rechazos','2020-06-10 16:17:40.182','2020-06-10 16:17:40.182','a4aaf22b-6090-
 ,('4aacbfa5-f808-49be-9df9-cccfd40c83c6','Segunda
 oportunidad','2020-06-10 16:17:40.192','2020-06-10 16:17:40.192','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','4b6eb31a-2080-417f-9187-92f9937adb7f')
 ,('512140bd-065d-48d9-a23c-58b983aff46d','Más','2020-06-10 16:17:40.206','2020-06-10 16:17:40.206','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','d5447ac5-7736-48fe-a201-68d00a947659')
-,('3dca8662-0b8b-4fd3-8771-3474e1266603','Oh! algo estuvo mal','2020-06-10 16:17:40.221','2020-06-10 16:17:40.221','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','0a8774a5-721b-4bd2-96ff-6b18ced73781')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('cf97504a-9fe5-4eb1-84c7-3c4b9d051b04','Prueba de nuevo','2020-06-10 16:17:40.232','2020-06-10 16:17:40.232','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','a191caaf-f72a-4336-8a07-e4e24104139c')
+('3dca8662-0b8b-4fd3-8771-3474e1266603','Oh! algo estuvo mal','2020-06-10 16:17:40.221','2020-06-10 16:17:40.221','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','0a8774a5-721b-4bd2-96ff-6b18ced73781')
+,('cf97504a-9fe5-4eb1-84c7-3c4b9d051b04','Prueba de nuevo','2020-06-10 16:17:40.232','2020-06-10 16:17:40.232','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','a191caaf-f72a-4336-8a07-e4e24104139c')
 ,('511493f5-e7dc-4209-ad37-a7d4d69feba1','Cerrar','2020-06-10 16:17:40.241','2020-06-10 16:17:40.241','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','b59fb522-1808-4b39-ab88-ad2a0e9d0268')
 ,('ba5b9177-1a4f-4505-b01f-583f6ca85bfd','Filtros','2020-06-10 16:17:40.254','2020-06-10 16:17:40.254','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','417d67e1-cb0e-4dd1-a920-1fd988b41400')
 ,('d1fdbdf6-85c6-48dc-a3c5-9df04f49357e','Mostrar 1 resultado','2020-06-10 16:17:40.298','2020-06-10 16:17:40.298','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','42df9a67-c4fe-4d02-8f27-03d0e657228d')
@@ -3103,10 +3277,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('23a59789-374f-4bbf-ba8e-88cee831eb7b','No hay resultados','2020-06-10 16:17:40.332','2020-06-10 16:17:40.332','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','ca64cfba-f8cd-4611-83f8-f15315f2f745')
 ,('2f49696e-a160-4548-af06-cf2688a6e02d','{{count}} resultados','2020-06-10 16:17:40.343','2020-06-10 16:17:40.343','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','9a462ce1-452e-47af-902d-b110a86ffaa0')
 ,('d39e17db-59e9-4d72-9fc4-b3c802df1956','No se ha encontrado ningún resultado','2020-06-10 16:17:40.364','2020-06-10 16:17:40.364','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','8be1ba14-7795-4a55-a1c3-1d9ef4b2ddea')
-,('21cb7de3-dcac-492b-a2e8-7a613bb4777f','Limpiar todo','2020-06-10 16:17:40.373','2020-06-10 16:17:40.373','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','f0839b8b-2e4e-4b43-888b-faf4a49e491e')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('cb41ed24-ae35-4d58-a46e-26efc2acdb21','Actualmente estás desconectado','2020-06-10 16:17:40.386','2020-06-10 16:17:40.386','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','0a8774a5-721b-4bd2-96ff-6b18ced73781')
+('21cb7de3-dcac-492b-a2e8-7a613bb4777f','Limpiar todo','2020-06-10 16:17:40.373','2020-06-10 16:17:40.373','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','f0839b8b-2e4e-4b43-888b-faf4a49e491e')
+,('cb41ed24-ae35-4d58-a46e-26efc2acdb21','Actualmente estás desconectado','2020-06-10 16:17:40.386','2020-06-10 16:17:40.386','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','0a8774a5-721b-4bd2-96ff-6b18ced73781')
 ,('15b95602-719c-4f8e-a2fd-3bc214a26689','Verifica tu conexión a internet e inténtalo nuevamente.','2020-06-10 16:17:40.397','2020-06-10 16:17:40.397','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','6b6f8ab5-5760-4319-a8a3-d7388aa70270')
 ,('4e70ea99-29e9-41e3-8a09-f7ea201db49b','Nuevo','2020-06-10 16:17:40.411','2020-06-10 16:17:40.411','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','57b4b4fc-d701-4d1f-8a82-8ae48b8f3cae')
 ,('e6032025-6160-457d-94aa-2b42b5e6e571','Lista de seleccionados','2020-06-10 16:17:40.419','2020-06-10 16:17:40.419','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','85df6841-7b7d-428a-8227-d3cef23ae588')
@@ -3115,10 +3289,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('b2285440-1e0b-46c4-a1b1-8e2bdf34b6fc','Incorporado','2020-06-10 16:17:40.446','2020-06-10 16:17:40.446','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','5253c260-453f-4298-9437-31872a3ebe2a')
 ,('62fe2d64-f1f9-43e9-8656-c53b699bb884','Contratado','2020-06-10 16:17:40.453','2020-06-10 16:17:40.453','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','41ce1cb3-5ad4-4e83-bb92-6d0b0a7d4601')
 ,('9eb0a242-283e-4310-98cc-12cac8d84da5','Rechazado','2020-06-10 16:17:40.463','2020-06-10 16:17:40.463','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','bd45489c-8b1a-4a1d-afa8-1a768844be9a')
-,('633172b6-562e-4f6f-99fe-e57d450dc378','Nuevo estado: {{a}}','2020-06-10 16:17:40.473','2020-06-10 16:17:40.473','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','a64915f5-1fc3-4c1f-ba6c-c409959cc2e3')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('6a7ea5a8-1b51-4fcf-bc94-94d5e7c904e1','Papelera de rechazos','2020-06-10 16:17:40.482','2020-06-10 16:17:40.482','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','bcb7e5ad-472c-4532-89f9-fa9fb8c2e2d8')
+('633172b6-562e-4f6f-99fe-e57d450dc378','Nuevo estado: {{a}}','2020-06-10 16:17:40.473','2020-06-10 16:17:40.473','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','a64915f5-1fc3-4c1f-ba6c-c409959cc2e3')
+,('6a7ea5a8-1b51-4fcf-bc94-94d5e7c904e1','Papelera de rechazos','2020-06-10 16:17:40.482','2020-06-10 16:17:40.482','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','bcb7e5ad-472c-4532-89f9-fa9fb8c2e2d8')
 ,('23de411c-bb66-4d42-b20e-dbe9bb1038a0','En pausa','2020-06-10 16:17:40.492','2020-06-10 16:17:40.492','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','88ccabc8-afd6-4aa1-bf8e-6b1105473d64')
 ,('5ba5f3e6-e979-454e-b71b-1cea1b80d8cf','Nuevo estado: Solicitado','2020-06-10 16:17:40.503','2020-06-10 16:17:40.503','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','5f9881db-6aaa-4b16-8531-64abd9bde4e9')
 ,('7569cd24-3047-4135-91a2-2d1cb01d9a88','Nuevo estado: Lista corta','2020-06-10 16:17:40.513','2020-06-10 16:17:40.513','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','f6db2ef2-a1b0-4b5d-9fee-3b71a9411345')
@@ -3127,10 +3301,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('351dc045-bd7c-471e-ad3a-b33d55b9eb3c','Nuevo estado: Incorporado','2020-06-10 16:17:40.542','2020-06-10 16:17:40.542','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','b76eb5c4-8a40-4f4b-a8e3-1213516eeb9e')
 ,('20d76b1d-1e06-4407-8bd5-3004902bd1d6','Nuevo estado: Contratado','2020-06-10 16:17:40.551','2020-06-10 16:17:40.551','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','0ce6711b-8bc3-4043-b6bd-531f6e86f01c')
 ,('fe741999-9e06-4bfc-95ed-64308488f660','Nuevo estado: Rechazado','2020-06-10 16:17:40.565','2020-06-10 16:17:40.565','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','91a77d96-d47f-49dd-9313-5ae002156e23')
-,('4530ca9d-5d83-40cb-b4e9-a67e01ff153e','Nuevo estado: {{a}}','2020-06-10 16:17:40.579','2020-06-10 16:17:40.579','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','904a1ff5-99b8-4a29-8def-9b52884330d5')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('9afd11d1-25cf-489d-82a3-a3d645a75abf','Zadania do wykonania','2020-06-10 16:17:40.606','2020-06-10 16:17:40.606','0c12577b-360b-4843-a86e-39c129047b0b','650749f0-2d4e-42f7-b5df-72bd9869a647')
+('4530ca9d-5d83-40cb-b4e9-a67e01ff153e','Nuevo estado: {{a}}','2020-06-10 16:17:40.579','2020-06-10 16:17:40.579','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','904a1ff5-99b8-4a29-8def-9b52884330d5')
+,('9afd11d1-25cf-489d-82a3-a3d645a75abf','Zadania do wykonania','2020-06-10 16:17:40.606','2020-06-10 16:17:40.606','0c12577b-360b-4843-a86e-39c129047b0b','650749f0-2d4e-42f7-b5df-72bd9869a647')
 ,('3249c788-90dc-4fad-b99a-5f036a075251','Oferty pracy','2020-06-10 16:17:40.618','2020-06-10 16:17:40.618','0c12577b-360b-4843-a86e-39c129047b0b','f17de69e-cf85-40dc-bad2-d05c6e1c717d')
 ,('87f4c08d-234c-4245-a013-6cfb4e612b45','Kandydaci','2020-06-10 16:17:40.633','2020-06-10 16:17:40.633','0c12577b-360b-4843-a86e-39c129047b0b','dc01e0e4-62b4-438a-bf63-990a87cba3ea')
 ,('a00e15b6-0d52-4790-b381-b36d5ddd172d','Czat','2020-06-10 16:17:40.647','2020-06-10 16:17:40.647','0c12577b-360b-4843-a86e-39c129047b0b','486bbee4-67f6-4be5-8ec9-d5fe4fd60498')
@@ -3139,10 +3313,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('5f61c65e-34ed-42c1-8916-b20528bb4a50','Urządzenie jest offline','2020-06-10 16:17:40.685','2020-06-10 16:17:40.685','0c12577b-360b-4843-a86e-39c129047b0b','3bc0b247-58a7-4704-8d18-62d4e7f01f09')
 ,('fa1e6f63-58ae-42b7-8bae-98b8fc6a7e12','Jesteś obecnie w trybie offline','2020-06-10 16:17:40.701','2020-06-10 16:17:40.701','0c12577b-360b-4843-a86e-39c129047b0b','fcbeb512-832f-47e2-b4f6-bd47794a54a9')
 ,('19071895-83a3-4cbb-96eb-5043a9a6ff15','Połącz się z Internetem i spróbuj ponownie.','2020-06-10 16:17:40.714','2020-06-10 16:17:40.714','0c12577b-360b-4843-a86e-39c129047b0b','7b74dbb0-81c6-468e-b174-4c67760f58c1')
-,('deb60bac-4999-4d3a-910e-d2e11c98195c','Przenieś do kosza','2020-06-10 16:17:40.728','2020-06-10 16:17:40.728','0c12577b-360b-4843-a86e-39c129047b0b','2492f444-5ad0-44ad-9e54-c7071be74e53')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('7566adea-0a9f-40b0-aaed-c74406eeac8e','Druga szansa','2020-06-10 16:17:40.743','2020-06-10 16:17:40.743','0c12577b-360b-4843-a86e-39c129047b0b','4b6eb31a-2080-417f-9187-92f9937adb7f')
+('deb60bac-4999-4d3a-910e-d2e11c98195c','Przenieś do kosza','2020-06-10 16:17:40.728','2020-06-10 16:17:40.728','0c12577b-360b-4843-a86e-39c129047b0b','2492f444-5ad0-44ad-9e54-c7071be74e53')
+,('7566adea-0a9f-40b0-aaed-c74406eeac8e','Druga szansa','2020-06-10 16:17:40.743','2020-06-10 16:17:40.743','0c12577b-360b-4843-a86e-39c129047b0b','4b6eb31a-2080-417f-9187-92f9937adb7f')
 ,('48f72497-e974-489a-be2d-6c83ca2973b0','Odrzuć','2020-06-10 16:17:40.751','2020-06-10 16:17:40.751','0c12577b-360b-4843-a86e-39c129047b0b','ba32fa3b-f09d-47a2-914a-ab9cf8357f4d')
 ,('8848403c-4741-4b9e-902f-4b3434faf352','Błąd serwera!','2020-06-10 16:17:40.761','2020-06-10 16:17:40.761','0c12577b-360b-4843-a86e-39c129047b0b','ad7cdfaa-d1e0-4d51-8ba2-68b4f2fcf590')
 ,('14e13077-a232-4b09-9251-927623190713','Polish','2020-06-10 16:17:40.777','2020-06-10 16:17:40.777','0c12577b-360b-4843-a86e-39c129047b0b','ea045290-caa9-4c77-bd94-5433efcb8ff0')
@@ -3151,10 +3325,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('cb6135e7-3179-4612-948f-d82c191ef7c8','Polaco','2020-06-10 16:17:40.805','2020-06-10 16:17:40.805','0c12577b-360b-4843-a86e-39c129047b0b','a5c948eb-ee0e-4874-adb6-c1df45dffc49')
 ,('e248abc4-a1d8-455a-ac27-35ee7a82d17e','pl','2020-06-10 16:17:40.819','2020-06-10 16:17:40.819','0c12577b-360b-4843-a86e-39c129047b0b','971cd13d-d520-4e43-a056-72fa55c6f71c')
 ,('048353c1-398e-4ce0-8544-10b9ac056c00','Data i godzina','2020-06-10 16:17:40.835','2020-06-10 16:17:40.835','0c12577b-360b-4843-a86e-39c129047b0b','0a8774a5-721b-4bd2-96ff-6b18ced73781')
-,('9bce2c5a-aba8-4251-ada0-2e5cebc4386f','Anuluj','2020-06-10 16:17:40.845','2020-06-10 16:17:40.845','0c12577b-360b-4843-a86e-39c129047b0b','17c0a33e-317c-4b9c-9f42-97fd13c5465b')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('e7703a26-8155-46d9-b880-8559e9b7618a','Koniec','2020-06-10 16:17:40.854','2020-06-10 16:17:40.854','0c12577b-360b-4843-a86e-39c129047b0b','bbbfac4c-e1b0-47e9-86bb-c6c8d7c84daa')
+('9bce2c5a-aba8-4251-ada0-2e5cebc4386f','Anuluj','2020-06-10 16:17:40.845','2020-06-10 16:17:40.845','0c12577b-360b-4843-a86e-39c129047b0b','17c0a33e-317c-4b9c-9f42-97fd13c5465b')
+,('e7703a26-8155-46d9-b880-8559e9b7618a','Koniec','2020-06-10 16:17:40.854','2020-06-10 16:17:40.854','0c12577b-360b-4843-a86e-39c129047b0b','bbbfac4c-e1b0-47e9-86bb-c6c8d7c84daa')
 ,('93719b09-0369-41fe-a7b2-8dc8226231e3','Dzisiaj','2020-06-10 16:17:40.865','2020-06-10 16:17:40.865','0c12577b-360b-4843-a86e-39c129047b0b','e98e867a-90be-44a0-8168-0e920062eeab')
 ,('9614848c-3f59-42c1-87a8-4fb5a463b96e','Przyszłość','2020-06-10 16:17:40.875','2020-06-10 16:17:40.875','0c12577b-360b-4843-a86e-39c129047b0b','9ca1ba5d-4d46-491a-bc49-91a180671f39')
 ,('044e8891-a227-4718-a26e-83dab8464465','Czas trwania','2020-06-10 16:17:40.885','2020-06-10 16:17:40.885','0c12577b-360b-4843-a86e-39c129047b0b','b9623da4-0154-4879-afb8-19ccc6f30858')
@@ -3163,10 +3337,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('473bfb23-5c12-4c87-9f22-30cb9907d0dd','Daty spotkań są nieprawidłowe','2020-06-10 16:17:40.913','2020-06-10 16:17:40.913','0c12577b-360b-4843-a86e-39c129047b0b','54d91116-77b8-4e72-b883-d81e400089f6')
 ,('40f6a83b-2b42-435f-81ce-9ee78d803fb3','ddd MMM DD','2020-06-10 16:17:40.924','2020-06-10 16:17:40.924','0c12577b-360b-4843-a86e-39c129047b0b','03f8bb6f-8ecc-4ce1-81b3-0eb685e6dfd5')
 ,('e17db06c-368c-4caf-8c8f-54826a03a52d','HH','2020-06-10 16:17:40.934','2020-06-10 16:17:40.934','0c12577b-360b-4843-a86e-39c129047b0b','f08a9ab3-e91e-412e-a087-9cc66f6b4b31')
-,('f218a95b-d43e-48c6-9386-4f4853af6407','mm','2020-06-10 16:17:40.944','2020-06-10 16:17:40.944','0c12577b-360b-4843-a86e-39c129047b0b','2d0be6af-b945-4e19-bfe7-b9e7c47734cb')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('f92aca07-2203-4f04-8ad0-3f3f48dc3da7','{{minutes}} Minut','2020-06-10 16:17:40.953','2020-06-10 16:17:40.953','0c12577b-360b-4843-a86e-39c129047b0b','c29ae2bf-b3c3-4360-aede-a47cc3f8091f')
+('f218a95b-d43e-48c6-9386-4f4853af6407','mm','2020-06-10 16:17:40.944','2020-06-10 16:17:40.944','0c12577b-360b-4843-a86e-39c129047b0b','2d0be6af-b945-4e19-bfe7-b9e7c47734cb')
+,('f92aca07-2203-4f04-8ad0-3f3f48dc3da7','{{minutes}} Minut','2020-06-10 16:17:40.953','2020-06-10 16:17:40.953','0c12577b-360b-4843-a86e-39c129047b0b','c29ae2bf-b3c3-4360-aede-a47cc3f8091f')
 ,('d1788c7f-05a2-4db1-819f-b55952d4fc83','Data i godzina','2020-06-10 16:17:40.969','2020-06-10 16:17:40.969','0c12577b-360b-4843-a86e-39c129047b0b','0a8774a5-721b-4bd2-96ff-6b18ced73781')
 ,('af3d4026-c9f9-4b8b-b76e-7f943e1e4cb5','Anuluj','2020-06-10 16:17:40.980','2020-06-10 16:17:40.980','0c12577b-360b-4843-a86e-39c129047b0b','17c0a33e-317c-4b9c-9f42-97fd13c5465b')
 ,('d49f775a-f696-47fd-9ee8-6a93f3924db3','Koniec','2020-06-10 16:17:40.990','2020-06-10 16:17:40.990','0c12577b-360b-4843-a86e-39c129047b0b','bbbfac4c-e1b0-47e9-86bb-c6c8d7c84daa')
@@ -3175,10 +3349,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('41bf3b0f-5931-4e7d-83d5-bdf672d5b7a3','Czas trwania','2020-06-10 16:17:41.020','2020-06-10 16:17:41.020','0c12577b-360b-4843-a86e-39c129047b0b','b9623da4-0154-4879-afb8-19ccc6f30858')
 ,('19f3045b-56a0-436c-9d63-19a3c785cf9c','Minut','2020-06-10 16:17:41.030','2020-06-10 16:17:41.030','0c12577b-360b-4843-a86e-39c129047b0b','8508f0d2-2f89-4a88-a827-c406c1bde9bc')
 ,('34e7499e-4386-4a8e-81c0-61718013d31c','Godziny','2020-06-10 16:17:41.039','2020-06-10 16:17:41.039','0c12577b-360b-4843-a86e-39c129047b0b','9d0cbc22-beee-4c12-8194-1ec1ab77e3c4')
-,('977b166b-8984-4dcc-94a1-1a2245f8611d','Daty spotkań są nieprawidłowe','2020-06-10 16:17:41.052','2020-06-10 16:17:41.052','0c12577b-360b-4843-a86e-39c129047b0b','54d91116-77b8-4e72-b883-d81e400089f6')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('b585f31d-ac92-4fb5-9e4b-2c95e2620700','ddd MMM DD','2020-06-10 16:17:41.063','2020-06-10 16:17:41.063','0c12577b-360b-4843-a86e-39c129047b0b','03f8bb6f-8ecc-4ce1-81b3-0eb685e6dfd5')
+('977b166b-8984-4dcc-94a1-1a2245f8611d','Daty spotkań są nieprawidłowe','2020-06-10 16:17:41.052','2020-06-10 16:17:41.052','0c12577b-360b-4843-a86e-39c129047b0b','54d91116-77b8-4e72-b883-d81e400089f6')
+,('b585f31d-ac92-4fb5-9e4b-2c95e2620700','ddd MMM DD','2020-06-10 16:17:41.063','2020-06-10 16:17:41.063','0c12577b-360b-4843-a86e-39c129047b0b','03f8bb6f-8ecc-4ce1-81b3-0eb685e6dfd5')
 ,('f94e17ea-e902-4c58-8ec8-5a6dcd99d9e6','HH','2020-06-10 16:17:41.073','2020-06-10 16:17:41.073','0c12577b-360b-4843-a86e-39c129047b0b','f08a9ab3-e91e-412e-a087-9cc66f6b4b31')
 ,('47cbfc57-c471-44d6-b6ee-51cdd7f31456','mm','2020-06-10 16:17:41.083','2020-06-10 16:17:41.083','0c12577b-360b-4843-a86e-39c129047b0b','2d0be6af-b945-4e19-bfe7-b9e7c47734cb')
 ,('947b3817-3082-4111-b338-f08e5f809351','{{minutes}} Minut','2020-06-10 16:17:41.094','2020-06-10 16:17:41.094','0c12577b-360b-4843-a86e-39c129047b0b','c29ae2bf-b3c3-4360-aede-a47cc3f8091f')
@@ -3189,10 +3363,10 @@ Kiedy rozpoczynamy pracę z {{x}}?','2020-06-10 16:17:41.121','2020-06-10 16:17:
 ,('44cddd1c-9868-43bf-be1f-58e2d7fbe6d8','Już prawie masz nowego pracownika! Czy chcesz zatrudnić tę osobę {{x}}?','2020-06-10 16:17:41.129','2020-06-10 16:17:41.129','0c12577b-360b-4843-a86e-39c129047b0b','04101b37-3726-493a-a7be-b3a04f992d87')
 ,('d75742b4-c661-49ee-b582-3c1156893f78','Przeniesiono do {{x}}','2020-06-10 16:17:41.139','2020-06-10 16:17:41.139','0c12577b-360b-4843-a86e-39c129047b0b','cbf1341a-417c-416b-8c9a-422fd1b886e4')
 ,('fd2fc492-5715-4707-9052-b692243e901c','Wyślij e-mail','2020-06-10 16:17:41.149','2020-06-10 16:17:41.149','0c12577b-360b-4843-a86e-39c129047b0b','3b51bfbb-57e2-4ea2-b638-bb8365055f1a')
-,('2b3724cf-448c-479f-bf04-4e97ae39d215','Umów rozmowę rekrutacyjną','2020-06-10 16:17:41.158','2020-06-10 16:17:41.158','0c12577b-360b-4843-a86e-39c129047b0b','1ee2f90c-3323-4604-a920-36bfdff939f9')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('010222ff-be88-4f91-9e97-844118fbe95b','Tak, zatrudniamy','2020-06-10 16:17:41.168','2020-06-10 16:17:41.168','0c12577b-360b-4843-a86e-39c129047b0b','aad9146a-ecb5-4806-8efe-090aac5f82b1')
+('2b3724cf-448c-479f-bf04-4e97ae39d215','Umów rozmowę rekrutacyjną','2020-06-10 16:17:41.158','2020-06-10 16:17:41.158','0c12577b-360b-4843-a86e-39c129047b0b','1ee2f90c-3323-4604-a920-36bfdff939f9')
+,('010222ff-be88-4f91-9e97-844118fbe95b','Tak, zatrudniamy','2020-06-10 16:17:41.168','2020-06-10 16:17:41.168','0c12577b-360b-4843-a86e-39c129047b0b','aad9146a-ecb5-4806-8efe-090aac5f82b1')
 ,('ae4e9267-cd7e-4c5e-9535-0e198a134fb0','Kontyntynuj','2020-06-10 16:17:41.181','2020-06-10 16:17:41.181','0c12577b-360b-4843-a86e-39c129047b0b','33c287a9-aca5-4ccb-a131-1aa63679c9f8')
 ,('fc4ef0ec-2595-4b70-b7ad-cef2529990eb','Nowe','2020-06-10 16:17:41.191','2020-06-10 16:17:41.191','0c12577b-360b-4843-a86e-39c129047b0b','0de37f11-a315-4bee-b9e5-0f028cfd79d8')
 ,('3f4aba2f-5988-4c62-a889-1a3a45c84353','Preselekcja','2020-06-10 16:17:41.205','2020-06-10 16:17:41.205','0c12577b-360b-4843-a86e-39c129047b0b','f8a03a5e-ccce-47dc-946a-7e03f7d80cbf')
@@ -3201,10 +3375,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('0307f756-595f-494a-8821-21f742bfaf0d','Onboarding','2020-06-10 16:17:41.237','2020-06-10 16:17:41.237','0c12577b-360b-4843-a86e-39c129047b0b','b0bcf3a1-39bb-44b0-8c29-fc13bafcbd0b')
 ,('b9f8aa95-695c-460d-978d-b3b1c655250d','Zatrudniono','2020-06-10 16:17:41.248','2020-06-10 16:17:41.248','0c12577b-360b-4843-a86e-39c129047b0b','130cdebb-9f0e-46ff-96e0-c702a3538427')
 ,('4a8b225d-34d1-418a-b6d1-064533b95c9a','Za chwilę odrzucisz tę aplikację. Czy chciałbyś:','2020-06-10 16:17:41.259','2020-06-10 16:17:41.259','0c12577b-360b-4843-a86e-39c129047b0b','bc06e206-8257-4273-878e-4d0fb4301d43')
-,('142bfb83-d120-47ab-a9b6-3306bc0aaa96','Odrzucony','2020-06-10 16:17:41.268','2020-06-10 16:17:41.268','0c12577b-360b-4843-a86e-39c129047b0b','cf0d661b-345c-4028-ba8b-9cd94b0404d9')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('a668240f-58b0-4dca-b94d-06372ee3a2d8','Zmień etap rekrutacji','2020-06-10 16:17:41.282','2020-06-10 16:17:41.282','0c12577b-360b-4843-a86e-39c129047b0b','c207b249-7d11-49f1-a7fd-7f35dd7ef48c')
+('142bfb83-d120-47ab-a9b6-3306bc0aaa96','Odrzucony','2020-06-10 16:17:41.268','2020-06-10 16:17:41.268','0c12577b-360b-4843-a86e-39c129047b0b','cf0d661b-345c-4028-ba8b-9cd94b0404d9')
+,('a668240f-58b0-4dca-b94d-06372ee3a2d8','Zmień etap rekrutacji','2020-06-10 16:17:41.282','2020-06-10 16:17:41.282','0c12577b-360b-4843-a86e-39c129047b0b','c207b249-7d11-49f1-a7fd-7f35dd7ef48c')
 ,('122a855e-0332-4936-b9e3-af6319f6704b','Nowe','2020-06-10 16:17:41.292','2020-06-10 16:17:41.292','0c12577b-360b-4843-a86e-39c129047b0b','0de37f11-a315-4bee-b9e5-0f028cfd79d8')
 ,('7fad76b2-e108-4533-94ad-0098524c1ea5','Preselekcja','2020-06-10 16:17:41.349','2020-06-10 16:17:41.349','0c12577b-360b-4843-a86e-39c129047b0b','f8a03a5e-ccce-47dc-946a-7e03f7d80cbf')
 ,('1fa13c4a-c2a6-4b1d-93de-ccf66a894e31','Rozmowa kwalifikacyjna','2020-06-10 16:17:41.376','2020-06-10 16:17:41.376','0c12577b-360b-4843-a86e-39c129047b0b','217716c4-d568-4a09-84d1-e654fa7b3773')
@@ -3213,10 +3387,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('06b0e5ac-d351-489b-9be9-b7ddec352bc4','Jesteś obecnie w trybie offline','2020-06-10 16:17:41.420','2020-06-10 16:17:41.420','0c12577b-360b-4843-a86e-39c129047b0b','0a8774a5-721b-4bd2-96ff-6b18ced73781')
 ,('2e827876-2373-437b-9c39-b3ed8d733440','Połącz się z Internetem i spróbuj ponownie.','2020-06-10 16:17:41.431','2020-06-10 16:17:41.431','0c12577b-360b-4843-a86e-39c129047b0b','6b6f8ab5-5760-4319-a8a3-d7388aa70270')
 ,('05892950-255a-4ff8-a40f-587c94ad0081','na ma dostępnych kroków','2020-06-10 16:17:41.439','2020-06-10 16:17:41.439','0c12577b-360b-4843-a86e-39c129047b0b','c15f5d1a-0219-46f2-8a61-f841a35c04c0')
-,('ab4e4739-184a-4ca0-9f98-037d22168e3e','Zmień etap rekrutacji','2020-06-10 16:17:41.453','2020-06-10 16:17:41.453','0c12577b-360b-4843-a86e-39c129047b0b','d90c69cf-8cae-4f4e-8e38-af0312dfc86c')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('14011b85-69b4-4973-8007-20bce3f1716b','Przenieś do kosza odrzuceń','2020-06-10 16:17:41.462','2020-06-10 16:17:41.462','0c12577b-360b-4843-a86e-39c129047b0b','2492f444-5ad0-44ad-9e54-c7071be74e53')
+('ab4e4739-184a-4ca0-9f98-037d22168e3e','Zmień etap rekrutacji','2020-06-10 16:17:41.453','2020-06-10 16:17:41.453','0c12577b-360b-4843-a86e-39c129047b0b','d90c69cf-8cae-4f4e-8e38-af0312dfc86c')
+,('14011b85-69b4-4973-8007-20bce3f1716b','Przenieś do kosza odrzuceń','2020-06-10 16:17:41.462','2020-06-10 16:17:41.462','0c12577b-360b-4843-a86e-39c129047b0b','2492f444-5ad0-44ad-9e54-c7071be74e53')
 ,('a6d1de6a-5146-4c3b-8cd6-95bc0689767a','Druga szansa','2020-06-10 16:17:41.472','2020-06-10 16:17:41.472','0c12577b-360b-4843-a86e-39c129047b0b','70ef40e2-8719-4ec3-b362-82a2855f5310')
 ,('742f6262-0494-4275-8a26-b189f55558bb','Pauza','2020-06-10 16:17:41.485','2020-06-10 16:17:41.485','0c12577b-360b-4843-a86e-39c129047b0b','d9570970-f54f-4c23-aba3-c8e117801f1b')
 ,('4c2380ae-f6d3-44b0-b547-afeacd2a1bff','Wróć do kroku „Nowe”','2020-06-10 16:17:41.500','2020-06-10 16:17:41.500','0c12577b-360b-4843-a86e-39c129047b0b','a36a604b-4817-4410-bc1a-0ea8110d83b3')
@@ -3225,10 +3399,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('d833e1a7-619f-42bf-a28a-71d8461340cb','Oferta','2020-06-10 16:17:41.549','2020-06-10 16:17:41.549','0c12577b-360b-4843-a86e-39c129047b0b','9a64ebef-bcb9-406a-bf6c-3322629def71')
 ,('7d5dbd53-499c-40b4-b5c2-e66974acf643','Onboarding','2020-06-10 16:17:41.560','2020-06-10 16:17:41.560','0c12577b-360b-4843-a86e-39c129047b0b','b0bcf3a1-39bb-44b0-8c29-fc13bafcbd0b')
 ,('184f70a4-07c5-4217-b191-efcbedc59588','Zatrudniono','2020-06-10 16:17:41.573','2020-06-10 16:17:41.573','0c12577b-360b-4843-a86e-39c129047b0b','130cdebb-9f0e-46ff-96e0-c702a3538427')
-,('d4665336-e15b-4aaa-ae47-f952fa9b3150','Odrzucono','2020-06-10 16:17:41.583','2020-06-10 16:17:41.583','0c12577b-360b-4843-a86e-39c129047b0b','bd7487fd-d437-4304-9e79-cbcfb56d5170')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('5e116c22-2f4c-4ee6-b155-ab8edf749b82','Czy na pewno chcesz
+('d4665336-e15b-4aaa-ae47-f952fa9b3150','Odrzucono','2020-06-10 16:17:41.583','2020-06-10 16:17:41.583','0c12577b-360b-4843-a86e-39c129047b0b','bd7487fd-d437-4304-9e79-cbcfb56d5170')
+,('5e116c22-2f4c-4ee6-b155-ab8edf749b82','Czy na pewno chcesz
 usunąć?','2020-06-10 16:17:41.596','2020-06-10 16:17:41.596','0c12577b-360b-4843-a86e-39c129047b0b','02fce22b-5ad6-4b3c-9733-6d91e034b714')
 ,('ef7ff0b7-c45f-452f-95fa-b347cc1f60c1','Tak','2020-06-10 16:17:41.610','2020-06-10 16:17:41.610','0c12577b-360b-4843-a86e-39c129047b0b','d92869c0-3473-4d7d-8e06-aa821fe5ca8c')
 ,('1d09fe8d-fe03-45e2-87a1-7c1f7922863e','Anuluj','2020-06-10 16:17:41.620','2020-06-10 16:17:41.620','0c12577b-360b-4843-a86e-39c129047b0b','64b1350e-8f50-4951-9648-0fdacc85399d')
@@ -3238,10 +3412,10 @@ usunąć?','2020-06-10 16:17:41.596','2020-06-10 16:17:41.596','0c12577b-360b-48
 ,('80cfd5c9-0c59-4bd5-91c9-49f37ca84e89','Zatwierdź','2020-06-10 16:17:41.664','2020-06-10 16:17:41.664','0c12577b-360b-4843-a86e-39c129047b0b','81c29668-8b71-4861-b64d-429034e7820f')
 ,('101dbdb0-9c15-41ab-914e-9e7297cac43a','Przedstawiamy wiadomości e-mail','2020-06-10 16:17:41.676','2020-06-10 16:17:41.676','0c12577b-360b-4843-a86e-39c129047b0b','cd7c1b1f-fe02-402a-8966-3aa9526e09b4')
 ,('7cd0f6a9-fde1-42e4-bfec-2b8bc5d4279e','Teraz możesz zarządzać swoimi wiadomościami z poziomu aplikacji mobilnej','2020-06-10 16:17:41.686','2020-06-10 16:17:41.686','0c12577b-360b-4843-a86e-39c129047b0b','e94573bc-3088-4509-81a5-7f5ffc999995')
-,('5ed12520-5482-4876-805b-ee3f80655e8b','Szablony wiadomości e-mail','2020-06-10 16:17:41.696','2020-06-10 16:17:41.696','0c12577b-360b-4843-a86e-39c129047b0b','28c06c60-0e99-49e3-a53a-062d64793269')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('78ecfdb8-2289-4209-87e2-a0a04d6fffe5','Wyślij szybciej wiadomość e-mail do kandydatów używając gotowych szablonów','2020-06-10 16:17:41.711','2020-06-10 16:17:41.711','0c12577b-360b-4843-a86e-39c129047b0b','940eb736-f31e-4ab7-b39d-f862ffa838bf')
+('5ed12520-5482-4876-805b-ee3f80655e8b','Szablony wiadomości e-mail','2020-06-10 16:17:41.696','2020-06-10 16:17:41.696','0c12577b-360b-4843-a86e-39c129047b0b','28c06c60-0e99-49e3-a53a-062d64793269')
+,('78ecfdb8-2289-4209-87e2-a0a04d6fffe5','Wyślij szybciej wiadomość e-mail do kandydatów używając gotowych szablonów','2020-06-10 16:17:41.711','2020-06-10 16:17:41.711','0c12577b-360b-4843-a86e-39c129047b0b','940eb736-f31e-4ab7-b39d-f862ffa838bf')
 ,('d16cc24d-4a0a-4a69-a620-96d1146eb39c','Dalej','2020-06-10 16:17:41.724','2020-06-10 16:17:41.724','0c12577b-360b-4843-a86e-39c129047b0b','f0e72f02-a84b-4847-a7d4-304dab0fdd36')
 ,('911d9eb8-ff4e-4410-89b5-ef014c7054e6','Koniec','2020-06-10 16:17:41.735','2020-06-10 16:17:41.735','0c12577b-360b-4843-a86e-39c129047b0b','bbbfac4c-e1b0-47e9-86bb-c6c8d7c84daa')
 ,('bc980d87-cce9-4b10-9b1c-d1acfcd75937','Pomiń','2020-06-10 16:17:41.744','2020-06-10 16:17:41.744','0c12577b-360b-4843-a86e-39c129047b0b','7ade9c62-4368-4fe2-85e2-fdf2c3b03f5c')
@@ -3250,10 +3424,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('7886c638-8151-4923-987e-212b127f8ad7','Odpowiedz w formie komentarza','2020-06-10 16:17:41.783','2020-06-10 16:17:41.783','0c12577b-360b-4843-a86e-39c129047b0b','3947fab6-3dfd-4f55-80d0-a0872d304a28')
 ,('8eef887b-bdd3-40be-b75f-b088cd1f96cf','Wyślij','2020-06-10 16:17:41.793','2020-06-10 16:17:41.793','0c12577b-360b-4843-a86e-39c129047b0b','a0e452ce-9e93-4b75-b881-042f1cfc66be')
 ,('9aa99bea-5b9b-4381-b9e7-7d1392b1ef49','Prosimy podsumować ocenę','2020-06-10 16:17:41.809','2020-06-10 16:17:41.809','0c12577b-360b-4843-a86e-39c129047b0b','dfede26c-5760-4ba7-b387-a27d6a848fd0')
-,('e5781737-112b-4eb2-b0d0-e3a7a0cfba63','Ten komentarz widoczny jest również w Chacie zespołowym','2020-06-10 16:17:41.817','2020-06-10 16:17:41.817','0c12577b-360b-4843-a86e-39c129047b0b','86e1e9b5-de97-422a-8269-2c5f33f25b87')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('0bc4aaa1-522a-4817-8300-b27f15dfdebb','Brak połączenia z internetem. Nie martw się, Twoje zmiany zostaną wysłane jak tylko znów połączysz się z internetem','2020-06-10 16:17:41.829','2020-06-10 16:17:41.829','0c12577b-360b-4843-a86e-39c129047b0b','dc1467be-1a8d-43d6-991f-0e0fca314b0d')
+('e5781737-112b-4eb2-b0d0-e3a7a0cfba63','Ten komentarz widoczny jest również w Chacie zespołowym','2020-06-10 16:17:41.817','2020-06-10 16:17:41.817','0c12577b-360b-4843-a86e-39c129047b0b','86e1e9b5-de97-422a-8269-2c5f33f25b87')
+,('0bc4aaa1-522a-4817-8300-b27f15dfdebb','Brak połączenia z internetem. Nie martw się, Twoje zmiany zostaną wysłane jak tylko znów połączysz się z internetem','2020-06-10 16:17:41.829','2020-06-10 16:17:41.829','0c12577b-360b-4843-a86e-39c129047b0b','dc1467be-1a8d-43d6-991f-0e0fca314b0d')
 ,('cbca8a86-f57f-4cf4-95c7-19d226adb809','Obecnie jesteś offline','2020-06-10 16:17:41.842','2020-06-10 16:17:41.842','0c12577b-360b-4843-a86e-39c129047b0b','fcbeb512-832f-47e2-b4f6-bd47794a54a9')
 ,('84aa6319-1ad6-47df-ab36-1af9f3c69285','Twoja decyzja będzie opublikowana, gdy ponownie przejdziesz w stan online','2020-06-10 16:17:41.859','2020-06-10 16:17:41.859','0c12577b-360b-4843-a86e-39c129047b0b','7b74dbb0-81c6-468e-b174-4c67760f58c1')
 ,('6aea4150-562e-4d1e-a755-556a66d6eff0','Wartość znamionowa','2020-06-10 16:17:41.869','2020-06-10 16:17:41.869','0c12577b-360b-4843-a86e-39c129047b0b','a59b9887-d8ac-42cc-a983-ed1b9785b6f7')
@@ -3262,10 +3436,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('ad8dbb36-1c76-42d2-9a68-f757ad9e1d4a','Może','2020-06-10 16:17:41.919','2020-06-10 16:17:41.919','0c12577b-360b-4843-a86e-39c129047b0b','719badb3-8906-42b9-b7e6-dfdf7c57685e')
 ,('b51be8cb-6799-4fad-9cd4-0f7521687fbe','Nie można ocenić','2020-06-10 16:17:41.932','2020-06-10 16:17:41.932','0c12577b-360b-4843-a86e-39c129047b0b','b19e1fe8-0217-46ea-894a-034d5e3dbf63')
 ,('ffc17e24-616e-4bd6-916c-0522cb15487e','Wybierz powód odrzucenia','2020-06-10 16:17:41.947','2020-06-10 16:17:41.947','0c12577b-360b-4843-a86e-39c129047b0b','0a8774a5-721b-4bd2-96ff-6b18ced73781')
-,('c7be270d-9b86-4f56-8c27-9ac02692ec00','Zapisz','2020-06-10 16:17:41.958','2020-06-10 16:17:41.958','0c12577b-360b-4843-a86e-39c129047b0b','a0e452ce-9e93-4b75-b881-042f1cfc66be')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('717fd879-81f6-4fe0-ac27-33ae01771d40','Przeniesiono do kosza odrzuceń','2020-06-10 16:17:41.970','2020-06-10 16:17:41.970','0c12577b-360b-4843-a86e-39c129047b0b','cbd9a0c4-952c-414c-a21d-3fb78389e17e')
+('c7be270d-9b86-4f56-8c27-9ac02692ec00','Zapisz','2020-06-10 16:17:41.958','2020-06-10 16:17:41.958','0c12577b-360b-4843-a86e-39c129047b0b','a0e452ce-9e93-4b75-b881-042f1cfc66be')
+,('717fd879-81f6-4fe0-ac27-33ae01771d40','Przeniesiono do kosza odrzuceń','2020-06-10 16:17:41.970','2020-06-10 16:17:41.970','0c12577b-360b-4843-a86e-39c129047b0b','cbd9a0c4-952c-414c-a21d-3fb78389e17e')
 ,('620d4ae3-fd32-4a15-8ca1-ab8bc357cc27','Nie można przenieść do kosza odrzuceń','2020-06-10 16:17:41.987','2020-06-10 16:17:41.987','0c12577b-360b-4843-a86e-39c129047b0b','09b5bf5c-0a9e-4a19-907d-0141a9542b5c')
 ,('6d97de53-d48b-4c62-852a-dfcc376821b1','Przeniesiono z kosza odrzuceń','2020-06-10 16:17:41.999','2020-06-10 16:17:41.999','0c12577b-360b-4843-a86e-39c129047b0b','3cad16df-e0a9-44b9-b4ff-389f19bf86f7')
 ,('ab78f578-79b1-4f8f-ab69-1ee50ae6d686','Nie można przenieść z kosza odrzuceń','2020-06-10 16:17:42.013','2020-06-10 16:17:42.013','0c12577b-360b-4843-a86e-39c129047b0b','7d0c6b87-9cba-45f7-ab15-9e0040792894')
@@ -3275,10 +3449,10 @@ usunąć?','2020-06-10 16:17:42.025','2020-06-10 16:17:42.025','0c12577b-360b-48
 ,('8cf17004-55da-4715-8233-21e610174c5d','Tak','2020-06-10 16:17:42.057','2020-06-10 16:17:42.057','0c12577b-360b-4843-a86e-39c129047b0b','d92869c0-3473-4d7d-8e06-aa821fe5ca8c')
 ,('635b6f82-98f3-45a5-bca5-54f791668a48','Anuluj','2020-06-10 16:17:42.067','2020-06-10 16:17:42.067','0c12577b-360b-4843-a86e-39c129047b0b','64b1350e-8f50-4951-9648-0fdacc85399d')
 ,('ad4fc4db-d5ef-49a0-9954-8891f1d50b73','Kosz','2020-06-10 16:17:42.077','2020-06-10 16:17:42.077','0c12577b-360b-4843-a86e-39c129047b0b','13271e8b-fce9-4a07-b2eb-59a9a4c80bfc')
-,('0f7f8577-9164-4239-b58b-5da3ac34379b','Druga szansa','2020-06-10 16:17:42.087','2020-06-10 16:17:42.087','0c12577b-360b-4843-a86e-39c129047b0b','70ef40e2-8719-4ec3-b362-82a2855f5310')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('25943344-b39f-4a36-bdc9-51bb0ec3aadb','Czy na pewno chcesz dać drugą szansę?','2020-06-10 16:17:42.100','2020-06-10 16:17:42.100','0c12577b-360b-4843-a86e-39c129047b0b','db2de653-751f-4a8d-8381-e43b0617a19c')
+('0f7f8577-9164-4239-b58b-5da3ac34379b','Druga szansa','2020-06-10 16:17:42.087','2020-06-10 16:17:42.087','0c12577b-360b-4843-a86e-39c129047b0b','70ef40e2-8719-4ec3-b362-82a2855f5310')
+,('25943344-b39f-4a36-bdc9-51bb0ec3aadb','Czy na pewno chcesz dać drugą szansę?','2020-06-10 16:17:42.100','2020-06-10 16:17:42.100','0c12577b-360b-4843-a86e-39c129047b0b','db2de653-751f-4a8d-8381-e43b0617a19c')
 ,('52e8e69e-c8a1-4e14-ae7e-b054ede4b035','Proszę wybrać powód odrzucenia','2020-06-10 16:17:42.119','2020-06-10 16:17:42.119','0c12577b-360b-4843-a86e-39c129047b0b','111aaaec-2a6d-40bd-b578-fde782fd0c56')
 ,('7b3faec9-624f-4d84-9f18-2b7fcd08bb2b','Potwierdź','2020-06-10 16:17:42.130','2020-06-10 16:17:42.130','0c12577b-360b-4843-a86e-39c129047b0b','a0e452ce-9e93-4b75-b881-042f1cfc66be')
 ,('5f89de71-2a99-4b07-b4a8-d45f3660ff12','Czy na pewno chcesz się
@@ -3288,23 +3462,21 @@ wylogować?','2020-06-10 16:17:42.146','2020-06-10 16:17:42.146','0c12577b-360b-
 ,('269a0920-fce4-43d2-947d-7c4abe27388d','Wyślij przypomnienie o rozmowie','2020-06-10 16:17:42.183','2020-06-10 16:17:42.183','0c12577b-360b-4843-a86e-39c129047b0b','e91f70e2-3e69-4725-8f7e-c5d307800684')
 ,('012b9e53-75fc-48c9-b069-516fe0b89155','Zmień termin rozmowy','2020-06-10 16:17:42.194','2020-06-10 16:17:42.194','0c12577b-360b-4843-a86e-39c129047b0b','999299c0-88b0-48b3-80a4-fc6cb583da41')
 ,('09d4a0f9-cba3-4c58-9fa6-6d3c8aaceeea','Anuluj rozmowe','2020-06-10 16:17:42.209','2020-06-10 16:17:42.209','0c12577b-360b-4843-a86e-39c129047b0b','17c0a33e-317c-4b9c-9f42-97fd13c5465b')
-,('5ae7d106-7e46-4d82-80c4-1944dd423df2','Potwierdź rozmowę','2020-06-10 16:17:42.219','2020-06-10 16:17:42.219','0c12577b-360b-4843-a86e-39c129047b0b','6888bec2-df90-40d0-9a24-fc70de1e1400')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('6e39e18e-e6a9-41b5-99d1-0d9719086df0','Rozmowa jest anulowana','2020-06-10 16:17:42.231','2020-06-10 16:17:42.231','0c12577b-360b-4843-a86e-39c129047b0b','b6018e5a-ca1c-4323-812f-cc1a2f3519a1')
+('5ae7d106-7e46-4d82-80c4-1944dd423df2','Potwierdź rozmowę','2020-06-10 16:17:42.219','2020-06-10 16:17:42.219','0c12577b-360b-4843-a86e-39c129047b0b','6888bec2-df90-40d0-9a24-fc70de1e1400')
+,('6e39e18e-e6a9-41b5-99d1-0d9719086df0','Rozmowa jest anulowana','2020-06-10 16:17:42.231','2020-06-10 16:17:42.231','0c12577b-360b-4843-a86e-39c129047b0b','b6018e5a-ca1c-4323-812f-cc1a2f3519a1')
 ,('931b0b74-8f4e-426d-a21f-d453e44dbf45','Rozmowa jest potwierdzona','2020-06-10 16:17:42.243','2020-06-10 16:17:42.243','0c12577b-360b-4843-a86e-39c129047b0b','b794acdd-0e97-4704-8bd1-9b300fb0ed93')
 ,('978ff9d1-bf9b-4fd9-9fb3-9db8521d5995','Wyślij przypomnienie','2020-06-10 16:17:42.256','2020-06-10 16:17:42.256','0c12577b-360b-4843-a86e-39c129047b0b','c0fe40b5-4f7f-40f6-a1ea-b3269138ec49')
 ,('ef06aff7-1f8e-451e-9a7c-656e5ba7ade6','Odrzuć','2020-06-10 16:17:42.268','2020-06-10 16:17:42.268','0c12577b-360b-4843-a86e-39c129047b0b','9dbee921-c464-4aa9-8917-073cc726ee44')
 ,('f7d51ea1-e295-4a0b-af90-597c21e097bf','Zmień termin spotkania','2020-06-10 16:17:42.280','2020-06-10 16:17:42.280','0c12577b-360b-4843-a86e-39c129047b0b','c9577941-8855-4a5d-879e-f66437b34c1d')
 ,('fa81748d-f74e-4370-ad3d-1b3204a41ee9','Jeśli zmienisz termin spotkania, obecne spotkanie zostanie usunięte. Czy na pewni chcesz usunąć obecne spotkanie?','2020-06-10 16:17:42.293','2020-06-10 16:17:42.293','0c12577b-360b-4843-a86e-39c129047b0b','13382d9a-b3a6-41eb-b3bc-ea1edeaf7750')
-,('16e59767-1a4d-4e50-b156-6aa85da300c3','Tak','2020-06-10 16:17:42.303','2020-06-10 16:17:42.303','0c12577b-360b-4843-a86e-39c129047b0b','d92869c0-3473-4d7d-8e06-aa821fe5ca8c')
-,('b7670ba2-42e7-4d22-bb81-bd46beeded4c','Nie','2020-06-10 16:17:42.315','2020-06-10 16:17:42.315','0c12577b-360b-4843-a86e-39c129047b0b','64b1350e-8f50-4951-9648-0fdacc85399d')
 ,('a02e5c6a-e137-4259-bbbe-9aabbc2f8bd8','Oferta została odrzucona','2020-06-10 16:17:42.325','2020-06-10 16:17:42.325','0c12577b-360b-4843-a86e-39c129047b0b','9a4621dc-ee9f-4581-aa58-8a655ac4de4d')
 ,('73819458-14fb-4c88-a9e3-1aed1409d8fb','Angielski','2020-06-10 16:17:42.337','2020-06-10 16:17:42.337','0c12577b-360b-4843-a86e-39c129047b0b','ea045290-caa9-4c77-bd94-5433efcb8ff0')
+,('09bcd6ef-1f95-441d-93ff-51d65e551f1d','Niemiecki','2020-06-10 16:17:42.348','2020-06-10 16:17:42.348','0c12577b-360b-4843-a86e-39c129047b0b','a4294de2-deba-4ddd-9a5d-e4ca72d8c2c0')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('09bcd6ef-1f95-441d-93ff-51d65e551f1d','Niemiecki','2020-06-10 16:17:42.348','2020-06-10 16:17:42.348','0c12577b-360b-4843-a86e-39c129047b0b','a4294de2-deba-4ddd-9a5d-e4ca72d8c2c0')
-,('a7b9a714-6bca-4dcd-b275-4da4fd07d493','Polski','2020-06-10 16:17:42.360','2020-06-10 16:17:42.360','0c12577b-360b-4843-a86e-39c129047b0b','918fdb99-de69-4375-bb8b-e7a4fb10593a')
+('a7b9a714-6bca-4dcd-b275-4da4fd07d493','Polski','2020-06-10 16:17:42.360','2020-06-10 16:17:42.360','0c12577b-360b-4843-a86e-39c129047b0b','918fdb99-de69-4375-bb8b-e7a4fb10593a')
 ,('998321e6-d1d6-478c-b230-0c69d49d07c2','Hiszpański','2020-06-10 16:17:42.370','2020-06-10 16:17:42.370','0c12577b-360b-4843-a86e-39c129047b0b','a5c948eb-ee0e-4874-adb6-c1df45dffc49')
 ,('73d3389a-803a-4520-8c4e-65ed631084d7','francuski','2020-06-10 16:17:42.381','2020-06-10 16:17:42.381','0c12577b-360b-4843-a86e-39c129047b0b','f551b1f1-843e-453f-a41d-ed55cbb1fa0d')
 ,('409f1956-12e8-4a3e-87ec-2e7ee635f9bb','Włoski','2020-06-10 16:17:42.393','2020-06-10 16:17:42.393','0c12577b-360b-4843-a86e-39c129047b0b','ee232141-842d-4fca-9c86-12bb7268af96')
@@ -3313,10 +3485,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('d5302f9d-fd8f-4ea2-ad9f-a6a6142ead6e','Holenderski','2020-06-10 16:17:42.427','2020-06-10 16:17:42.427','0c12577b-360b-4843-a86e-39c129047b0b','bd6ce1cb-923c-4831-9d5c-25c9ec939da5')
 ,('32623f98-2920-4908-b1b4-b3b2770673a3','Portugalczyk','2020-06-10 16:17:42.437','2020-06-10 16:17:42.437','0c12577b-360b-4843-a86e-39c129047b0b','2b6b3ebc-bc27-40a2-a5fb-7bb56573b0e5')
 ,('03c74139-79a8-4066-b146-79cc83a159c6','Szwedzki','2020-06-10 16:17:42.446','2020-06-10 16:17:42.446','0c12577b-360b-4843-a86e-39c129047b0b','fbcc52ae-ae45-483c-8d27-adeb3c6b48ee')
+,('20b38e81-121d-4641-8df8-3988b05cdac8','Chińczyk','2020-06-10 16:17:42.455','2020-06-10 16:17:42.455','0c12577b-360b-4843-a86e-39c129047b0b','ebf20f20-bcb1-44f0-9f40-69b72c84401a')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('20b38e81-121d-4641-8df8-3988b05cdac8','Chińczyk','2020-06-10 16:17:42.455','2020-06-10 16:17:42.455','0c12577b-360b-4843-a86e-39c129047b0b','ebf20f20-bcb1-44f0-9f40-69b72c84401a')
-,('82f5f545-ba7b-44eb-9f47-eaa802acfeb2','Szablon','2020-06-10 16:17:42.466','2020-06-10 16:17:42.466','0c12577b-360b-4843-a86e-39c129047b0b','0a8774a5-721b-4bd2-96ff-6b18ced73781')
+('82f5f545-ba7b-44eb-9f47-eaa802acfeb2','Szablon','2020-06-10 16:17:42.466','2020-06-10 16:17:42.466','0c12577b-360b-4843-a86e-39c129047b0b','0a8774a5-721b-4bd2-96ff-6b18ced73781')
 ,('a249c8fa-6d59-4d03-a05a-af1435b99cca','Anuluj','2020-06-10 16:17:42.478','2020-06-10 16:17:42.478','0c12577b-360b-4843-a86e-39c129047b0b','17c0a33e-317c-4b9c-9f42-97fd13c5465b')
 ,('e23afe6b-a757-4d55-9159-c08cd642fab6','Gotowe','2020-06-10 16:17:42.487','2020-06-10 16:17:42.487','0c12577b-360b-4843-a86e-39c129047b0b','bbbfac4c-e1b0-47e9-86bb-c6c8d7c84daa')
 ,('a58e2b74-007a-4c54-b460-279afea12597','Język','2020-06-10 16:17:42.498','2020-06-10 16:17:42.498','0c12577b-360b-4843-a86e-39c129047b0b','a0925053-ddfb-45be-975c-70ad961690d7')
@@ -3325,10 +3497,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('3e991af4-42eb-4a53-8ae8-4d156fa545b1','Podana treść zostanie zastąpiona tym szablonem','2020-06-10 16:17:42.530','2020-06-10 16:17:42.530','0c12577b-360b-4843-a86e-39c129047b0b','004c13ac-ab4e-458c-89ee-d64be64205e8')
 ,('d98b4937-d8d2-49da-bcac-2f5d31cf3738','Zaprosić na rozmowę kwalifikacyjną?','2020-06-10 16:17:42.542','2020-06-10 16:17:42.542','0c12577b-360b-4843-a86e-39c129047b0b','0a8774a5-721b-4bd2-96ff-6b18ced73781')
 ,('19fc4ed3-a942-4f48-bc3b-cd3ee0d54290','Odpowiedz przez wiadomość tekstową','2020-06-10 16:17:42.549','2020-06-10 16:17:42.549','0c12577b-360b-4843-a86e-39c129047b0b','3947fab6-3dfd-4f55-80d0-a0872d304a28')
+,('7e566ba7-1999-493c-8d10-50f4384f6336','Zapisz','2020-06-10 16:17:42.560','2020-06-10 16:17:42.560','0c12577b-360b-4843-a86e-39c129047b0b','a0e452ce-9e93-4b75-b881-042f1cfc66be')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('7e566ba7-1999-493c-8d10-50f4384f6336','Zapisz','2020-06-10 16:17:42.560','2020-06-10 16:17:42.560','0c12577b-360b-4843-a86e-39c129047b0b','a0e452ce-9e93-4b75-b881-042f1cfc66be')
-,('69aaf88d-ffb9-45a5-85a9-cb20e68acfb0','Prosimy podsumować swoją opinię','2020-06-10 16:17:42.568','2020-06-10 16:17:42.568','0c12577b-360b-4843-a86e-39c129047b0b','dfede26c-5760-4ba7-b387-a27d6a848fd0')
+('69aaf88d-ffb9-45a5-85a9-cb20e68acfb0','Prosimy podsumować swoją opinię','2020-06-10 16:17:42.568','2020-06-10 16:17:42.568','0c12577b-360b-4843-a86e-39c129047b0b','dfede26c-5760-4ba7-b387-a27d6a848fd0')
 ,('dfc73fbc-6535-4f17-8916-2b42d059510e','Ten komentarz jest również widoczny w czacie zespołowym','2020-06-10 16:17:42.581','2020-06-10 16:17:42.581','0c12577b-360b-4843-a86e-39c129047b0b','86e1e9b5-de97-422a-8269-2c5f33f25b87')
 ,('028993af-93af-4059-8081-e8e1afe52077','Jesteś obecnie w trybie offline','2020-06-10 16:17:42.587','2020-06-10 16:17:42.587','0c12577b-360b-4843-a86e-39c129047b0b','fcbeb512-832f-47e2-b4f6-bd47794a54a9')
 ,('5b6a8f2b-11cf-473c-9be2-3c190066d2f2','Twoja opinia zostanie wysłana, gdy tylko będziesz ponownie online','2020-06-10 16:17:42.597','2020-06-10 16:17:42.597','0c12577b-360b-4843-a86e-39c129047b0b','7b74dbb0-81c6-468e-b174-4c67760f58c1')
@@ -3337,10 +3509,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('e850f58f-de5f-4159-8c3b-4eb0f78863d8','Nie można skomentować','2020-06-10 16:17:42.624','2020-06-10 16:17:42.624','0c12577b-360b-4843-a86e-39c129047b0b','bb70e6fb-9b58-40c8-a73b-dad3e3fd5022')
 ,('b1d21e90-8fa2-4be3-ad47-137c68897d53','Online','2020-06-10 16:17:42.634','2020-06-10 16:17:42.634','0c12577b-360b-4843-a86e-39c129047b0b','3f834323-20f2-4578-8998-3d274733c566')
 ,('ffff0c5f-cc57-4d14-b0ad-71267f8a1dcd','Offline','2020-06-10 16:17:42.646','2020-06-10 16:17:42.646','0c12577b-360b-4843-a86e-39c129047b0b','52576025-45fa-43cc-820e-b889fbb0e270')
+,('45ff24d1-0368-4da9-8810-a18c498d281d','Wyślij opinię','2020-06-10 16:17:42.657','2020-06-10 16:17:42.657','0c12577b-360b-4843-a86e-39c129047b0b','e39a08b1-f30d-4925-a21d-50cf218c9bf4')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('45ff24d1-0368-4da9-8810-a18c498d281d','Wyślij opinię','2020-06-10 16:17:42.657','2020-06-10 16:17:42.657','0c12577b-360b-4843-a86e-39c129047b0b','e39a08b1-f30d-4925-a21d-50cf218c9bf4')
-,('d66fcce4-9e5e-4bd1-92f5-1ebc9cee209e','Wyślij nam swoją opinię
+('d66fcce4-9e5e-4bd1-92f5-1ebc9cee209e','Wyślij nam swoją opinię
 przez e-mail!','2020-06-10 16:17:42.667','2020-06-10 16:17:42.667','0c12577b-360b-4843-a86e-39c129047b0b','36fa3435-61c9-4a54-ae9e-cdb9e54e87ed')
 ,('c9ba864f-5fce-4a2d-a887-5dc4a142a599','Kontynuuj','2020-06-10 16:17:42.681','2020-06-10 16:17:42.681','0c12577b-360b-4843-a86e-39c129047b0b','d92869c0-3473-4d7d-8e06-aa821fe5ca8c')
 ,('d39f42da-267c-4945-a710-0cdca7faf0af','Anuluj','2020-06-10 16:17:42.692','2020-06-10 16:17:42.692','0c12577b-360b-4843-a86e-39c129047b0b','64b1350e-8f50-4951-9648-0fdacc85399d')
@@ -3350,10 +3522,10 @@ przez e-mail!','2020-06-10 16:17:42.667','2020-06-10 16:17:42.667','0c12577b-360
 ,('8e5b8d75-44d5-45e5-831e-9aaafcee3ab0','Czat','2020-06-10 16:17:42.736','2020-06-10 16:17:42.736','0c12577b-360b-4843-a86e-39c129047b0b','fdf6129d-4c37-46b1-8aaa-45052e8d94d3')
 ,('8407fb20-fb86-4a36-a2e0-a193cb93445f','Kosz','2020-06-10 16:17:42.746','2020-06-10 16:17:42.746','0c12577b-360b-4843-a86e-39c129047b0b','13271e8b-fce9-4a07-b2eb-59a9a4c80bfc')
 ,('1620569b-5ca6-4c0e-9a04-1304d7dfe4ac','Ustawienia','2020-06-10 16:17:42.756','2020-06-10 16:17:42.756','0c12577b-360b-4843-a86e-39c129047b0b','1fc91a45-6dd0-4a3d-8c30-0d6b1edfb682')
+,('fd138b11-0d7c-4d92-9772-b1ce64702640','Wiadomości','2020-06-10 16:17:42.768','2020-06-10 16:17:42.768','0c12577b-360b-4843-a86e-39c129047b0b','aa9880ad-adf3-408c-ac01-860e5efbe2f1')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('fd138b11-0d7c-4d92-9772-b1ce64702640','Wiadomości','2020-06-10 16:17:42.768','2020-06-10 16:17:42.768','0c12577b-360b-4843-a86e-39c129047b0b','aa9880ad-adf3-408c-ac01-860e5efbe2f1')
-,('b42e9ab1-4e47-4e07-aaee-4543f2669d0c','Informacje o aplikacji','2020-06-10 16:17:42.784','2020-06-10 16:17:42.784','0c12577b-360b-4843-a86e-39c129047b0b','0a8774a5-721b-4bd2-96ff-6b18ced73781')
+('b42e9ab1-4e47-4e07-aaee-4543f2669d0c','Informacje o aplikacji','2020-06-10 16:17:42.784','2020-06-10 16:17:42.784','0c12577b-360b-4843-a86e-39c129047b0b','0a8774a5-721b-4bd2-96ff-6b18ced73781')
 ,('3b14914a-9fdf-42e0-8482-955688cf27ad','Imprint','2020-06-10 16:17:42.796','2020-06-10 16:17:42.796','0c12577b-360b-4843-a86e-39c129047b0b','188aab68-8bfa-46f0-bed8-77463b896869')
 ,('4313f3e8-1886-4cd6-a8e1-d4498657e815','Wersja','2020-06-10 16:17:42.811','2020-06-10 16:17:42.811','0c12577b-360b-4843-a86e-39c129047b0b','dff61361-192a-4088-b91a-b18e144a20ff')
 ,('223b06f5-555a-4f84-94e1-32d53617bd4c','System operacyjny','2020-06-10 16:17:42.822','2020-06-10 16:17:42.822','0c12577b-360b-4843-a86e-39c129047b0b','e5f75dd6-adb8-43dd-ae95-705de793ea07')
@@ -3362,10 +3534,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('32c09cf2-0cb3-4546-bf33-d2180031fda8','Warunki korzystania','2020-06-10 16:17:42.852','2020-06-10 16:17:42.852','0c12577b-360b-4843-a86e-39c129047b0b','6b321c2a-fcf5-4194-b2ce-082da4ba0a5f')
 ,('058cd55c-294f-4763-96fc-c0ed8900a573','Licencje','2020-06-10 16:17:42.865','2020-06-10 16:17:42.865','0c12577b-360b-4843-a86e-39c129047b0b','8d1fe0a4-58a9-4026-8c43-f569b8af87dd')
 ,('e2224a30-7e3d-4e84-9740-b0b02bfbf7c4','PRZEPISY PRAWNE I ZASADY','2020-06-10 16:17:42.876','2020-06-10 16:17:42.876','0c12577b-360b-4843-a86e-39c129047b0b','2bc02bf0-46c9-4494-824f-e2297f5655a8')
+,('990d08a0-405a-48f2-ac6b-e2532ed10469','https://www.softgarden.io/company/imprint/','2020-06-10 16:17:42.884','2020-06-10 16:17:42.884','0c12577b-360b-4843-a86e-39c129047b0b','cd927ee7-c197-4ece-9671-64cb61b4a39b')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('990d08a0-405a-48f2-ac6b-e2532ed10469','https://www.softgarden.io/company/imprint/','2020-06-10 16:17:42.884','2020-06-10 16:17:42.884','0c12577b-360b-4843-a86e-39c129047b0b','cd927ee7-c197-4ece-9671-64cb61b4a39b')
-,('77d536c8-b5e2-4e1b-ba23-94ca3c7a0262','https://www.softgarden.io/company/data-protection-notice-for-softgarden-products/','2020-06-10 16:17:42.894','2020-06-10 16:17:42.894','0c12577b-360b-4843-a86e-39c129047b0b','d3af4e74-833d-404f-90bb-39c57b6132b8')
+('77d536c8-b5e2-4e1b-ba23-94ca3c7a0262','https://www.softgarden.io/company/data-protection-notice-for-softgarden-products/','2020-06-10 16:17:42.894','2020-06-10 16:17:42.894','0c12577b-360b-4843-a86e-39c129047b0b','d3af4e74-833d-404f-90bb-39c57b6132b8')
 ,('0a0418b5-a378-4fd2-aafe-2f403e4ec9cd','https://www.softgarden.io/company/terms/','2020-06-10 16:17:42.901','2020-06-10 16:17:42.901','0c12577b-360b-4843-a86e-39c129047b0b','171bf735-8e6a-4b43-b255-4bb73bae6d07')
 ,('88ad10a2-eed8-4e11-ab6d-4570885b8014','Biblioteki, których używamy','2020-06-10 16:17:42.911','2020-06-10 16:17:42.911','0c12577b-360b-4843-a86e-39c129047b0b','e59f13f4-0229-426e-9020-b4519f3d379c')
 ,('febe0906-2bc8-4e96-92c2-fd9cba0d515c','Poniższa lista zewnętrznych oprogramowań może być użyta w częściach aplikacji softgarden. Dziękujemy społeczności open source za ich wkład.','2020-06-10 16:17:42.918','2020-06-10 16:17:42.918','0c12577b-360b-4843-a86e-39c129047b0b','33a36fed-3438-4075-8ced-4e4fffd691b5')
@@ -3374,10 +3546,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('6a072ecf-461f-42f1-8f29-8ec101db3792','Nie','2020-06-10 16:17:42.947','2020-06-10 16:17:42.947','0c12577b-360b-4843-a86e-39c129047b0b','64b1350e-8f50-4951-9648-0fdacc85399d')
 ,('4ea7596e-13ef-4133-9a1c-7f32873ed24d','Tak','2020-06-10 16:17:42.957','2020-06-10 16:17:42.957','0c12577b-360b-4843-a86e-39c129047b0b','d92869c0-3473-4d7d-8e06-aa821fe5ca8c')
 ,('8264e356-a409-4a18-81e2-bef0053b2c45','Kandydaci','2020-06-10 16:17:42.975','2020-06-10 16:17:42.975','0c12577b-360b-4843-a86e-39c129047b0b','0a8774a5-721b-4bd2-96ff-6b18ced73781')
+,('5bc37cca-f56e-4b48-8ffd-6ef87762a2ad','Wyszukiwanie według nazwy, tytułu lub lokalizacji','2020-06-10 16:17:42.984','2020-06-10 16:17:42.984','0c12577b-360b-4843-a86e-39c129047b0b','2d84282c-de52-492a-a55b-469d769e12ae')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('5bc37cca-f56e-4b48-8ffd-6ef87762a2ad','Wyszukiwanie według nazwy, tytułu lub lokalizacji','2020-06-10 16:17:42.984','2020-06-10 16:17:42.984','0c12577b-360b-4843-a86e-39c129047b0b','2d84282c-de52-492a-a55b-469d769e12ae')
-,('74e90188-c897-43e6-b784-6ed67157699d','Druga szansa','2020-06-10 16:17:43.005','2020-06-10 16:17:43.005','0c12577b-360b-4843-a86e-39c129047b0b','70ef40e2-8719-4ec3-b362-82a2855f5310')
+('74e90188-c897-43e6-b784-6ed67157699d','Druga szansa','2020-06-10 16:17:43.005','2020-06-10 16:17:43.005','0c12577b-360b-4843-a86e-39c129047b0b','70ef40e2-8719-4ec3-b362-82a2855f5310')
 ,('7bbf3ff4-7bb9-4e01-944a-55711cf9b287','Obecnie w procesie aplikacyjnym nie ma aplikacji.','2020-06-10 16:17:43.016','2020-06-10 16:17:43.016','0c12577b-360b-4843-a86e-39c129047b0b','35bb7f80-c09c-4686-b631-77a013ea0e75')
 ,('24fb3046-6b1d-4473-93e8-5d6799736fe2','Zmień
 status','2020-06-10 16:17:43.026','2020-06-10 16:17:43.026','0c12577b-360b-4843-a86e-39c129047b0b','de22e015-7ced-48bc-892d-fa4e4552c21e')
@@ -3389,10 +3561,10 @@ szansa','2020-06-10 16:17:43.044','2020-06-10 16:17:43.044','0c12577b-360b-4843-
 ,('fefd1963-8fc5-440a-b0c7-830874fdc316','Został wstrzymany na {{a}}','2020-06-10 16:17:43.069','2020-06-10 16:17:43.069','0c12577b-360b-4843-a86e-39c129047b0b','b73868c7-9ede-43e1-a635-f202daddec50')
 ,('4f277385-149f-484e-aca8-ff960307997b','Oferta została wysłana {{date}}','2020-06-10 16:17:43.078','2020-06-10 16:17:43.078','0c12577b-360b-4843-a86e-39c129047b0b','3aac5fdc-aea7-4945-bad5-08f2e900296b')
 ,('807ba3d8-c2b3-44f1-8387-f57c4f248bec','Wynajęty na {{day}} {{date}}','2020-06-10 16:17:43.087','2020-06-10 16:17:43.087','0c12577b-360b-4843-a86e-39c129047b0b','b0da7047-b19e-471c-acf7-12ec574cad57')
+,('a21671e6-b55d-4a05-bf94-94d808026dda','Pierwszy dzień {{day}} {{date}}','2020-06-10 16:17:43.096','2020-06-10 16:17:43.096','0c12577b-360b-4843-a86e-39c129047b0b','a241d4f3-a77b-4e9d-af58-20288b7c1c0c')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('a21671e6-b55d-4a05-bf94-94d808026dda','Pierwszy dzień {{day}} {{date}}','2020-06-10 16:17:43.096','2020-06-10 16:17:43.096','0c12577b-360b-4843-a86e-39c129047b0b','a241d4f3-a77b-4e9d-af58-20288b7c1c0c')
-,('dbee7697-1159-4899-81da-b333f6830ac4','D MMM, YYYY','2020-06-10 16:17:43.105','2020-06-10 16:17:43.105','0c12577b-360b-4843-a86e-39c129047b0b','e6bc0f44-9e75-4c0d-b3fb-9861aed6d346')
+('dbee7697-1159-4899-81da-b333f6830ac4','D MMM, YYYY','2020-06-10 16:17:43.105','2020-06-10 16:17:43.105','0c12577b-360b-4843-a86e-39c129047b0b','e6bc0f44-9e75-4c0d-b3fb-9861aed6d346')
 ,('00b8d742-fd5c-4d25-9615-32474c7e9c22','Oferta zaakceptowania w ','2020-06-10 16:17:43.114','2020-06-10 16:17:43.114','0c12577b-360b-4843-a86e-39c129047b0b','aeb35b68-9a70-4c10-b2ce-4fe8f0b64d76')
 ,('04dcc4b4-dbbc-4c4b-bf8f-b3bb0b43fba8','ddd DD MMM, YYYY','2020-06-10 16:17:43.124','2020-06-10 16:17:43.124','0c12577b-360b-4843-a86e-39c129047b0b','cc9eec4c-4639-4d4e-ae33-58e17709f85e')
 ,('28914f38-4dbd-49c4-b433-e13af40dab7c','ddd MMM DD, YYYY','2020-06-10 16:17:43.133','2020-06-10 16:17:43.133','0c12577b-360b-4843-a86e-39c129047b0b','0f0f4203-9107-4712-a679-1a6a5a9705d9')
@@ -3401,10 +3573,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('600e7a57-8b1e-4c98-9a91-33a3e8dd9794','ZADANIA DO WYKONANIA','2020-06-10 16:17:43.167','2020-06-10 16:17:43.167','0c12577b-360b-4843-a86e-39c129047b0b','f214c412-8902-4426-9f14-b2fceb7ef33f')
 ,('29372cf3-901b-4b64-985a-01d79ab4129f','PRZEGLĄD APLIKACJI','2020-06-10 16:17:43.176','2020-06-10 16:17:43.176','0c12577b-360b-4843-a86e-39c129047b0b','644b60af-5c46-4e07-b857-3df03c31d6b8')
 ,('12256246-dbca-40c4-97e5-9244deb29dc8','TAGS','2020-06-10 16:17:43.185','2020-06-10 16:17:43.185','0c12577b-360b-4843-a86e-39c129047b0b','5d9744ed-100e-4c91-b498-2befa0230ca3')
+,('a87286c6-774d-4846-ba0f-4517c6ffa398','ZAŁĄCZNIKI','2020-06-10 16:17:43.194','2020-06-10 16:17:43.194','0c12577b-360b-4843-a86e-39c129047b0b','82a47841-8ab3-456c-9449-151adf3e7ed3')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('a87286c6-774d-4846-ba0f-4517c6ffa398','ZAŁĄCZNIKI','2020-06-10 16:17:43.194','2020-06-10 16:17:43.194','0c12577b-360b-4843-a86e-39c129047b0b','82a47841-8ab3-456c-9449-151adf3e7ed3')
-,('bc3ac5cf-1c73-4f89-837c-40aa9cdbf73b','OCENY APLIKACJI','2020-06-10 16:17:43.205','2020-06-10 16:17:43.205','0c12577b-360b-4843-a86e-39c129047b0b','be00c368-8109-4310-9fcf-1b8627911905')
+('bc3ac5cf-1c73-4f89-837c-40aa9cdbf73b','OCENY APLIKACJI','2020-06-10 16:17:43.205','2020-06-10 16:17:43.205','0c12577b-360b-4843-a86e-39c129047b0b','be00c368-8109-4310-9fcf-1b8627911905')
 ,('3cf1bf4a-e1be-4ce4-a110-a3a604eef51e','Twoja ocena','2020-06-10 16:17:43.215','2020-06-10 16:17:43.215','0c12577b-360b-4843-a86e-39c129047b0b','d0cd184b-2507-49f0-a071-859d9f24ddbd')
 ,('c1a436c3-8066-4100-bde0-693063444319','Twój ostatni komentarz','2020-06-10 16:17:43.227','2020-06-10 16:17:43.227','0c12577b-360b-4843-a86e-39c129047b0b','1add9ecf-a8b8-4b65-94a9-e97f59daed1a')
 ,('641a96b1-19c2-493a-9ff1-f839c4b37d6e','Brak głosowania przez podniesienie kciuka','2020-06-10 16:17:43.238','2020-06-10 16:17:43.238','0c12577b-360b-4843-a86e-39c129047b0b','804afffc-ad53-42b7-8096-181969082ae7')
@@ -3413,10 +3585,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('8b7c7112-bb6a-468b-988d-daaa9a053c25','Napisz','2020-06-10 16:17:43.269','2020-06-10 16:17:43.269','0c12577b-360b-4843-a86e-39c129047b0b','97bf4237-a390-45e7-aba3-3a41164ccce7')
 ,('85095472-d0a3-4cff-bef2-f94a92410ae5','CV','2020-06-10 16:17:43.279','2020-06-10 16:17:43.279','0c12577b-360b-4843-a86e-39c129047b0b','4a22320c-9b19-4d3d-a3e1-7f94f298e9c6')
 ,('e8cb4d07-7b56-406e-988e-cb359ab8099b','Wyświetl wszystkie jako plik PDF','2020-06-10 16:17:43.287','2020-06-10 16:17:43.287','0c12577b-360b-4843-a86e-39c129047b0b','a115ab9a-50e9-4025-ab02-213aabdec330')
+,('8926e7c9-ba53-45c7-b601-1a1660f5af08','Głosuj','2020-06-10 16:17:43.296','2020-06-10 16:17:43.296','0c12577b-360b-4843-a86e-39c129047b0b','0698b174-2d48-4a24-bd86-c2cbabf19294')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('8926e7c9-ba53-45c7-b601-1a1660f5af08','Głosuj','2020-06-10 16:17:43.296','2020-06-10 16:17:43.296','0c12577b-360b-4843-a86e-39c129047b0b','0698b174-2d48-4a24-bd86-c2cbabf19294')
-,('56e7743b-2217-47aa-9c42-96082ac66768','Oceń','2020-06-10 16:17:43.304','2020-06-10 16:17:43.304','0c12577b-360b-4843-a86e-39c129047b0b','086798da-9a38-4b68-8145-32946908501f')
+('56e7743b-2217-47aa-9c42-96082ac66768','Oceń','2020-06-10 16:17:43.304','2020-06-10 16:17:43.304','0c12577b-360b-4843-a86e-39c129047b0b','086798da-9a38-4b68-8145-32946908501f')
 ,('d76ee8cb-f2dc-47ea-9d17-723f32724973','Zaprosić na rozmowę kwalifikacyjną?','2020-06-10 16:17:43.315','2020-06-10 16:17:43.315','0c12577b-360b-4843-a86e-39c129047b0b','6150699f-6291-49b7-99fe-6cb422304d17')
 ,('4c1a8bf9-13dd-4893-9556-b1a042cdfee5','Czy chcesz wystawić Ocenę?','2020-06-10 16:17:43.325','2020-06-10 16:17:43.325','0c12577b-360b-4843-a86e-39c129047b0b','84138a6a-ca1c-48be-a986-0811f484ba95')
 ,('b4c28258-84bb-4607-a0d7-ee51ce99e7ca','Jesteś obecnie w trybie offline','2020-06-10 16:17:43.333','2020-06-10 16:17:43.333','0c12577b-360b-4843-a86e-39c129047b0b','fcbeb512-832f-47e2-b4f6-bd47794a54a9')
@@ -3425,10 +3597,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('ab6c5c14-5c06-48c8-9edf-6e25130c3be2','Jeszcze nie głosowano','2020-06-10 16:17:43.360','2020-06-10 16:17:43.360','0c12577b-360b-4843-a86e-39c129047b0b','f5927aa7-6bcb-4c96-ba40-0f44d4844844')
 ,('3313eec1-54e4-4ada-b45b-f6d77570ccff','Głosy zespołu','2020-06-10 16:17:43.369','2020-06-10 16:17:43.369','0c12577b-360b-4843-a86e-39c129047b0b','a296b9f9-74c5-4c27-9a97-8b0075454993')
 ,('80e2002c-c343-4324-afba-274a65af077e','Jesteś obecnie w trybie offline','2020-06-10 16:17:43.382','2020-06-10 16:17:43.382','0c12577b-360b-4843-a86e-39c129047b0b','df296d17-3eda-4123-b535-a164f2d84cec')
+,('cd44ce40-eeda-41f7-aabf-debae9b47671','Połącz się z Internetem i spróbuj ponownie.','2020-06-10 16:17:43.393','2020-06-10 16:17:43.393','0c12577b-360b-4843-a86e-39c129047b0b','32d9a0b6-ad5a-4899-a6d2-4e560ca18245')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('cd44ce40-eeda-41f7-aabf-debae9b47671','Połącz się z Internetem i spróbuj ponownie.','2020-06-10 16:17:43.393','2020-06-10 16:17:43.393','0c12577b-360b-4843-a86e-39c129047b0b','32d9a0b6-ad5a-4899-a6d2-4e560ca18245')
-,('f38474f9-4ed3-43cc-9129-7373d43bc5a6','Oceny zespołowe','2020-06-10 16:17:43.401','2020-06-10 16:17:43.401','0c12577b-360b-4843-a86e-39c129047b0b','f995ea19-d216-404a-843f-9c18131521d5')
+('f38474f9-4ed3-43cc-9129-7373d43bc5a6','Oceny zespołowe','2020-06-10 16:17:43.401','2020-06-10 16:17:43.401','0c12577b-360b-4843-a86e-39c129047b0b','f995ea19-d216-404a-843f-9c18131521d5')
 ,('4903c394-c518-45b9-be57-1b597c998a7f','Twoje oceny','2020-06-10 16:17:43.411','2020-06-10 16:17:43.411','0c12577b-360b-4843-a86e-39c129047b0b','d1942c5a-ad56-40b6-a191-ef1c8c9ec275')
 ,('309088c7-e4fc-4108-98d7-7b21f4021031','1 Ocena','2020-06-10 16:17:43.420','2020-06-10 16:17:43.420','0c12577b-360b-4843-a86e-39c129047b0b','1df1c9f3-dd6c-4ab1-a57f-cc8de0a317fe')
 ,('42765422-4373-4b1e-870d-808207114060','{{count}} Oceny','2020-06-10 16:17:43.429','2020-06-10 16:17:43.429','0c12577b-360b-4843-a86e-39c129047b0b','6c585adf-7914-4a21-9ff7-7731126d787a')
@@ -3437,10 +3609,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('a323562f-6281-4409-9758-f5194e4d75c9','Nie zatrudnił bym tego kandydata','2020-06-10 16:17:43.457','2020-06-10 16:17:43.457','0c12577b-360b-4843-a86e-39c129047b0b','e1fb5b39-54e5-454b-b5b2-218e19b3696c')
 ,('289daa05-9243-4625-9da7-fb1d08270c92','Nie oceniono','2020-06-10 16:17:43.468','2020-06-10 16:17:43.468','0c12577b-360b-4843-a86e-39c129047b0b','f253ea97-bbf7-490b-94e4-112a55a3d521')
 ,('6cd62488-4326-4435-b8cf-a20a06ec37d2','Szczegóły aplikacji','2020-06-10 16:17:43.478','2020-06-10 16:17:43.478','0c12577b-360b-4843-a86e-39c129047b0b','1d027d18-972b-4a1a-8747-43f0e9b3f49a')
+,('cd0eb3d5-ad9d-4c5f-a8d4-cbcb06d066ac',' E-mail','2020-06-10 16:17:43.487','2020-06-10 16:17:43.487','0c12577b-360b-4843-a86e-39c129047b0b','d05377c4-435d-4ddf-b58c-594b230a9e14')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('cd0eb3d5-ad9d-4c5f-a8d4-cbcb06d066ac',' E-mail','2020-06-10 16:17:43.487','2020-06-10 16:17:43.487','0c12577b-360b-4843-a86e-39c129047b0b','d05377c4-435d-4ddf-b58c-594b230a9e14')
-,('8c631973-058b-4cf9-a0d9-9b1cc8600a17','Telefon','2020-06-10 16:17:43.500','2020-06-10 16:17:43.500','0c12577b-360b-4843-a86e-39c129047b0b','b0d58993-3bf7-48bb-8abf-dbf604b88967')
+('8c631973-058b-4cf9-a0d9-9b1cc8600a17','Telefon','2020-06-10 16:17:43.500','2020-06-10 16:17:43.500','0c12577b-360b-4843-a86e-39c129047b0b','b0d58993-3bf7-48bb-8abf-dbf604b88967')
 ,('ae112ebd-daba-484f-8aa1-abed06c87c31','Przeniesiono z kosza odrzuceń','2020-06-10 16:17:43.513','2020-06-10 16:17:43.513','0c12577b-360b-4843-a86e-39c129047b0b','3cad16df-e0a9-44b9-b4ff-389f19bf86f7')
 ,('5a976435-fdeb-4c82-aa2c-7c04b33a9054','Nie można przenieść z kosza odrzuceń','2020-06-10 16:17:43.522','2020-06-10 16:17:43.522','0c12577b-360b-4843-a86e-39c129047b0b','7d0c6b87-9cba-45f7-ab15-9e0040792894')
 ,('2bc52891-c991-4e46-8084-cab9142485bc','Czy na pewno chcesz
@@ -3450,10 +3622,10 @@ usunąć?','2020-06-10 16:17:43.533','2020-06-10 16:17:43.533','0c12577b-360b-48
 ,('e6c72159-7b68-41c0-8e39-6f98df448b3b','Anuluj','2020-06-10 16:17:43.562','2020-06-10 16:17:43.562','0c12577b-360b-4843-a86e-39c129047b0b','17c0a33e-317c-4b9c-9f42-97fd13c5465b')
 ,('0f08b8f7-55e4-4a87-9fef-aa5d38cd1378','Czy chcesz spróbować ponownie?','2020-06-10 16:17:43.572','2020-06-10 16:17:43.572','0c12577b-360b-4843-a86e-39c129047b0b','b2e53602-5cf8-4828-9e0e-129969a12c57')
 ,('33f0fd24-b1f7-4dfb-adbd-7d9043b27346','Rozmowa nie jest zaplanowana','2020-06-10 16:17:43.581','2020-06-10 16:17:43.581','0c12577b-360b-4843-a86e-39c129047b0b','2b09b1d0-c2f5-47ee-b108-ee5f86ce44a8')
+,('fbd41e4f-3084-4834-aed9-308b32faa0ae','Rozkład inny ','2020-06-10 16:17:43.591','2020-06-10 16:17:43.591','0c12577b-360b-4843-a86e-39c129047b0b','0ffcc331-9cce-4ea7-9cca-6edb2844394a')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('fbd41e4f-3084-4834-aed9-308b32faa0ae','Rozkład inny ','2020-06-10 16:17:43.591','2020-06-10 16:17:43.591','0c12577b-360b-4843-a86e-39c129047b0b','0ffcc331-9cce-4ea7-9cca-6edb2844394a')
-,('71cd7667-e699-4901-b420-a2640864a039','Oczekiwanie na odpowiedź','2020-06-10 16:17:43.602','2020-06-10 16:17:43.602','0c12577b-360b-4843-a86e-39c129047b0b','4ccbafbd-c02d-4985-8e37-6cbb7a24cc21')
+('71cd7667-e699-4901-b420-a2640864a039','Oczekiwanie na odpowiedź','2020-06-10 16:17:43.602','2020-06-10 16:17:43.602','0c12577b-360b-4843-a86e-39c129047b0b','4ccbafbd-c02d-4985-8e37-6cbb7a24cc21')
 ,('b84f44b0-e989-48ea-a694-c5902d477a88','Potwierdź','2020-06-10 16:17:43.612','2020-06-10 16:17:43.612','0c12577b-360b-4843-a86e-39c129047b0b','5224a046-e396-4267-ae00-1492356f60b2')
 ,('14b59ef6-41a4-427b-9120-08d547e68415','Zmień termin','2020-06-10 16:17:43.622','2020-06-10 16:17:43.622','0c12577b-360b-4843-a86e-39c129047b0b','999299c0-88b0-48b3-80a4-fc6cb583da41')
 ,('7d444300-a7ae-41cf-a8e1-a78bbcc21fbd','Umów','2020-06-10 16:17:43.630','2020-06-10 16:17:43.630','0c12577b-360b-4843-a86e-39c129047b0b','610d087b-65b4-4a10-af33-1eabc50ef912')
@@ -3462,10 +3634,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('36fa4714-ccea-45db-92b3-c7d4ef7646c5','do rozmowy ','2020-06-10 16:17:43.661','2020-06-10 16:17:43.661','0c12577b-360b-4843-a86e-39c129047b0b','a813d016-ecc9-4c54-8808-bcb1097bafce')
 ,('453964e1-c027-4b38-a373-84b7502f1db1','Rozmowa o','2020-06-10 16:17:43.671','2020-06-10 16:17:43.671','0c12577b-360b-4843-a86e-39c129047b0b','e343f6e6-9f97-45c6-92fa-570d413cdd75')
 ,('a2e4ca8c-65ef-47ec-9591-85eb2af3adbd','Zakończone rozmowy','2020-06-10 16:17:43.680','2020-06-10 16:17:43.680','0c12577b-360b-4843-a86e-39c129047b0b','224ea73a-c41e-4cbd-9166-5b8fa75800bc')
+,('5dd719f2-44f1-4b8a-a8a0-9fcc3ed866b4','Potwierdzone nadchodzące rozmowy','2020-06-10 16:17:43.691','2020-06-10 16:17:43.691','0c12577b-360b-4843-a86e-39c129047b0b','faa8521b-d651-461d-a26d-520027aeb17d')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('5dd719f2-44f1-4b8a-a8a0-9fcc3ed866b4','Potwierdzone nadchodzące rozmowy','2020-06-10 16:17:43.691','2020-06-10 16:17:43.691','0c12577b-360b-4843-a86e-39c129047b0b','faa8521b-d651-461d-a26d-520027aeb17d')
-,('1b620ecd-72e1-47ea-b9c2-6bebc695c227','Wyślij nową ofertę','2020-06-10 16:17:43.702','2020-06-10 16:17:43.702','0c12577b-360b-4843-a86e-39c129047b0b','d5f3a64b-22c4-4097-89d9-a28cc9e6e1ec')
+('1b620ecd-72e1-47ea-b9c2-6bebc695c227','Wyślij nową ofertę','2020-06-10 16:17:43.702','2020-06-10 16:17:43.702','0c12577b-360b-4843-a86e-39c129047b0b','d5f3a64b-22c4-4097-89d9-a28cc9e6e1ec')
 ,('dadeffc5-5be1-483a-a89e-4185eeeaa3c3','Oferta odrzucona','2020-06-10 16:17:43.713','2020-06-10 16:17:43.713','0c12577b-360b-4843-a86e-39c129047b0b','30e6f337-8f9f-4d9b-9a1b-ad567966229d')
 ,('41f4f593-0ea3-4984-9fa8-ba3388b96129','Oferta zaakceptowana','2020-06-10 16:17:43.723','2020-06-10 16:17:43.723','0c12577b-360b-4843-a86e-39c129047b0b','701049c7-2fc0-432e-aa9b-68e7e3ffce00')
 ,('da0d6ade-0f89-4d32-93a8-818a48121de3','Odrzucenie w dniu ','2020-06-10 16:17:43.735','2020-06-10 16:17:43.735','0c12577b-360b-4843-a86e-39c129047b0b','50e94435-6cd3-4699-8416-4a84a5e742c9')
@@ -3474,10 +3646,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('1592c9e0-e079-4e44-814f-c46f46b0347b','Przeniesione do ','2020-06-10 16:17:43.764','2020-06-10 16:17:43.764','0c12577b-360b-4843-a86e-39c129047b0b','cbf1341a-417c-416b-8c9a-422fd1b886e4')
 ,('6af9ce38-7571-4805-ba52-d041565323d6','Powrót do wcześniejszego kroku','2020-06-10 16:17:43.778','2020-06-10 16:17:43.778','0c12577b-360b-4843-a86e-39c129047b0b','55ad0568-9ad4-4f0c-88dc-d604e280a55a')
 ,('6cd2cc17-a289-426d-b6db-8e1bc089d09d','Zresetowane','2020-06-10 16:17:43.788','2020-06-10 16:17:43.788','0c12577b-360b-4843-a86e-39c129047b0b','d17a76ef-2394-4f56-a76d-c1fcd2f6e6d8')
+,('4911e48c-13da-45fb-a6a7-0f16c3279c5a','Obecny status','2020-06-10 16:17:43.798','2020-06-10 16:17:43.798','0c12577b-360b-4843-a86e-39c129047b0b','76a06b92-dc1e-4551-9d12-da6d95038b92')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('4911e48c-13da-45fb-a6a7-0f16c3279c5a','Obecny status','2020-06-10 16:17:43.798','2020-06-10 16:17:43.798','0c12577b-360b-4843-a86e-39c129047b0b','76a06b92-dc1e-4551-9d12-da6d95038b92')
-,('ab3e6e4f-1e6b-422b-90d1-fdb39c2284d3','Wyślij nową ofertę','2020-06-10 16:17:43.810','2020-06-10 16:17:43.810','0c12577b-360b-4843-a86e-39c129047b0b','41a62f5a-72c0-496c-a5d3-1268b62e24b7')
+('ab3e6e4f-1e6b-422b-90d1-fdb39c2284d3','Wyślij nową ofertę','2020-06-10 16:17:43.810','2020-06-10 16:17:43.810','0c12577b-360b-4843-a86e-39c129047b0b','41a62f5a-72c0-496c-a5d3-1268b62e24b7')
 ,('b3b63280-72aa-425f-82aa-7f753e2688b1','Oferta jest zaakceptowana','2020-06-10 16:17:43.821','2020-06-10 16:17:43.821','0c12577b-360b-4843-a86e-39c129047b0b','9218cd21-8e55-4276-b327-cce9f91c64f3')
 ,('148801bc-fefb-485d-89d5-e442418f6d8d','Oferta jest odrzucona','2020-06-10 16:17:43.832','2020-06-10 16:17:43.832','0c12577b-360b-4843-a86e-39c129047b0b','9a4621dc-ee9f-4581-aa58-8a655ac4de4d')
 ,('7247324b-aa3f-4c5d-acd0-df73d74ccd7d','DD MM YYYY','2020-06-10 16:17:43.847','2020-06-10 16:17:43.847','0c12577b-360b-4843-a86e-39c129047b0b','cc9eec4c-4639-4d4e-ae33-58e17709f85e')
@@ -3486,10 +3658,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('0e813e9d-96d9-43fc-a0f8-3866b6f5f3b8','DOŚWIADCZENIE ZAWODOWE','2020-06-10 16:17:43.877','2020-06-10 16:17:43.877','0c12577b-360b-4843-a86e-39c129047b0b','aee448eb-abee-44ea-806b-ed2e7ead5ff3')
 ,('2b81682a-6d91-4131-a2d6-15944083a22e','WYKSZTAŁCENIE','2020-06-10 16:17:43.891','2020-06-10 16:17:43.891','0c12577b-360b-4843-a86e-39c129047b0b','27fabfe8-bf0b-47db-83b0-f068cddf73f0')
 ,('e4851616-459f-4724-922a-4e7cb4b1abde','obecnie','2020-06-10 16:17:43.900','2020-06-10 16:17:43.900','0c12577b-360b-4843-a86e-39c129047b0b','cc659b51-da6c-4925-bbad-198608f96b80')
+,('db0b2a68-a43a-4194-a5e5-8f011fb00466','Dyplom: {{x}}','2020-06-10 16:17:43.912','2020-06-10 16:17:43.912','0c12577b-360b-4843-a86e-39c129047b0b','a887e868-d82a-4fad-b126-69fa744758f4')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('db0b2a68-a43a-4194-a5e5-8f011fb00466','Dyplom: {{x}}','2020-06-10 16:17:43.912','2020-06-10 16:17:43.912','0c12577b-360b-4843-a86e-39c129047b0b','a887e868-d82a-4fad-b126-69fa744758f4')
-,('43976a7b-6751-4cdb-9cdb-bab9601f12e9','Autoblokada','2020-06-10 16:17:43.929','2020-06-10 16:17:43.929','0c12577b-360b-4843-a86e-39c129047b0b','7dc2b23a-4e7d-422a-9c74-28a9664939d2')
+('43976a7b-6751-4cdb-9cdb-bab9601f12e9','Autoblokada','2020-06-10 16:17:43.929','2020-06-10 16:17:43.929','0c12577b-360b-4843-a86e-39c129047b0b','7dc2b23a-4e7d-422a-9c74-28a9664939d2')
 ,('374740a2-1836-42b2-904f-aa7923733b6c','Anuluj','2020-06-10 16:17:43.938','2020-06-10 16:17:43.938','0c12577b-360b-4843-a86e-39c129047b0b','17c0a33e-317c-4b9c-9f42-97fd13c5465b')
 ,('35bb5c1e-7a52-4ad7-99f7-d22a28bff798','Gotowe','2020-06-10 16:17:43.947','2020-06-10 16:17:43.947','0c12577b-360b-4843-a86e-39c129047b0b','bbbfac4c-e1b0-47e9-86bb-c6c8d7c84daa')
 ,('f5764c97-f6fd-42f3-8c83-6f62f5bdaf08','Blokowanie aplikacji, gdy działa w tle.','2020-06-10 16:17:43.957','2020-06-10 16:17:43.957','0c12577b-360b-4843-a86e-39c129047b0b','c846b29d-724c-46fe-bac4-8512c6f29195')
@@ -3498,10 +3670,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('2b450128-5371-4a5c-9e3b-aae6178d11c4','Wprowadź ponownie nowy kod dostępu','2020-06-10 16:17:43.988','2020-06-10 16:17:43.988','0c12577b-360b-4843-a86e-39c129047b0b','2fb395d6-ab6f-4956-9288-e123eb630bec')
 ,('803136a6-d99c-4eed-b793-0c31bb9ad65b','Kod dostępu nie jest identyczny Spróbuj jeszcze raz','2020-06-10 16:17:43.998','2020-06-10 16:17:43.998','0c12577b-360b-4843-a86e-39c129047b0b','8230ade8-21bf-4dd1-9c7b-04dd6befecec')
 ,('b348a7a1-7689-4b0a-9c63-f8468aa3805a','Zmień kod PIN','2020-06-10 16:17:44.008','2020-06-10 16:17:44.008','0c12577b-360b-4843-a86e-39c129047b0b','b6b66c61-de8a-41a7-8670-ab5acd8bb45f')
+,('31a0b91f-4120-4dfa-bf83-0baed17c173c','Anuluj','2020-06-10 16:17:44.019','2020-06-10 16:17:44.019','0c12577b-360b-4843-a86e-39c129047b0b','17c0a33e-317c-4b9c-9f42-97fd13c5465b')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('31a0b91f-4120-4dfa-bf83-0baed17c173c','Anuluj','2020-06-10 16:17:44.019','2020-06-10 16:17:44.019','0c12577b-360b-4843-a86e-39c129047b0b','17c0a33e-317c-4b9c-9f42-97fd13c5465b')
-,('20d54918-e150-4679-b036-0b377cbab2e3','Czat','2020-06-10 16:17:44.033','2020-06-10 16:17:44.033','0c12577b-360b-4843-a86e-39c129047b0b','0a8774a5-721b-4bd2-96ff-6b18ced73781')
+('20d54918-e150-4679-b036-0b377cbab2e3','Czat','2020-06-10 16:17:44.033','2020-06-10 16:17:44.033','0c12577b-360b-4843-a86e-39c129047b0b','0a8774a5-721b-4bd2-96ff-6b18ced73781')
 ,('95de1841-cc9d-4089-838c-3241777db54f','Szukaj nazwisk','2020-06-10 16:17:44.048','2020-06-10 16:17:44.048','0c12577b-360b-4843-a86e-39c129047b0b','2d84282c-de52-492a-a55b-469d769e12ae')
 ,('e213f2d5-eda3-4c0c-8665-d2139b462f07','Ty','2020-06-10 16:17:44.060','2020-06-10 16:17:44.060','0c12577b-360b-4843-a86e-39c129047b0b','6522da59-7cdc-4fcd-9e36-2e51893d8e7f')
 ,('4ffb770b-9c93-4d68-9b12-854e78dbd4dd','Obecnie nie ma czatów zespołowych na temat aplikacji w procesie aplikacyjnym.','2020-06-10 16:17:44.083','2020-06-10 16:17:44.083','0c12577b-360b-4843-a86e-39c129047b0b','48941d31-784a-4568-9b1f-95d729d83a31')
@@ -3510,10 +3682,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('636cf290-42b1-4d5a-b55d-8fcc714b82ad','Wyślij','2020-06-10 16:17:44.119','2020-06-10 16:17:44.119','0c12577b-360b-4843-a86e-39c129047b0b','674edb43-c461-470b-874c-b23e334de223')
 ,('bd553deb-3435-4862-bffd-24ebf5275778','Jesteś obecnie w trybie offline','2020-06-10 16:17:44.128','2020-06-10 16:17:44.128','0c12577b-360b-4843-a86e-39c129047b0b','fcbeb512-832f-47e2-b4f6-bd47794a54a9')
 ,('614a2f2b-8378-4736-a147-af031a316e04','Obecnie nie masz połączenia z Internetem. Ale nie martw się, twoje wiadomości zostaną przesłane po ponownym połączeniu.','2020-06-10 16:17:44.139','2020-06-10 16:17:44.139','0c12577b-360b-4843-a86e-39c129047b0b','7b74dbb0-81c6-468e-b174-4c67760f58c1')
+,('164d2655-aaaf-4fbe-b907-1f4e9372f42a',' • Edytowane','2020-06-10 16:17:44.151','2020-06-10 16:17:44.151','0c12577b-360b-4843-a86e-39c129047b0b','5df4b335-752c-463b-8e10-4e4d1364e038')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('164d2655-aaaf-4fbe-b907-1f4e9372f42a',' • Edytowane','2020-06-10 16:17:44.151','2020-06-10 16:17:44.151','0c12577b-360b-4843-a86e-39c129047b0b','5df4b335-752c-463b-8e10-4e4d1364e038')
-,('c64c73d3-f030-43a8-9b7f-95c0abd785f6','Dzisiaj','2020-06-10 16:17:44.161','2020-06-10 16:17:44.161','0c12577b-360b-4843-a86e-39c129047b0b','e98e867a-90be-44a0-8168-0e920062eeab')
+('c64c73d3-f030-43a8-9b7f-95c0abd785f6','Dzisiaj','2020-06-10 16:17:44.161','2020-06-10 16:17:44.161','0c12577b-360b-4843-a86e-39c129047b0b','e98e867a-90be-44a0-8168-0e920062eeab')
 ,('4f87d89e-bdbb-401e-a21e-0ce27ec70eea','Wczoraj','2020-06-10 16:17:44.170','2020-06-10 16:17:44.170','0c12577b-360b-4843-a86e-39c129047b0b','8d8f7ea7-4142-4ed5-aaca-d4804895ff95')
 ,('ac040cbf-1612-4af5-9657-c2fabdc5508b','Wiadomość','2020-06-10 16:17:44.182','2020-06-10 16:17:44.182','0c12577b-360b-4843-a86e-39c129047b0b','d05377c4-435d-4ddf-b58c-594b230a9e14')
 ,('b30c8d43-23b1-41bd-b05d-efcf5e49f502','Wiadomości','2020-06-10 16:17:44.193','2020-06-10 16:17:44.193','0c12577b-360b-4843-a86e-39c129047b0b','aa9880ad-adf3-408c-ac01-860e5efbe2f1')
@@ -3522,10 +3694,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('934492c2-54fa-4d24-871e-07c824934d8c','Skrzynka odbiorcza','2020-06-10 16:17:44.227','2020-06-10 16:17:44.227','0c12577b-360b-4843-a86e-39c129047b0b','aee04cae-72d7-44b1-b512-85f12a552c82')
 ,('337c9f7b-4e77-4f9f-a9d5-f07338a64f66','Wysłane','2020-06-10 16:17:44.236','2020-06-10 16:17:44.236','0c12577b-360b-4843-a86e-39c129047b0b','92464967-b899-4215-8b2b-29c701fd84c4')
 ,('b2cf7024-0531-4eb3-8424-a5d3e9bcc49f','Nieprzeczytane na początku','2020-06-10 16:17:44.246','2020-06-10 16:17:44.246','0c12577b-360b-4843-a86e-39c129047b0b','54b964b9-1538-40db-ad99-0cb2e6607e8c')
+,('f4b9a741-8239-45bc-b873-169d5d714048','Najnowsze na początku','2020-06-10 16:17:44.255','2020-06-10 16:17:44.255','0c12577b-360b-4843-a86e-39c129047b0b','7f54009b-7f11-426d-a8d7-fad3cdb2ff79')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('f4b9a741-8239-45bc-b873-169d5d714048','Najnowsze na początku','2020-06-10 16:17:44.255','2020-06-10 16:17:44.255','0c12577b-360b-4843-a86e-39c129047b0b','7f54009b-7f11-426d-a8d7-fad3cdb2ff79')
-,('94058630-6f48-47f4-a1e5-4fff1b251ae7','Najstarsze na początku','2020-06-10 16:17:44.265','2020-06-10 16:17:44.265','0c12577b-360b-4843-a86e-39c129047b0b','395c815f-fbd4-40fc-b2fd-22597ac2d433')
+('94058630-6f48-47f4-a1e5-4fff1b251ae7','Najstarsze na początku','2020-06-10 16:17:44.265','2020-06-10 16:17:44.265','0c12577b-360b-4843-a86e-39c129047b0b','395c815f-fbd4-40fc-b2fd-22597ac2d433')
 ,('cbe9f988-e730-4d67-90fe-7a5b4a196af2','Witaj, ','2020-06-10 16:17:44.278','2020-06-10 16:17:44.278','0c12577b-360b-4843-a86e-39c129047b0b','be487c3b-2a95-4ccd-ae34-6be21a949719')
 ,('dd5c25f4-2841-487b-8fd6-0b1c87364321','Zaległe głosowania','2020-06-10 16:17:44.286','2020-06-10 16:17:44.286','0c12577b-360b-4843-a86e-39c129047b0b','71a839d4-2c7e-4641-aab3-9a135b418d3e')
 ,('b48a8cac-5497-4c34-b546-2e471f97892c','Oceń aplikacje','2020-06-10 16:17:44.295','2020-06-10 16:17:44.295','0c12577b-360b-4843-a86e-39c129047b0b','e7b5db2f-138c-4aea-97e3-2d19a46982d5')
@@ -3534,10 +3706,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('ebe000d8-6c11-4400-ac69-5e9a1964b3ca','Dzisiaj','2020-06-10 16:17:44.326','2020-06-10 16:17:44.326','0c12577b-360b-4843-a86e-39c129047b0b','a511d36e-f92d-4b39-84f1-aa0a3ae4ae0c')
 ,('f71c53c0-3a64-47c1-8faa-2c2ac41c7d65','W tym tygodniu','2020-06-10 16:17:44.334','2020-06-10 16:17:44.334','0c12577b-360b-4843-a86e-39c129047b0b','106975ab-fd8b-40e0-8c4a-17f3e662fd3e')
 ,('dd7f53a7-1c8e-45e4-a093-8196a1cd8ad8','Ilość rozmów kwal. na dzisiaj: 1','2020-06-10 16:17:44.347','2020-06-10 16:17:44.347','0c12577b-360b-4843-a86e-39c129047b0b','66ac706f-6580-40b4-9878-1d6169c1bcfd')
+,('3d6056ea-5d4e-4574-ba10-e56b7c30803c','Nadchodzące rozmowy kwal. w tym tygoniu: 1','2020-06-10 16:17:44.357','2020-06-10 16:17:44.357','0c12577b-360b-4843-a86e-39c129047b0b','96f5807b-013f-4fbe-b596-2febeaf27216')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('3d6056ea-5d4e-4574-ba10-e56b7c30803c','Nadchodzące rozmowy kwal. w tym tygoniu: 1','2020-06-10 16:17:44.357','2020-06-10 16:17:44.357','0c12577b-360b-4843-a86e-39c129047b0b','96f5807b-013f-4fbe-b596-2febeaf27216')
-,('0eb6956c-8c87-4293-8824-3ed532068e6f','Ostatnio odwiedzane oferty pracy','2020-06-10 16:17:44.367','2020-06-10 16:17:44.367','0c12577b-360b-4843-a86e-39c129047b0b','74434668-3bee-4669-aee2-2682e98d567d')
+('0eb6956c-8c87-4293-8824-3ed532068e6f','Ostatnio odwiedzane oferty pracy','2020-06-10 16:17:44.367','2020-06-10 16:17:44.367','0c12577b-360b-4843-a86e-39c129047b0b','74434668-3bee-4669-aee2-2682e98d567d')
 ,('93a1d1a9-75d4-490b-b680-ae299566fdbf','Ostatnia aktywność','2020-06-10 16:17:44.376','2020-06-10 16:17:44.376','0c12577b-360b-4843-a86e-39c129047b0b','872a2475-f857-4a2f-8800-798eeaea4d74')
 ,('f40a3e65-8f8c-4c50-9cbf-265625f78296','Uuups! Coś poszło nie tak','2020-06-10 16:17:44.384','2020-06-10 16:17:44.384','0c12577b-360b-4843-a86e-39c129047b0b','9b1c9a79-ce1b-42cb-9d50-1a7774ba9f7d')
 ,('737d167a-97b9-4b54-83e4-9b0fc678cd0d','Obecnie brak rozmów kwal','2020-06-10 16:17:44.395','2020-06-10 16:17:44.395','0c12577b-360b-4843-a86e-39c129047b0b','844dadd9-884a-4605-b842-2835793f7fd3')
@@ -3546,10 +3718,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('90ac0cfb-544d-495f-9cfe-effd288a1a66','Aplikacje','2020-06-10 16:17:44.423','2020-06-10 16:17:44.423','0c12577b-360b-4843-a86e-39c129047b0b','ed0c6c08-e9ab-49b3-bbe0-8345b8f4b690')
 ,('73f6ee2e-223d-4169-862f-fc560e914238','Brak rozmów kwal. w tym tygodniu','2020-06-10 16:17:44.432','2020-06-10 16:17:44.432','0c12577b-360b-4843-a86e-39c129047b0b','1a782fb3-bf3b-4354-a204-9fc9539c93ed')
 ,('ea9cacf1-e459-40ec-8b87-73432ebc6e67','Ilość rozmów kwal. na dzisiaj: {{count}}','2020-06-10 16:17:44.443','2020-06-10 16:17:44.443','0c12577b-360b-4843-a86e-39c129047b0b','7e9039d3-6a89-4d06-bb3d-32a2c4b3cdfd')
+,('2cbc05bc-1791-45ce-97b6-3cb3b7b27788','Dzisiaj brak rozmów kwal','2020-06-10 16:17:44.452','2020-06-10 16:17:44.452','0c12577b-360b-4843-a86e-39c129047b0b','dab89db3-3932-430c-bd66-a398da84f05d')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('2cbc05bc-1791-45ce-97b6-3cb3b7b27788','Dzisiaj brak rozmów kwal','2020-06-10 16:17:44.452','2020-06-10 16:17:44.452','0c12577b-360b-4843-a86e-39c129047b0b','dab89db3-3932-430c-bd66-a398da84f05d')
-,('ef61ffa7-7ecf-4ec7-83d4-77b10d73e805','Nadchodzące rozmowy kwal. w tym tygoniu: {{count}}','2020-06-10 16:17:44.460','2020-06-10 16:17:44.460','0c12577b-360b-4843-a86e-39c129047b0b','e0d73462-5009-4106-a0ef-9757519a23f7')
+('ef61ffa7-7ecf-4ec7-83d4-77b10d73e805','Nadchodzące rozmowy kwal. w tym tygoniu: {{count}}','2020-06-10 16:17:44.460','2020-06-10 16:17:44.460','0c12577b-360b-4843-a86e-39c129047b0b','e0d73462-5009-4106-a0ef-9757519a23f7')
 ,('f16cf978-8846-4f9d-a91f-4b63487b9414','Zadania do wykonania','2020-06-10 16:17:44.471','2020-06-10 16:17:44.471','0c12577b-360b-4843-a86e-39c129047b0b','0a8774a5-721b-4bd2-96ff-6b18ced73781')
 ,('5623898b-3c57-4fd6-9a88-af1cf5b0a88f','Głosowanie przez podniesienie kciuka','2020-06-10 16:17:44.481','2020-06-10 16:17:44.481','0c12577b-360b-4843-a86e-39c129047b0b','599b2771-e6ee-4302-9edd-d2c71566239b')
 ,('214a7f73-425c-4cd8-ab16-3c82ce245435','Obecnie nie ma dostępnych aktywnych To-dos.','2020-06-10 16:17:44.490','2020-06-10 16:17:44.490','0c12577b-360b-4843-a86e-39c129047b0b','0d171e37-28ce-46cf-bcee-1f85bb33a01e')
@@ -3558,10 +3730,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('022c6229-22e4-4d1b-943f-5dba2596a447','Oceń aplikację o pracę','2020-06-10 16:17:44.516','2020-06-10 16:17:44.516','0c12577b-360b-4843-a86e-39c129047b0b','209c4edd-3876-413d-a780-dafa27fd0a86')
 ,('4161850f-ec8e-4ad4-89e4-cef5bb4ecfc4','Nadchodząca rozmowa o pracę','2020-06-10 16:17:44.523','2020-06-10 16:17:44.523','0c12577b-360b-4843-a86e-39c129047b0b','72050ea4-d10c-43cf-9f39-a420714b6c37')
 ,('f45c3e6d-701d-40f7-ada6-51bb2d09679b','Nadchodząca rozmowa o pracę','2020-06-10 16:17:44.534','2020-06-10 16:17:44.534','0c12577b-360b-4843-a86e-39c129047b0b','7c3346b6-aa2b-47bb-83b0-3a15ba4fa721')
+,('1facf8ef-d4a8-4469-870f-1603b061630c','Oczekujące głosowanie kciukiem','2020-06-10 16:17:44.542','2020-06-10 16:17:44.542','0c12577b-360b-4843-a86e-39c129047b0b','16895f21-62c0-4d13-afbb-22a2d34a6e2e')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('1facf8ef-d4a8-4469-870f-1603b061630c','Oczekujące głosowanie kciukiem','2020-06-10 16:17:44.542','2020-06-10 16:17:44.542','0c12577b-360b-4843-a86e-39c129047b0b','16895f21-62c0-4d13-afbb-22a2d34a6e2e')
-,('40fc10b8-da09-45c4-8e49-24645e00fa0e','Oczekująca ocena','2020-06-10 16:17:44.551','2020-06-10 16:17:44.551','0c12577b-360b-4843-a86e-39c129047b0b','a2f55647-c712-4ba3-b332-4fc2293a5ac6')
+('40fc10b8-da09-45c4-8e49-24645e00fa0e','Oczekująca ocena','2020-06-10 16:17:44.551','2020-06-10 16:17:44.551','0c12577b-360b-4843-a86e-39c129047b0b','a2f55647-c712-4ba3-b332-4fc2293a5ac6')
 ,('6197e2b5-f091-4a04-8a4e-f0141914395b','Sprawdź status aplikacji','2020-06-10 16:17:44.561','2020-06-10 16:17:44.561','0c12577b-360b-4843-a86e-39c129047b0b','695185d8-74cb-4208-a900-d13f735221a4')
 ,('d1e230c0-a9bc-4ba0-a841-7559ea93d68b','Potwierdź rozmowę o prace','2020-06-10 16:17:44.569','2020-06-10 16:17:44.569','0c12577b-360b-4843-a86e-39c129047b0b','283ceb3a-c29a-41ae-8a46-fa893448a16a')
 ,('9f7fb504-b750-4e0b-94bd-1a8ac698d947','Sprawdź ogłoszenie o prace','2020-06-10 16:17:44.580','2020-06-10 16:17:44.580','0c12577b-360b-4843-a86e-39c129047b0b','41746333-c895-4e1f-9edb-023fb4b6209d')
@@ -3570,10 +3742,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('c41708aa-b609-4523-801e-f5f0635c21bf','Twoja opinia jest potrzebna!','2020-06-10 16:17:44.610','2020-06-10 16:17:44.610','0c12577b-360b-4843-a86e-39c129047b0b','08531c41-fa14-4719-99ab-318c05963114')
 ,('6a4be6b5-2f90-4263-8849-6d4340fd4705','Poświęć chwilę, aby wyrazić opinię w naszej krótkiej ankiecie.','2020-06-10 16:17:44.619','2020-06-10 16:17:44.619','0c12577b-360b-4843-a86e-39c129047b0b','a24a8627-5c3a-4d59-9624-520d3c10fd91')
 ,('405b5de3-4bc8-4482-a0cf-a786dae33f94','Zacznij ankietę','2020-06-10 16:17:44.628','2020-06-10 16:17:44.628','0c12577b-360b-4843-a86e-39c129047b0b','8fccf0b6-b504-40f7-bb35-f7ec94556038')
+,('0240b62a-909c-4433-b8b2-6db8287e1c56','Nie teraz','2020-06-10 16:17:44.638','2020-06-10 16:17:44.638','0c12577b-360b-4843-a86e-39c129047b0b','ecdb2c54-a5c4-4d97-9e09-d8b07926a38f')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('0240b62a-909c-4433-b8b2-6db8287e1c56','Nie teraz','2020-06-10 16:17:44.638','2020-06-10 16:17:44.638','0c12577b-360b-4843-a86e-39c129047b0b','ecdb2c54-a5c4-4d97-9e09-d8b07926a38f')
-,('6f9f25a2-ce90-4e2a-b117-55ca3ca22bfb','Ankieta','2020-06-10 16:17:44.647','2020-06-10 16:17:44.647','0c12577b-360b-4843-a86e-39c129047b0b','79884ca9-e100-496c-8b9d-61cd53d14034')
+('6f9f25a2-ce90-4e2a-b117-55ca3ca22bfb','Ankieta','2020-06-10 16:17:44.647','2020-06-10 16:17:44.647','0c12577b-360b-4843-a86e-39c129047b0b','79884ca9-e100-496c-8b9d-61cd53d14034')
 ,('05c6c8ce-82e1-4d96-8a4b-1f2b69fdbfba','Wprowadź kod dostępu','2020-06-10 16:17:44.658','2020-06-10 16:17:44.658','0c12577b-360b-4843-a86e-39c129047b0b','2b0bcd6c-9c30-488d-951f-333c088021fb')
 ,('8b78a164-0cf5-4233-bf8a-6acd0e7ae0bc','Wprowadź ponownie kod dostępu','2020-06-10 16:17:44.669','2020-06-10 16:17:44.669','0c12577b-360b-4843-a86e-39c129047b0b','3f95cd91-1ffb-4f93-ab03-2db7e9d81310')
 ,('20abd826-4020-4b50-9d81-d4c541c09a83','Kod dostępu nie jest identyczny Spróbuj jeszcze raz','2020-06-10 16:17:44.679','2020-06-10 16:17:44.679','0c12577b-360b-4843-a86e-39c129047b0b','8230ade8-21bf-4dd1-9c7b-04dd6befecec')
@@ -3582,10 +3754,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('65cd6876-a618-4cf3-92a6-3af0100a9651','OK','2020-06-10 16:17:44.711','2020-06-10 16:17:44.711','0c12577b-360b-4843-a86e-39c129047b0b','f24cbf9b-7810-4de6-90ab-3e4fdf7a8c86')
 ,('ccf9c69a-7473-40dd-932f-9a39bf5a37ca','Wiadomość','2020-06-10 16:17:44.725','2020-06-10 16:17:44.725','0c12577b-360b-4843-a86e-39c129047b0b','d05377c4-435d-4ddf-b58c-594b230a9e14')
 ,('56990b6b-912f-4683-8afd-4550065c355a','Wiadomości','2020-06-10 16:17:44.734','2020-06-10 16:17:44.734','0c12577b-360b-4843-a86e-39c129047b0b','aa9880ad-adf3-408c-ac01-860e5efbe2f1')
+,('f6f9facb-9c8d-4b51-8c1d-e5e17d2d3dfa','Szukaj nazwisk','2020-06-10 16:17:44.742','2020-06-10 16:17:44.742','0c12577b-360b-4843-a86e-39c129047b0b','2d84282c-de52-492a-a55b-469d769e12ae')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('f6f9facb-9c8d-4b51-8c1d-e5e17d2d3dfa','Szukaj nazwisk','2020-06-10 16:17:44.742','2020-06-10 16:17:44.742','0c12577b-360b-4843-a86e-39c129047b0b','2d84282c-de52-492a-a55b-469d769e12ae')
-,('25b44a99-2642-4425-bed6-f43d841d2a2b','Brak wiadomości e-mail','2020-06-10 16:17:44.753','2020-06-10 16:17:44.753','0c12577b-360b-4843-a86e-39c129047b0b','12bbd105-5313-429e-bd53-3657e5140cb3')
+('25b44a99-2642-4425-bed6-f43d841d2a2b','Brak wiadomości e-mail','2020-06-10 16:17:44.753','2020-06-10 16:17:44.753','0c12577b-360b-4843-a86e-39c129047b0b','12bbd105-5313-429e-bd53-3657e5140cb3')
 ,('e0867986-b50e-4ee3-8c4b-35aa766a520b','Skrzynka odbiorcza','2020-06-10 16:17:44.763','2020-06-10 16:17:44.763','0c12577b-360b-4843-a86e-39c129047b0b','aee04cae-72d7-44b1-b512-85f12a552c82')
 ,('be76196e-32a0-443b-9b2a-50b3fdc83ccf','Wysłane','2020-06-10 16:17:44.773','2020-06-10 16:17:44.773','0c12577b-360b-4843-a86e-39c129047b0b','92464967-b899-4215-8b2b-29c701fd84c4')
 ,('52488bb0-bbf8-4294-886e-128c9c87b5a0','Nieprzeczytane na początku','2020-06-10 16:17:44.783','2020-06-10 16:17:44.783','0c12577b-360b-4843-a86e-39c129047b0b','54b964b9-1538-40db-ad99-0cb2e6607e8c')
@@ -3594,10 +3766,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('9ee311c5-2e27-440b-a25d-0bc3e06578bf','Pokaż więcej','2020-06-10 16:17:44.815','2020-06-10 16:17:44.815','0c12577b-360b-4843-a86e-39c129047b0b','114994a9-d760-4c22-85d0-1448838dc4c1')
 ,('eaebf1a7-0d8e-49b1-9a05-0f004fb254f5','Zobacz mniej','2020-06-10 16:17:44.824','2020-06-10 16:17:44.824','0c12577b-360b-4843-a86e-39c129047b0b','e01befcc-ee20-4c00-a8ef-ac1c8101ca94')
 ,('4d144a97-e3fd-47d9-b8b6-55dc9d14eb0a','Do','2020-06-10 16:17:44.835','2020-06-10 16:17:44.835','0c12577b-360b-4843-a86e-39c129047b0b','4d5d26a0-1297-4638-aa0b-0260f3338a64')
+,('a9b5a9bc-8471-4bd4-8d2b-5fdc410e4898','CC','2020-06-10 16:17:44.843','2020-06-10 16:17:44.843','0c12577b-360b-4843-a86e-39c129047b0b','fd257e34-f643-403d-bae4-a3195ff29cd6')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('a9b5a9bc-8471-4bd4-8d2b-5fdc410e4898','CC','2020-06-10 16:17:44.843','2020-06-10 16:17:44.843','0c12577b-360b-4843-a86e-39c129047b0b','fd257e34-f643-403d-bae4-a3195ff29cd6')
-,('a0697a56-def1-4a87-86c5-e0187421da29','BCC','2020-06-10 16:17:44.851','2020-06-10 16:17:44.851','0c12577b-360b-4843-a86e-39c129047b0b','fc147222-f0c0-48d0-b4fd-20b8b971278f')
+('a0697a56-def1-4a87-86c5-e0187421da29','BCC','2020-06-10 16:17:44.851','2020-06-10 16:17:44.851','0c12577b-360b-4843-a86e-39c129047b0b','fc147222-f0c0-48d0-b4fd-20b8b971278f')
 ,('a01abe63-0dd0-4f30-a82d-6adc2cc0ce9f',' klikajac tutaj','2020-06-10 16:17:44.865','2020-06-10 16:17:44.865','0c12577b-360b-4843-a86e-39c129047b0b','41e0f33f-9863-41b6-9407-df46a8524730')
 ,('6c6f838e-302e-4bc3-8faa-65165ac1676d','(wysyłanie...)','2020-06-10 16:17:44.873','2020-06-10 16:17:44.873','0c12577b-360b-4843-a86e-39c129047b0b','23d7dda0-529e-49c8-b2fe-6b25522af399')
 ,('fdb9e657-63ef-4e65-99c0-afa7aa43a240','Twoja wiadomość zostanie wysłana, gdy będziesz ponownie online.','2020-06-10 16:17:44.882','2020-06-10 16:17:44.882','0c12577b-360b-4843-a86e-39c129047b0b','1455a67f-aa79-4376-9a7a-1c4809cf3143')
@@ -3606,10 +3778,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('e37684a9-9e21-46a5-bb9e-606d1ad3d2fd','E-mail systemowy','2020-06-10 16:17:44.910','2020-06-10 16:17:44.910','0c12577b-360b-4843-a86e-39c129047b0b','88dbe438-5427-4444-a8a1-01960979ea30')
 ,('3c132f80-de43-4bad-bba6-142dc049ba2f','Odpowiedz','2020-06-10 16:17:44.919','2020-06-10 16:17:44.919','0c12577b-360b-4843-a86e-39c129047b0b','7f99867f-6bb1-4d13-b999-91eacce95e03')
 ,('814ce943-6421-4009-9e1a-8f19e63e5594','Odp. wszystkim','2020-06-10 16:17:44.928','2020-06-10 16:17:44.928','0c12577b-360b-4843-a86e-39c129047b0b','679b8371-8e9d-4757-ac2a-a241d704023c')
+,('40b09639-25f7-495e-9e2b-9d23632848e7','Przekaż dalej','2020-06-10 16:17:44.936','2020-06-10 16:17:44.936','0c12577b-360b-4843-a86e-39c129047b0b','6b9153b2-f3c0-4423-b26f-28046711b6df')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('40b09639-25f7-495e-9e2b-9d23632848e7','Przekaż dalej','2020-06-10 16:17:44.936','2020-06-10 16:17:44.936','0c12577b-360b-4843-a86e-39c129047b0b','6b9153b2-f3c0-4423-b26f-28046711b6df')
-,('f8c36e44-79fe-441d-9b5f-15ea5fd307df','napisał(a) :','2020-06-10 16:17:44.947','2020-06-10 16:17:44.947','0c12577b-360b-4843-a86e-39c129047b0b','e5be7d93-f884-41d0-86f8-328b4710be5d')
+('f8c36e44-79fe-441d-9b5f-15ea5fd307df','napisał(a) :','2020-06-10 16:17:44.947','2020-06-10 16:17:44.947','0c12577b-360b-4843-a86e-39c129047b0b','e5be7d93-f884-41d0-86f8-328b4710be5d')
 ,('a6fdc052-2c23-4aec-ae5e-15133866f751','Wiadomość','2020-06-10 16:17:44.960','2020-06-10 16:17:44.960','0c12577b-360b-4843-a86e-39c129047b0b','d05377c4-435d-4ddf-b58c-594b230a9e14')
 ,('bfb08ffb-f65a-442e-8a76-0d7c83afa91c','Wiadomości','2020-06-10 16:17:44.971','2020-06-10 16:17:44.971','0c12577b-360b-4843-a86e-39c129047b0b','aa9880ad-adf3-408c-ac01-860e5efbe2f1')
 ,('198789b3-10b6-4355-bc26-d39839d2e93d','Szukaj nazwisk','2020-06-10 16:17:44.981','2020-06-10 16:17:44.981','0c12577b-360b-4843-a86e-39c129047b0b','2d84282c-de52-492a-a55b-469d769e12ae')
@@ -3618,10 +3790,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('5d4eb69c-82b0-45c5-9a3b-67fc6a2628b5','(wysyłanie...)','2020-06-10 16:17:45.011','2020-06-10 16:17:45.011','0c12577b-360b-4843-a86e-39c129047b0b','23d7dda0-529e-49c8-b2fe-6b25522af399')
 ,('5bdd887e-44cf-4ee1-838a-dcdcfc5c38b9','Do:','2020-06-10 16:17:45.024','2020-06-10 16:17:45.024','0c12577b-360b-4843-a86e-39c129047b0b','4d5d26a0-1297-4638-aa0b-0260f3338a64')
 ,('6fc305b6-0c39-4a37-b566-803244ef3daf','więcej','2020-06-10 16:17:45.034','2020-06-10 16:17:45.034','0c12577b-360b-4843-a86e-39c129047b0b','d5447ac5-7736-48fe-a201-68d00a947659')
+,('6fb55448-fe0e-4195-8159-1b0da61a10a5','Dw:','2020-06-10 16:17:45.043','2020-06-10 16:17:45.043','0c12577b-360b-4843-a86e-39c129047b0b','fd257e34-f643-403d-bae4-a3195ff29cd6')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('6fb55448-fe0e-4195-8159-1b0da61a10a5','Dw:','2020-06-10 16:17:45.043','2020-06-10 16:17:45.043','0c12577b-360b-4843-a86e-39c129047b0b','fd257e34-f643-403d-bae4-a3195ff29cd6')
-,('f5210b0c-5a39-4829-bc02-31c367865657','Udw:','2020-06-10 16:17:45.052','2020-06-10 16:17:45.052','0c12577b-360b-4843-a86e-39c129047b0b','fc147222-f0c0-48d0-b4fd-20b8b971278f')
+('f5210b0c-5a39-4829-bc02-31c367865657','Udw:','2020-06-10 16:17:45.052','2020-06-10 16:17:45.052','0c12577b-360b-4843-a86e-39c129047b0b','fc147222-f0c0-48d0-b4fd-20b8b971278f')
 ,('f51df4eb-6b0b-48e2-8646-c85015b519f8','Temat','2020-06-10 16:17:45.062','2020-06-10 16:17:45.062','0c12577b-360b-4843-a86e-39c129047b0b','a2992334-b16c-4b5a-bb36-943af7bb1ba7')
 ,('d9d47c94-5adb-491b-8cad-60826fc7a888','Dołącz plik','2020-06-10 16:17:45.072','2020-06-10 16:17:45.072','0c12577b-360b-4843-a86e-39c129047b0b','18464e95-4a24-4bd0-83c5-702143c84454')
 ,('267eba49-c122-4050-9169-c2599d4e06f9','Użyj szablonu','2020-06-10 16:17:45.081','2020-06-10 16:17:45.081','0c12577b-360b-4843-a86e-39c129047b0b','554fe922-75e8-4961-a1fb-0a1d1682143b')
@@ -3630,10 +3802,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('b05e84bf-2235-48dc-9d23-bc317eb7fc8b','E-mail został wysłany','2020-06-10 16:17:45.111','2020-06-10 16:17:45.111','0c12577b-360b-4843-a86e-39c129047b0b','92464967-b899-4215-8b2b-29c701fd84c4')
 ,('172cc8ad-a714-4a33-9dbc-6f7f06fdd745','E-mail nie został wysłany','2020-06-10 16:17:45.124','2020-06-10 16:17:45.124','0c12577b-360b-4843-a86e-39c129047b0b','72b763ee-2e5f-4e0f-b273-6a49ac28c663')
 ,('48795481-518c-4c85-98f5-458632bda7d6','Nieprawidłowy E-mail','2020-06-10 16:17:45.134','2020-06-10 16:17:45.134','0c12577b-360b-4843-a86e-39c129047b0b','19051f16-3e89-46ce-9ec2-75fe8d029d5a')
+,('be7282f0-ffa0-45a7-9e65-210135c4472b','Ten plik przekracza dopuszczalny limit 10 MB','2020-06-10 16:17:45.146','2020-06-10 16:17:45.146','0c12577b-360b-4843-a86e-39c129047b0b','ce032782-507f-4b7c-ba73-f85b21b785f0')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('be7282f0-ffa0-45a7-9e65-210135c4472b','Ten plik przekracza dopuszczalny limit 10 MB','2020-06-10 16:17:45.146','2020-06-10 16:17:45.146','0c12577b-360b-4843-a86e-39c129047b0b','ce032782-507f-4b7c-ba73-f85b21b785f0')
-,('879abcfa-344d-413b-b447-bab6f9f95721','Jesteś pewny, że chcesz wyjść?','2020-06-10 16:17:45.153','2020-06-10 16:17:45.153','0c12577b-360b-4843-a86e-39c129047b0b','bea99621-2ab7-490a-a7cf-3f32f94cb757')
+('879abcfa-344d-413b-b447-bab6f9f95721','Jesteś pewny, że chcesz wyjść?','2020-06-10 16:17:45.153','2020-06-10 16:17:45.153','0c12577b-360b-4843-a86e-39c129047b0b','bea99621-2ab7-490a-a7cf-3f32f94cb757')
 ,('02b20c08-912d-429d-8782-c263bd0367b4','Filled data will be lost','2020-06-10 16:17:45.162','2020-06-10 16:17:45.162','0c12577b-360b-4843-a86e-39c129047b0b','4d6b30a7-67d5-4262-99a5-3437c4498347')
 ,('6fef6745-ae9d-43b8-87d4-2e6448d38ec1','Anuluj','2020-06-10 16:17:45.170','2020-06-10 16:17:45.170','0c12577b-360b-4843-a86e-39c129047b0b','17c0a33e-317c-4b9c-9f42-97fd13c5465b')
 ,('117bb016-f111-4f9b-afc4-bdcca7e0087f','Tak, wychodzę','2020-06-10 16:17:45.179','2020-06-10 16:17:45.179','0c12577b-360b-4843-a86e-39c129047b0b','b5739c32-f4c2-482c-8292-69abcbaf3881')
@@ -3642,10 +3814,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('399c350f-3a80-44be-bf2c-c59a4206cebe','Tak, wyślij','2020-06-10 16:17:45.211','2020-06-10 16:17:45.211','0c12577b-360b-4843-a86e-39c129047b0b','bcd626d5-baba-46fe-9a1e-1b16b9401935')
 ,('de9f48fb-03ba-4348-8451-6f54652844f2','Email zostanie wysłany online','2020-06-10 16:17:45.220','2020-06-10 16:17:45.220','0c12577b-360b-4843-a86e-39c129047b0b','1455a67f-aa79-4376-9a7a-1c4809cf3143')
 ,('990eb9d7-9e36-4800-854e-92bff2904a5d','Filtr','2020-06-10 16:17:45.234','2020-06-10 16:17:45.234','0c12577b-360b-4843-a86e-39c129047b0b','417d67e1-cb0e-4dd1-a920-1fd988b41400')
+,('d8a750a1-650d-4c0e-9d7d-75caff16c92c','Status zadań do wykonania','2020-06-10 16:17:45.244','2020-06-10 16:17:45.244','0c12577b-360b-4843-a86e-39c129047b0b','e8c1a191-9f49-45d6-8dea-2e09e295ab26')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('d8a750a1-650d-4c0e-9d7d-75caff16c92c','Status zadań do wykonania','2020-06-10 16:17:45.244','2020-06-10 16:17:45.244','0c12577b-360b-4843-a86e-39c129047b0b','e8c1a191-9f49-45d6-8dea-2e09e295ab26')
-,('384c28f7-f536-44fb-8ca3-5e84ffcc7c28','Krok aplikacji','2020-06-10 16:17:45.253','2020-06-10 16:17:45.253','0c12577b-360b-4843-a86e-39c129047b0b','4138f5e2-baa7-48e9-bbcb-6dafac432a99')
+('384c28f7-f536-44fb-8ca3-5e84ffcc7c28','Krok aplikacji','2020-06-10 16:17:45.253','2020-06-10 16:17:45.253','0c12577b-360b-4843-a86e-39c129047b0b','4138f5e2-baa7-48e9-bbcb-6dafac432a99')
 ,('646c4984-94d3-49d0-9d3e-529fdb943526','Nazwa stanowiska','2020-06-10 16:17:45.262','2020-06-10 16:17:45.262','0c12577b-360b-4843-a86e-39c129047b0b','1abdaaa5-0e17-41ab-a897-e31512b2d349')
 ,('296b3564-32de-4813-a979-2adc7abf1192','Lokalizacja','2020-06-10 16:17:45.271','2020-06-10 16:17:45.271','0c12577b-360b-4843-a86e-39c129047b0b','43005d71-dbda-4d36-b63b-6525a8a3b564')
 ,('0abaa4b5-df42-4d43-91dc-3ac57e3a8f69','Tags','2020-06-10 16:17:45.282','2020-06-10 16:17:45.282','0c12577b-360b-4843-a86e-39c129047b0b','48ff20f1-ad06-4d94-9083-1b9e2a0522c3')
@@ -3654,10 +3826,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('c6a11538-6e73-4346-81f4-e8102a8c9753','DODATKOWE FILTRY','2020-06-10 16:17:45.306','2020-06-10 16:17:45.306','0c12577b-360b-4843-a86e-39c129047b0b','a66cca28-9895-4860-98b9-db709190d122')
 ,('3b09b9cf-4058-423f-9b0e-e6fd68e3a798','Kosz','2020-06-10 16:17:45.316','2020-06-10 16:17:45.316','0c12577b-360b-4843-a86e-39c129047b0b','13271e8b-fce9-4a07-b2eb-59a9a4c80bfc')
 ,('a8e2fee4-9d1f-47bc-aefd-560997f26f2d','Kandydaci wstrzymane','2020-06-10 16:17:45.326','2020-06-10 16:17:45.326','0c12577b-360b-4843-a86e-39c129047b0b','4c275149-d1e6-4174-b007-d89f7f3a6e1e')
+,('a9168164-101f-4789-8258-bef08e738828','Twoje wyszukiwanie','2020-06-10 16:17:45.334','2020-06-10 16:17:45.334','0c12577b-360b-4843-a86e-39c129047b0b','b37ad9eb-7345-4b87-a1d1-565396a4c397')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('a9168164-101f-4789-8258-bef08e738828','Twoje wyszukiwanie','2020-06-10 16:17:45.334','2020-06-10 16:17:45.334','0c12577b-360b-4843-a86e-39c129047b0b','b37ad9eb-7345-4b87-a1d1-565396a4c397')
-,('06e04bbf-905c-4d6f-bc87-ab555393f88d','Status przypomnienia','2020-06-10 16:17:45.344','2020-06-10 16:17:45.344','0c12577b-360b-4843-a86e-39c129047b0b','6368d265-bfa5-42e9-9dca-ee7c3052246c')
+('06e04bbf-905c-4d6f-bc87-ab555393f88d','Status przypomnienia','2020-06-10 16:17:45.344','2020-06-10 16:17:45.344','0c12577b-360b-4843-a86e-39c129047b0b','6368d265-bfa5-42e9-9dca-ee7c3052246c')
 ,('1ebe35b4-3276-41e7-9afb-24311d7eda47','Data przypomnienia','2020-06-10 16:17:45.352','2020-06-10 16:17:45.352','0c12577b-360b-4843-a86e-39c129047b0b','caef76e4-c7d1-4d73-83e0-eb51cabb72b5')
 ,('13253433-3fed-4d83-83e3-ca6f3d7ca28c','Moje przypomnienia','2020-06-10 16:17:45.362','2020-06-10 16:17:45.362','0c12577b-360b-4843-a86e-39c129047b0b','52cc84a8-2111-4665-9f25-f91691f7de29')
 ,('49c981b7-f9cf-4775-b082-7cd82a87e442','Ten filtr jest wyłączony, ponieważ jesteś w pozycjach.','2020-06-10 16:17:45.371','2020-06-10 16:17:45.371','0c12577b-360b-4843-a86e-39c129047b0b','f67276a9-0281-4dcc-87e0-8898ebf40144')
@@ -3666,10 +3838,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('b06cfeb8-7e7a-4129-b212-f44873de2139','Nazwa stanowiska','2020-06-10 16:17:45.412','2020-06-10 16:17:45.412','0c12577b-360b-4843-a86e-39c129047b0b','1abdaaa5-0e17-41ab-a897-e31512b2d349')
 ,('d75ca4a6-f18e-4fe6-b350-7b98aa3651e4','Lokalizacja','2020-06-10 16:17:45.429','2020-06-10 16:17:45.429','0c12577b-360b-4843-a86e-39c129047b0b','43005d71-dbda-4d36-b63b-6525a8a3b564')
 ,('2dca5378-6c91-4eee-b1f9-b8fc3643316e','Nie określono','2020-06-10 16:17:45.445','2020-06-10 16:17:45.445','0c12577b-360b-4843-a86e-39c129047b0b','51ca77f9-42b6-4df3-8ac9-97a29bb04b13')
+,('25618769-d4df-4ee6-bad5-322369e07e1c','Usuń','2020-06-10 16:17:45.453','2020-06-10 16:17:45.453','0c12577b-360b-4843-a86e-39c129047b0b','f0839b8b-2e4e-4b43-888b-faf4a49e491e')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('25618769-d4df-4ee6-bad5-322369e07e1c','Usuń','2020-06-10 16:17:45.453','2020-06-10 16:17:45.453','0c12577b-360b-4843-a86e-39c129047b0b','f0839b8b-2e4e-4b43-888b-faf4a49e491e')
-,('e3869d05-1af5-4673-9cd6-f95217ec77f8','Szukaj','2020-06-10 16:17:45.463','2020-06-10 16:17:45.463','0c12577b-360b-4843-a86e-39c129047b0b','b37ad9eb-7345-4b87-a1d1-565396a4c397')
+('e3869d05-1af5-4673-9cd6-f95217ec77f8','Szukaj','2020-06-10 16:17:45.463','2020-06-10 16:17:45.463','0c12577b-360b-4843-a86e-39c129047b0b','b37ad9eb-7345-4b87-a1d1-565396a4c397')
 ,('7574690e-fac3-4618-aafc-a344fd665dbc','Tags','2020-06-10 16:17:45.473','2020-06-10 16:17:45.473','0c12577b-360b-4843-a86e-39c129047b0b','48ff20f1-ad06-4d94-9083-1b9e2a0522c3')
 ,('3188a6b2-aae0-49cf-a1ac-9c0b2d281196','Status przypomnienia','2020-06-10 16:17:45.483','2020-06-10 16:17:45.483','0c12577b-360b-4843-a86e-39c129047b0b','6368d265-bfa5-42e9-9dca-ee7c3052246c')
 ,('6c6696fa-67b0-4bc0-8aa4-2a8b216e3010','Data przypomnienia','2020-06-10 16:17:45.493','2020-06-10 16:17:45.493','0c12577b-360b-4843-a86e-39c129047b0b','caef76e4-c7d1-4d73-83e0-eb51cabb72b5')
@@ -3678,10 +3850,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('9e92e33a-37c9-4888-b158-d8befe7e4891','Wykonane','2020-06-10 16:17:45.521','2020-06-10 16:17:45.521','0c12577b-360b-4843-a86e-39c129047b0b','74ca3a02-7b57-436e-99d6-4c2897b20c68')
 ,('a93e58f1-74d0-441a-b4d8-29144abe5383','Odrzucone','2020-06-10 16:17:45.531','2020-06-10 16:17:45.531','0c12577b-360b-4843-a86e-39c129047b0b','15fb1d7c-5b55-4780-a200-29186c4631f4')
 ,('86525462-990c-46c9-b6ab-17988ffb236b','W dowolnym momencie','2020-06-10 16:17:45.540','2020-06-10 16:17:45.540','0c12577b-360b-4843-a86e-39c129047b0b','2ed95280-3ef7-42e0-8757-216d228584f9')
+,('2e34effd-5bb5-4656-bb3d-0f4bfb4a9191','Ostatnie 24 godziny','2020-06-10 16:17:45.550','2020-06-10 16:17:45.550','0c12577b-360b-4843-a86e-39c129047b0b','f5b9edb1-f0c4-4b16-9fb2-b41a37aaf7cf')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('2e34effd-5bb5-4656-bb3d-0f4bfb4a9191','Ostatnie 24 godziny','2020-06-10 16:17:45.550','2020-06-10 16:17:45.550','0c12577b-360b-4843-a86e-39c129047b0b','f5b9edb1-f0c4-4b16-9fb2-b41a37aaf7cf')
-,('6fa7c7b6-0cfa-432b-a598-1c35b9a291ea','Ostatnie 3 dni','2020-06-10 16:17:45.561','2020-06-10 16:17:45.561','0c12577b-360b-4843-a86e-39c129047b0b','35ce8309-ef90-4fbb-971f-260974f3d64b')
+('6fa7c7b6-0cfa-432b-a598-1c35b9a291ea','Ostatnie 3 dni','2020-06-10 16:17:45.561','2020-06-10 16:17:45.561','0c12577b-360b-4843-a86e-39c129047b0b','35ce8309-ef90-4fbb-971f-260974f3d64b')
 ,('c1954769-37bd-4fae-aec2-1401397a160c','Ostatnich 7 dni','2020-06-10 16:17:45.569','2020-06-10 16:17:45.569','0c12577b-360b-4843-a86e-39c129047b0b','02725202-a6fb-4332-a4ed-dfbcc2e1cef2')
 ,('69f788de-0486-4ecc-9836-99cf33aba25e','Zaprosić na rozmowę?','2020-06-10 16:17:45.578','2020-06-10 16:17:45.578','0c12577b-360b-4843-a86e-39c129047b0b','236abe16-e4f6-4f2d-b871-87ff979a9808')
 ,('2d066542-5d8b-4cc1-b3f0-93993a219de4','Oceń aplikację','2020-06-10 16:17:45.589','2020-06-10 16:17:45.589','0c12577b-360b-4843-a86e-39c129047b0b','209c4edd-3876-413d-a780-dafa27fd0a86')
@@ -3690,10 +3862,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('3de21bcc-6ce3-475d-8614-d553bf14aea5','Potwierdź rozmowę kwalifikacyjną','2020-06-10 16:17:45.621','2020-06-10 16:17:45.621','0c12577b-360b-4843-a86e-39c129047b0b','283ceb3a-c29a-41ae-8a46-fa893448a16a')
 ,('1f92d60c-725d-4b46-a3ac-fd24d00451ad','Umów rozmowę rekrutacyjną','2020-06-10 16:17:45.633','2020-06-10 16:17:45.633','0c12577b-360b-4843-a86e-39c129047b0b','058cbe78-e18c-4dac-b684-9621d1a5d80b')
 ,('f7b88bfe-b9f2-4501-a165-c1df3cb94989','Lokalizacja','2020-06-10 16:17:45.641','2020-06-10 16:17:45.641','0c12577b-360b-4843-a86e-39c129047b0b','3e06a2ce-b3d0-497c-9e7d-574c2d9da2d8')
+,('fc8f903c-9f79-4793-8539-3ade3e892a59','Utwórz e-mail...','2020-06-10 16:17:45.651','2020-06-10 16:17:45.651','0c12577b-360b-4843-a86e-39c129047b0b','8ae033ca-9c0d-4f0a-a91a-5f23f9d8d1e2')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('fc8f903c-9f79-4793-8539-3ade3e892a59','Utwórz e-mail...','2020-06-10 16:17:45.651','2020-06-10 16:17:45.651','0c12577b-360b-4843-a86e-39c129047b0b','8ae033ca-9c0d-4f0a-a91a-5f23f9d8d1e2')
-,('7b4671b6-c179-45fd-8016-4df1cdd6cd6b','Zaplanuj','2020-06-10 16:17:45.667','2020-06-10 16:17:45.667','0c12577b-360b-4843-a86e-39c129047b0b','610d087b-65b4-4a10-af33-1eabc50ef912')
+('7b4671b6-c179-45fd-8016-4df1cdd6cd6b','Zaplanuj','2020-06-10 16:17:45.667','2020-06-10 16:17:45.667','0c12577b-360b-4843-a86e-39c129047b0b','610d087b-65b4-4a10-af33-1eabc50ef912')
 ,('a7b49598-4c4f-4156-9437-60b291290742','Data I godzina','2020-06-10 16:17:45.677','2020-06-10 16:17:45.677','0c12577b-360b-4843-a86e-39c129047b0b','09afd2a1-d662-4ce4-ae8e-ac41839a524f')
 ,('aafbcc44-4e3c-46ff-855d-cd47bb3ecb2c','MMM DD, HH:mm','2020-06-10 16:17:45.687','2020-06-10 16:17:45.687','0c12577b-360b-4843-a86e-39c129047b0b','7952399c-1556-4a96-8a39-eb5994e95a6f')
 ,('6af0932a-a33f-4967-a3b1-b2aec187d8ba','HH:mm','2020-06-10 16:17:45.698','2020-06-10 16:17:45.698','0c12577b-360b-4843-a86e-39c129047b0b','da113252-f0a6-4c36-9f0c-da54c9378f3a')
@@ -3702,11 +3874,11 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('9a3abcdd-1e46-4813-a76d-69fb00b59475','Aplikacja email: ','2020-06-10 16:17:45.730','2020-06-10 16:17:45.730','0c12577b-360b-4843-a86e-39c129047b0b','6bbb8a68-fd8f-499d-850f-9ca504bada8c')
 ,('89c8467c-f816-4185-aacb-eff9d09d3c5f','Brak daty','2020-06-10 16:17:45.739','2020-06-10 16:17:45.739','0c12577b-360b-4843-a86e-39c129047b0b','bd6c2ce4-d412-4a9d-b5a3-15573857c367')
 ,('0e2a8db3-540f-4be5-8cf1-fa438b62f9d4','Rozmowa jest umówiona','2020-06-10 16:17:45.752','2020-06-10 16:17:45.752','0c12577b-360b-4843-a86e-39c129047b0b','70a19873-e82e-4021-bd93-90d0a8758267')
+,('ed876d93-abd1-4882-a2be-cd3ff5788567','Łatwo oceniaj
+aplikacje. Nawet offline.','2020-06-10 16:17:45.765','2020-06-10 16:17:45.765','0c12577b-360b-4843-a86e-39c129047b0b','031bf6a2-e1cb-43ad-841f-19b5672dba6e')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('ed876d93-abd1-4882-a2be-cd3ff5788567','Łatwo oceniaj
-aplikacje. Nawet offline.','2020-06-10 16:17:45.765','2020-06-10 16:17:45.765','0c12577b-360b-4843-a86e-39c129047b0b','031bf6a2-e1cb-43ad-841f-19b5672dba6e')
-,('99859c6d-e59a-4376-b416-309810cb800d','Szybkie głosowanie','2020-06-10 16:17:45.774','2020-06-10 16:17:45.774','0c12577b-360b-4843-a86e-39c129047b0b','9ed6f50e-a2d7-4888-90c0-d40595c6f8f1')
+('99859c6d-e59a-4376-b416-309810cb800d','Szybkie głosowanie','2020-06-10 16:17:45.774','2020-06-10 16:17:45.774','0c12577b-360b-4843-a86e-39c129047b0b','9ed6f50e-a2d7-4888-90c0-d40595c6f8f1')
 ,('5d3279f9-97d5-4a7e-a1c5-631d081021dc','Czat zespołowy','2020-06-10 16:17:45.785','2020-06-10 16:17:45.785','0c12577b-360b-4843-a86e-39c129047b0b','d04f7a9d-5c34-4fd7-a13e-607931a1b4e4')
 ,('2f8da077-3ce2-4133-91ef-894865963c44','Pomiń','2020-06-10 16:17:45.795','2020-06-10 16:17:45.795','0c12577b-360b-4843-a86e-39c129047b0b','59d31645-a677-4d88-80d1-c6f6d2cd4846')
 ,('d882c82c-a579-491a-a303-6921fbc40f35','','2020-06-10 16:17:45.804','2020-06-10 16:17:45.804','0c12577b-360b-4843-a86e-39c129047b0b','290383a0-23cb-46e0-b9d9-bd76dec6d7bc')
@@ -3716,11 +3888,12 @@ rozmowę kwalifikacyjną.','2020-06-10 16:17:45.814','2020-06-10 16:17:45.814','
 ,('c8eb171b-c9e2-4354-b1f6-43355c61d83d','Rozpocznij','2020-06-10 16:17:45.832','2020-06-10 16:17:45.832','0c12577b-360b-4843-a86e-39c129047b0b','c445b15a-9256-4829-8c5b-1ec1360e7dbe')
 ,('7a51d476-1c7a-474c-babf-227ceccf7ebf','Kontynuuj','2020-06-10 16:17:45.844','2020-06-10 16:17:45.844','0c12577b-360b-4843-a86e-39c129047b0b','ef33eebb-4545-4a97-8369-9055b50ffc3f')
 ,('f9f49241-ce7c-4e31-83c7-6e0e546db751','Oferty pracy','2020-06-10 16:17:45.856','2020-06-10 16:17:45.856','0c12577b-360b-4843-a86e-39c129047b0b','0a8774a5-721b-4bd2-96ff-6b18ced73781')
+,('371ebcd5-a660-4a1a-81f2-41616ab2d0f8','Kandydaci','2020-06-10 16:17:45.866','2020-06-10 16:17:45.866','0c12577b-360b-4843-a86e-39c129047b0b','ed0c6c08-e9ab-49b3-bbe0-8345b8f4b690')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('371ebcd5-a660-4a1a-81f2-41616ab2d0f8','Kandydaci','2020-06-10 16:17:45.866','2020-06-10 16:17:45.866','0c12577b-360b-4843-a86e-39c129047b0b','ed0c6c08-e9ab-49b3-bbe0-8345b8f4b690')
-,('80db96f5-6fa7-47cb-a6a7-93dd8f263f5b','Nie ma ofert pracy, w które jesteś zaangażowany.
+('80db96f5-6fa7-47cb-a6a7-93dd8f263f5b','Nie ma ofert pracy, w które jesteś zaangażowany.
 Aby utworzyć nową ofertę pracy, skorzystaj z programu e-rekrutacja softgarden lub skontaktuj się ze swoją osobą rekrutującą.','2020-06-10 16:17:45.875','2020-06-10 16:17:45.875','0c12577b-360b-4843-a86e-39c129047b0b','9b6fe046-9c4f-46bd-b48e-a7402983fa2a')
+,('9c6e5be5-8fed-4563-ad0b-5034299a0dd9','Decline','2020-06-19 10:44:30.778','2020-06-19 10:44:30.778','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','a8a28c8d-2dda-42b7-83cd-7195e9d1450c')
 ,('e404c478-79a4-4402-a979-267e5be4060d','Szukaj po nazwie stanowiska','2020-06-10 16:17:45.885','2020-06-10 16:17:45.885','0c12577b-360b-4843-a86e-39c129047b0b','2d84282c-de52-492a-a55b-469d769e12ae')
 ,('7f975a03-f290-4732-8128-3f6187f539d7','Wyświetl ogłoszenia o pracę','2020-06-10 16:17:45.899','2020-06-10 16:17:45.899','0c12577b-360b-4843-a86e-39c129047b0b','d3e8e288-4864-4e8f-b4c3-4d870ce7306b')
 ,('032b8ec9-3098-4348-b7fe-08c1a54502fd','Wyświetl zespół rekrutujący','2020-06-10 16:17:45.909','2020-06-10 16:17:45.909','0c12577b-360b-4843-a86e-39c129047b0b','14e2f62e-4348-47c8-8c81-09a625addc7f')
@@ -3798,13 +3971,14 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('64e785d2-f81e-4be4-85fe-55a9d64a4171','Logowanie','2020-06-10 16:17:46.531','2020-06-10 16:17:46.531','0c12577b-360b-4843-a86e-39c129047b0b','b66addce-ff00-4f58-91dd-7ac3a80f7ab5')
 ,('388f8681-c640-489e-823a-e77eb8349236','Ok','2020-06-10 16:17:46.540','2020-06-10 16:17:46.540','0c12577b-360b-4843-a86e-39c129047b0b','896f055c-c19b-468e-8da7-a4ce848f03c5')
 ,('6022d0b5-c882-48f8-8748-f3e3fe12545d','Logowanie nie powiodło się','2020-06-10 16:17:46.550','2020-06-10 16:17:46.550','0c12577b-360b-4843-a86e-39c129047b0b','c5cc9c2b-3f08-47c8-ba5a-d9115f0d20b6')
+,('3472c703-978a-4441-a61e-99d78caadcd8','Sprawdź status aplikacji','2020-06-10 16:17:47.249','2020-06-10 16:17:47.249','0c12577b-360b-4843-a86e-39c129047b0b','695185d8-74cb-4208-a900-d13f735221a4')
 ,('9329c082-a882-4bf9-a935-83c1aada3f35','Nie można się zalogować, ponieważ jesteś w trybie offline','2020-06-10 16:17:46.561','2020-06-10 16:17:46.561','0c12577b-360b-4843-a86e-39c129047b0b','dc1467be-1a8d-43d6-991f-0e0fca314b0d')
 ,('eb9b1331-8573-4e6f-9cde-c33129e7e68d','Zaloguj się bez SSO','2020-06-10 16:17:46.571','2020-06-10 16:17:46.571','0c12577b-360b-4843-a86e-39c129047b0b','90e2299a-b6f1-4a00-8596-467129929542')
 ,('d37cd820-4dea-4f4a-a42b-9128776c86c0','SSO Logowanie','2020-06-10 16:17:46.580','2020-06-10 16:17:46.580','0c12577b-360b-4843-a86e-39c129047b0b','e5d0ce90-696c-4c02-b617-b0751d6c5521')
-,('31b0ad32-e03a-421a-8c00-11f07fd86a52','Ustawienia','2020-06-10 16:17:46.593','2020-06-10 16:17:46.593','0c12577b-360b-4843-a86e-39c129047b0b','0a8774a5-721b-4bd2-96ff-6b18ced73781')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('5621aa60-6eb4-4a2f-b3f4-324bf3ef7154','Bezpieczeństwo','2020-06-10 16:17:46.606','2020-06-10 16:17:46.606','0c12577b-360b-4843-a86e-39c129047b0b','e5891856-53b9-41fe-b03d-697279ffce5c')
+('31b0ad32-e03a-421a-8c00-11f07fd86a52','Ustawienia','2020-06-10 16:17:46.593','2020-06-10 16:17:46.593','0c12577b-360b-4843-a86e-39c129047b0b','0a8774a5-721b-4bd2-96ff-6b18ced73781')
+,('5621aa60-6eb4-4a2f-b3f4-324bf3ef7154','Bezpieczeństwo','2020-06-10 16:17:46.606','2020-06-10 16:17:46.606','0c12577b-360b-4843-a86e-39c129047b0b','e5891856-53b9-41fe-b03d-697279ffce5c')
 ,('059c7fdb-e3cc-4eca-a0f2-d914c622c6ae','Powiadomienia','2020-06-10 16:17:46.615','2020-06-10 16:17:46.615','0c12577b-360b-4843-a86e-39c129047b0b','f1d5d677-6178-432e-8ae8-f46c93da4802')
 ,('43016467-4252-4ec4-b1e2-8aff7c62596d','Ogólne','2020-06-10 16:17:46.624','2020-06-10 16:17:46.624','0c12577b-360b-4843-a86e-39c129047b0b','d0f10494-6484-4c08-be45-ebefc0f67697')
 ,('b61a3f38-842f-4b21-984a-10778dc32dc8','Wyświetl numer oferty pracy','2020-06-10 16:17:46.633','2020-06-10 16:17:46.633','0c12577b-360b-4843-a86e-39c129047b0b','b95d305d-b4bf-4081-a44c-5bc70b611b1d')
@@ -3813,10 +3987,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('4465f356-97ad-4f3e-b174-8f4c298750bc','Autoblokada','2020-06-10 16:17:46.666','2020-06-10 16:17:46.666','0c12577b-360b-4843-a86e-39c129047b0b','7dc2b23a-4e7d-422a-9c74-28a9664939d2')
 ,('2d746f29-4dfc-4ff4-a9a5-aeda6097d1db','Identyfikator twarzy / dotykowy','2020-06-10 16:17:46.675','2020-06-10 16:17:46.675','0c12577b-360b-4843-a86e-39c129047b0b','443ab63d-01ca-4171-9d3b-ec1517a62394')
 ,('ea55e146-8eb4-40c1-a18c-8e68df2eab1f','Nowe aplikacje do głosowania','2020-06-10 16:17:46.686','2020-06-10 16:17:46.686','0c12577b-360b-4843-a86e-39c129047b0b','83f78b19-8f52-4356-9bee-e58b62906f76')
-,('7109d50d-d2cf-4453-b746-57b57ab6a457','Nowe aplikacje do oceny','2020-06-10 16:17:46.697','2020-06-10 16:17:46.697','0c12577b-360b-4843-a86e-39c129047b0b','e53bb57b-4e70-492a-b2f6-6031eff34c20')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('649d678d-15a8-4653-8455-cb55f0b3bfea','Nowe komentarze','2020-06-10 16:17:46.709','2020-06-10 16:17:46.709','0c12577b-360b-4843-a86e-39c129047b0b','ec1f9707-dbac-4dbd-959b-146677c8d7d5')
+('7109d50d-d2cf-4453-b746-57b57ab6a457','Nowe aplikacje do oceny','2020-06-10 16:17:46.697','2020-06-10 16:17:46.697','0c12577b-360b-4843-a86e-39c129047b0b','e53bb57b-4e70-492a-b2f6-6031eff34c20')
+,('649d678d-15a8-4653-8455-cb55f0b3bfea','Nowe komentarze','2020-06-10 16:17:46.709','2020-06-10 16:17:46.709','0c12577b-360b-4843-a86e-39c129047b0b','ec1f9707-dbac-4dbd-959b-146677c8d7d5')
 ,('381cd204-3bc3-4e67-a4b2-a44e8daa907d','Aktualizacje statusu','2020-06-10 16:17:46.720','2020-06-10 16:17:46.720','0c12577b-360b-4843-a86e-39c129047b0b','2d9d282e-6867-42a3-b02c-26aec3320209')
 ,('9bbb395d-002f-49b5-b840-0a6885ab7de2','Nowe wzmianki','2020-06-10 16:17:46.731','2020-06-10 16:17:46.731','0c12577b-360b-4843-a86e-39c129047b0b','0d7c33c8-2676-4c50-90f5-b69b32b36fe9')
 ,('fb2a56b8-a447-42ee-a1b8-ddbff8489b9a','Imprint','2020-06-10 16:17:46.741','2020-06-10 16:17:46.741','0c12577b-360b-4843-a86e-39c129047b0b','188aab68-8bfa-46f0-bed8-77463b896869')
@@ -3825,10 +3999,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('95a8a8ed-082d-4a37-a286-e0db636dcf4e','Licencje','2020-06-10 16:17:46.777','2020-06-10 16:17:46.777','0c12577b-360b-4843-a86e-39c129047b0b','8d1fe0a4-58a9-4026-8c43-f569b8af87dd')
 ,('6f3103cd-83f9-4d66-9ff0-06d0c4f2fac1','Wyloguj się','2020-06-10 16:17:46.788','2020-06-10 16:17:46.788','0c12577b-360b-4843-a86e-39c129047b0b','b6603dd5-8c2e-4866-be99-76bfe58d3610')
 ,('aa78c7df-a1b7-43ce-a74c-130fbb15879e','Język','2020-06-10 16:17:46.798','2020-06-10 16:17:46.798','0c12577b-360b-4843-a86e-39c129047b0b','a0925053-ddfb-45be-975c-70ad961690d7')
-,('bbb3e9b8-cf6c-4667-b94a-1b981833ff20','Informacje o aplikacji','2020-06-10 16:17:46.807','2020-06-10 16:17:46.807','0c12577b-360b-4843-a86e-39c129047b0b','a2ed90db-37ac-4d62-89d2-0e2e59fcdd95')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('bb4b6331-f109-477a-baa0-adebdb5dca07','https://www.softgarden.de/unternehmen/impressum/','2020-06-10 16:17:46.818','2020-06-10 16:17:46.818','0c12577b-360b-4843-a86e-39c129047b0b','cd927ee7-c197-4ece-9671-64cb61b4a39b')
+('bbb3e9b8-cf6c-4667-b94a-1b981833ff20','Informacje o aplikacji','2020-06-10 16:17:46.807','2020-06-10 16:17:46.807','0c12577b-360b-4843-a86e-39c129047b0b','a2ed90db-37ac-4d62-89d2-0e2e59fcdd95')
+,('bb4b6331-f109-477a-baa0-adebdb5dca07','https://www.softgarden.de/unternehmen/impressum/','2020-06-10 16:17:46.818','2020-06-10 16:17:46.818','0c12577b-360b-4843-a86e-39c129047b0b','cd927ee7-c197-4ece-9671-64cb61b4a39b')
 ,('0b93e34c-7dbb-43c4-9490-afc665748c6c','https://www.softgarden.de/unternehmen/datenschutz-softgarden-produkte/','2020-06-10 16:17:46.828','2020-06-10 16:17:46.828','0c12577b-360b-4843-a86e-39c129047b0b','d3af4e74-833d-404f-90bb-39c57b6132b8')
 ,('81b706ad-9099-45f3-97e8-ad199ce8bfb1','https://www.softgarden.de/unternehmen/nutzungsbedingungen/','2020-06-10 16:17:46.838','2020-06-10 16:17:46.838','0c12577b-360b-4843-a86e-39c129047b0b','171bf735-8e6a-4b43-b255-4bb73bae6d07')
 ,('7170d977-4450-422f-9fdd-52cd7209883d','Biblioteki, z których korzystamy','2020-06-10 16:17:46.849','2020-06-10 16:17:46.849','0c12577b-360b-4843-a86e-39c129047b0b','e59f13f4-0229-426e-9020-b4519f3d379c')
@@ -3837,10 +4011,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('a1b9e355-5515-4253-978d-8b0eeea73b6a','Nadchodząca rozmowa kwalifikacyjna','2020-06-10 16:17:46.878','2020-06-10 16:17:46.878','0c12577b-360b-4843-a86e-39c129047b0b','7cc204d6-ed61-4bfa-961a-e6e568280444')
 ,('f29e4c88-d144-495d-965d-aec1d1ebc930','Sprawdź status aplikacji','2020-06-10 16:17:46.887','2020-06-10 16:17:46.887','0c12577b-360b-4843-a86e-39c129047b0b','84a1f4e9-e20a-47ea-8365-7ee25a8362f3')
 ,('3fb9d417-9075-4f51-80a0-90170043c446','Potwierdź rozmowę kwalifikacyjną','2020-06-10 16:17:46.898','2020-06-10 16:17:46.898','0c12577b-360b-4843-a86e-39c129047b0b','1fdcac0f-2287-4b4c-ac48-2ba7cc66517a')
-,('ce7179d0-ce6f-488b-8409-7f78376b5a65','Nowa poczta kandydująca','2020-06-10 16:17:46.909','2020-06-10 16:17:46.909','0c12577b-360b-4843-a86e-39c129047b0b','fcb918bb-ca11-4efa-b0e3-7e3b211b0f20')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('08e9b8ff-2c23-4fc2-90fa-39a73b1ccc20','Oceny zespołowe','2020-06-10 16:17:46.922','2020-06-10 16:17:46.922','0c12577b-360b-4843-a86e-39c129047b0b','058cbe78-e18c-4dac-b684-9621d1a5d80b')
+('ce7179d0-ce6f-488b-8409-7f78376b5a65','Nowa poczta kandydująca','2020-06-10 16:17:46.909','2020-06-10 16:17:46.909','0c12577b-360b-4843-a86e-39c129047b0b','fcb918bb-ca11-4efa-b0e3-7e3b211b0f20')
+,('08e9b8ff-2c23-4fc2-90fa-39a73b1ccc20','Oceny zespołowe','2020-06-10 16:17:46.922','2020-06-10 16:17:46.922','0c12577b-360b-4843-a86e-39c129047b0b','058cbe78-e18c-4dac-b684-9621d1a5d80b')
 ,('f4f28532-f1ff-4b19-ab6d-89218c478e94','PODSUMOWANIE','2020-06-10 16:17:46.932','2020-06-10 16:17:46.932','0c12577b-360b-4843-a86e-39c129047b0b','c8b088f7-f8c3-4236-b1ea-b681a5d5dbc0')
 ,('ce6c070e-d695-4b4a-89b3-a687b2800832','OCENY','2020-06-10 16:17:46.941','2020-06-10 16:17:46.941','0c12577b-360b-4843-a86e-39c129047b0b','7f50f201-2ed8-4052-9948-bf32c12f5723')
 ,('240aaf38-d30d-4fb5-8334-9b0dd9ceef16','Twój głos','2020-06-10 16:17:46.952','2020-06-10 16:17:46.952','0c12577b-360b-4843-a86e-39c129047b0b','d0cd184b-2507-49f0-a071-859d9f24ddbd')
@@ -3849,10 +4023,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('1df36661-c343-4826-be3d-5dd2bc164004','Edytuj','2020-06-10 16:17:46.983','2020-06-10 16:17:46.983','0c12577b-360b-4843-a86e-39c129047b0b','d1be4854-8db7-4081-8c25-25465d36120b')
 ,('15dc4773-fd5f-4487-9706-c1e4e98f4d40','Zatrudnił(a)bym','2020-06-10 16:17:46.994','2020-06-10 16:17:46.994','0c12577b-360b-4843-a86e-39c129047b0b','09ae5c0e-7b0b-4585-a74b-d097b8b13a32')
 ,('932bdb1c-10f0-482d-8f36-38cd75d1de06','Nie zatrudnił(a)bym','2020-06-10 16:17:47.003','2020-06-10 16:17:47.003','0c12577b-360b-4843-a86e-39c129047b0b','26005f64-4667-41c6-8a6a-ee77889eec1e')
-,('4731b6cc-5ad4-48b6-a7ac-ae22a2c94751','Jest niezdecydowany','2020-06-10 16:17:47.013','2020-06-10 16:17:47.013','0c12577b-360b-4843-a86e-39c129047b0b','8588c8bf-0632-4746-b77e-8563ed21d827')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('5ff50c9d-ab6c-4578-9f57-d47d5ea3aca3','Kryteria oceny','2020-06-10 16:17:47.023','2020-06-10 16:17:47.023','0c12577b-360b-4843-a86e-39c129047b0b','b08f1ef7-4c39-4a44-b030-8beb11b1823d')
+('4731b6cc-5ad4-48b6-a7ac-ae22a2c94751','Jest niezdecydowany','2020-06-10 16:17:47.013','2020-06-10 16:17:47.013','0c12577b-360b-4843-a86e-39c129047b0b','8588c8bf-0632-4746-b77e-8563ed21d827')
+,('5ff50c9d-ab6c-4578-9f57-d47d5ea3aca3','Kryteria oceny','2020-06-10 16:17:47.023','2020-06-10 16:17:47.023','0c12577b-360b-4843-a86e-39c129047b0b','b08f1ef7-4c39-4a44-b030-8beb11b1823d')
 ,('f123ad47-5b65-48de-b2e3-2a6dc5f2b6a1','Nie oceniono','2020-06-10 16:17:47.036','2020-06-10 16:17:47.036','0c12577b-360b-4843-a86e-39c129047b0b','f253ea97-bbf7-490b-94e4-112a55a3d521')
 ,('7925fd1c-128c-40dc-bd32-be0a0f57bba2','Ogółem','2020-06-10 16:17:47.045','2020-06-10 16:17:47.045','0c12577b-360b-4843-a86e-39c129047b0b','e970152d-09f2-46c4-96ef-bf42de60f888')
 ,('5b0e6d02-714d-40bc-9dc4-85fecc99e1c0','Bardzo dobry','2020-06-10 16:17:47.054','2020-06-10 16:17:47.054','0c12577b-360b-4843-a86e-39c129047b0b','b40e6bec-4cbc-4e37-b002-4a290ff77842')
@@ -3861,10 +4035,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('c918963d-d67a-4f88-9c1b-1af8440b58d8','Dostateczny','2020-06-10 16:17:47.081','2020-06-10 16:17:47.081','0c12577b-360b-4843-a86e-39c129047b0b','3be053ff-e609-434f-8e06-f8e4f9fabb85')
 ,('3f8f10b6-5de7-458e-a8d4-1e243d6cf5f7','Nieodpowiedni','2020-06-10 16:17:47.091','2020-06-10 16:17:47.091','0c12577b-360b-4843-a86e-39c129047b0b','5e0652ed-c946-4596-bdc9-1ed9787a311b')
 ,('4e05679e-c9c6-44f0-8d00-59ffe68f0c67','Niedostateczny','2020-06-10 16:17:47.102','2020-06-10 16:17:47.102','0c12577b-360b-4843-a86e-39c129047b0b','e1d3ffd9-7c26-478b-8a75-0da0ef7919ca')
-,('9f54c15b-59de-455b-872d-773e15403195','1 Ocena','2020-06-10 16:17:47.112','2020-06-10 16:17:47.112','0c12577b-360b-4843-a86e-39c129047b0b','1df1c9f3-dd6c-4ab1-a57f-cc8de0a317fe')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('de971c2f-fb3a-4a01-a31e-d49ad98760b7','{{count}} Oceny','2020-06-10 16:17:47.122','2020-06-10 16:17:47.122','0c12577b-360b-4843-a86e-39c129047b0b','6c585adf-7914-4a21-9ff7-7731126d787a')
+('9f54c15b-59de-455b-872d-773e15403195','1 Ocena','2020-06-10 16:17:47.112','2020-06-10 16:17:47.112','0c12577b-360b-4843-a86e-39c129047b0b','1df1c9f3-dd6c-4ab1-a57f-cc8de0a317fe')
+,('de971c2f-fb3a-4a01-a31e-d49ad98760b7','{{count}} Oceny','2020-06-10 16:17:47.122','2020-06-10 16:17:47.122','0c12577b-360b-4843-a86e-39c129047b0b','6c585adf-7914-4a21-9ff7-7731126d787a')
 ,('bafb0b3a-98ad-4310-b0f1-bdb5d78bc52c','Zatrudnił bym tego kandydata','2020-06-10 16:17:47.131','2020-06-10 16:17:47.131','0c12577b-360b-4843-a86e-39c129047b0b','18b5d460-6afe-41c9-b65e-7ca313b181af')
 ,('108ba04b-4343-4cb1-9841-ae9caeb7966d','Nie zatrudnił bym tego kandydata','2020-06-10 16:17:47.141','2020-06-10 16:17:47.141','0c12577b-360b-4843-a86e-39c129047b0b','e1fb5b39-54e5-454b-b5b2-218e19b3696c')
 ,('003ef2fe-c24c-402a-81ca-01a7a1c84d1f','Zadania do wykonania','2020-06-10 16:17:47.154','2020-06-10 16:17:47.154','0c12577b-360b-4843-a86e-39c129047b0b','0a8774a5-721b-4bd2-96ff-6b18ced73781')
@@ -3873,22 +4047,22 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('70f29786-f3d2-44f7-ae41-223df9e69876','Przejdź do listy ofert pracy.','2020-06-10 16:17:47.182','2020-06-10 16:17:47.182','0c12577b-360b-4843-a86e-39c129047b0b','045b19aa-0fab-4662-afad-56db73acccf5')
 ,('5d507c72-bd06-4c98-a8b6-0cbff32b78a8','Zaprosić na rozmowę o pracę?','2020-06-10 16:17:47.190','2020-06-10 16:17:47.190','0c12577b-360b-4843-a86e-39c129047b0b','236abe16-e4f6-4f2d-b871-87ff979a9808')
 ,('8250c262-0965-4833-a836-6427634b2562','Oceń aplikację o pracę','2020-06-10 16:17:47.200','2020-06-10 16:17:47.200','0c12577b-360b-4843-a86e-39c129047b0b','209c4edd-3876-413d-a780-dafa27fd0a86')
-,('1e5f56a0-e9af-4f6d-9143-a1134c20fd34','Nadchodząca rozmowa o pracę','2020-06-10 16:17:47.212','2020-06-10 16:17:47.212','0c12577b-360b-4843-a86e-39c129047b0b','72050ea4-d10c-43cf-9f39-a420714b6c37')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('1e345dec-5c06-486d-9be6-4d7dcefb5d92','Nadchodząca rozmowa o pracę','2020-06-10 16:17:47.220','2020-06-10 16:17:47.220','0c12577b-360b-4843-a86e-39c129047b0b','7c3346b6-aa2b-47bb-83b0-3a15ba4fa721')
+('1e5f56a0-e9af-4f6d-9143-a1134c20fd34','Nadchodząca rozmowa o pracę','2020-06-10 16:17:47.212','2020-06-10 16:17:47.212','0c12577b-360b-4843-a86e-39c129047b0b','72050ea4-d10c-43cf-9f39-a420714b6c37')
+,('1e345dec-5c06-486d-9be6-4d7dcefb5d92','Nadchodząca rozmowa o pracę','2020-06-10 16:17:47.220','2020-06-10 16:17:47.220','0c12577b-360b-4843-a86e-39c129047b0b','7c3346b6-aa2b-47bb-83b0-3a15ba4fa721')
 ,('25181147-23a0-4190-ba3e-202847bdac38','Oczekujące głosowanie kciukiem','2020-06-10 16:17:47.230','2020-06-10 16:17:47.230','0c12577b-360b-4843-a86e-39c129047b0b','16895f21-62c0-4d13-afbb-22a2d34a6e2e')
 ,('0b94fc0d-7a88-49cd-b7b1-1a7e4f580568','Oczekująca ocena','2020-06-10 16:17:47.239','2020-06-10 16:17:47.239','0c12577b-360b-4843-a86e-39c129047b0b','a2f55647-c712-4ba3-b332-4fc2293a5ac6')
-,('3472c703-978a-4441-a61e-99d78caadcd8','Sprawdź status aplikacji','2020-06-10 16:17:47.249','2020-06-10 16:17:47.249','0c12577b-360b-4843-a86e-39c129047b0b','695185d8-74cb-4208-a900-d13f735221a4')
+,('232bc58e-f179-44e8-b8b9-60e9539fd97c','No','2020-06-19 10:44:17.998','2020-06-19 10:44:17.998','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','932ec36c-48ec-40e9-abd1-cc16f59f6ec4')
 ,('ec110564-e2d5-4830-8276-db1c57596f8a','Potwierdź rozmowę o prace','2020-06-10 16:17:47.257','2020-06-10 16:17:47.257','0c12577b-360b-4843-a86e-39c129047b0b','283ceb3a-c29a-41ae-8a46-fa893448a16a')
 ,('795bda58-cc84-4b5a-934b-c884280a81aa','Sprawdź ogłoszenie o prace','2020-06-10 16:17:47.266','2020-06-10 16:17:47.266','0c12577b-360b-4843-a86e-39c129047b0b','41746333-c895-4e1f-9edb-023fb4b6209d')
 ,('69795a2d-0f1f-42de-addc-5e706cc46b32','Ogłoszenie o pracę wygasło','2020-06-10 16:17:47.274','2020-06-10 16:17:47.274','0c12577b-360b-4843-a86e-39c129047b0b','d14ef13e-cb23-4547-a464-148215bb2866')
 ,('f0b3c52d-3e60-4383-8730-9053146b0035','Nie aktywowano żadnych rodzajów!','2020-06-10 16:17:47.289','2020-06-10 16:17:47.289','0c12577b-360b-4843-a86e-39c129047b0b','583b437f-e805-498e-babd-b753ad2e7cd7')
 ,('e9a3f144-b3dc-4b83-850d-7adf09b745ca','Twoja opinia jest potrzebna!','2020-06-10 16:17:47.298','2020-06-10 16:17:47.298','0c12577b-360b-4843-a86e-39c129047b0b','08531c41-fa14-4719-99ab-318c05963114')
-,('d672459a-c4f7-4bef-b37c-49609d7efbfe','Poświęć chwilę, aby wyrazić opinię w naszej krótkiej ankiecie.','2020-06-10 16:17:47.308','2020-06-10 16:17:47.308','0c12577b-360b-4843-a86e-39c129047b0b','a24a8627-5c3a-4d59-9624-520d3c10fd91')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('1646f687-c517-44ad-9b1d-c989bf451390','Zacznij ankietę','2020-06-10 16:17:47.317','2020-06-10 16:17:47.317','0c12577b-360b-4843-a86e-39c129047b0b','8fccf0b6-b504-40f7-bb35-f7ec94556038')
+('d672459a-c4f7-4bef-b37c-49609d7efbfe','Poświęć chwilę, aby wyrazić opinię w naszej krótkiej ankiecie.','2020-06-10 16:17:47.308','2020-06-10 16:17:47.308','0c12577b-360b-4843-a86e-39c129047b0b','a24a8627-5c3a-4d59-9624-520d3c10fd91')
+,('1646f687-c517-44ad-9b1d-c989bf451390','Zacznij ankietę','2020-06-10 16:17:47.317','2020-06-10 16:17:47.317','0c12577b-360b-4843-a86e-39c129047b0b','8fccf0b6-b504-40f7-bb35-f7ec94556038')
 ,('b31af7f8-1528-4410-9c11-7276fda19422','Nie teraz','2020-06-10 16:17:47.326','2020-06-10 16:17:47.326','0c12577b-360b-4843-a86e-39c129047b0b','ecdb2c54-a5c4-4d97-9e09-d8b07926a38f')
 ,('a41963f6-07db-4917-9ff9-6bc91bbab60d','Ankieta','2020-06-10 16:17:47.336','2020-06-10 16:17:47.336','0c12577b-360b-4843-a86e-39c129047b0b','79884ca9-e100-496c-8b9d-61cd53d14034')
 ,('c3e594f9-2ad0-4c51-8ac7-cdc5f77715ed','Due date on top','2020-06-10 16:17:47.345','2020-06-10 16:17:47.345','0c12577b-360b-4843-a86e-39c129047b0b','a6d50994-b8cf-4962-b90f-ff7b614d1bf4')
@@ -3897,10 +4071,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('79a20bc4-99cc-4c47-a335-236df54c993f','Imprint','2020-06-10 16:17:47.375','2020-06-10 16:17:47.375','0c12577b-360b-4843-a86e-39c129047b0b','188aab68-8bfa-46f0-bed8-77463b896869')
 ,('d08df215-0db4-4501-8596-f9d690d5a607','Polityka prywatności','2020-06-10 16:17:47.386','2020-06-10 16:17:47.386','0c12577b-360b-4843-a86e-39c129047b0b','31a677e8-8b95-4829-bae2-58a004c55028')
 ,('f14b5b28-afe8-405b-ab4b-9b24fb2ff2fc','Warunki korzystania','2020-06-10 16:17:47.396','2020-06-10 16:17:47.396','0c12577b-360b-4843-a86e-39c129047b0b','6b321c2a-fcf5-4194-b2ce-082da4ba0a5f')
-,('dbbdf437-6824-48ed-91e2-acef97c4f1b2','Licencje','2020-06-10 16:17:47.406','2020-06-10 16:17:47.406','0c12577b-360b-4843-a86e-39c129047b0b','8d1fe0a4-58a9-4026-8c43-f569b8af87dd')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('f1423c41-add1-4ad1-920d-ea5c99436b20','Głosowania','2020-06-10 16:17:47.418','2020-06-10 16:17:47.418','0c12577b-360b-4843-a86e-39c129047b0b','0a8774a5-721b-4bd2-96ff-6b18ced73781')
+('dbbdf437-6824-48ed-91e2-acef97c4f1b2','Licencje','2020-06-10 16:17:47.406','2020-06-10 16:17:47.406','0c12577b-360b-4843-a86e-39c129047b0b','8d1fe0a4-58a9-4026-8c43-f569b8af87dd')
+,('f1423c41-add1-4ad1-920d-ea5c99436b20','Głosowania','2020-06-10 16:17:47.418','2020-06-10 16:17:47.418','0c12577b-360b-4843-a86e-39c129047b0b','0a8774a5-721b-4bd2-96ff-6b18ced73781')
 ,('012f8ed2-d56c-4bb4-9283-2c6e56daa9ff','Jeszcze nie głosowano','2020-06-10 16:17:47.427','2020-06-10 16:17:47.427','0c12577b-360b-4843-a86e-39c129047b0b','083494ff-dd4a-42b1-a71d-726c76b6f8a2')
 ,('959fa0c8-1749-41a9-820d-904e41303aaf','Brak głosowania przez podniesienie kciuka','2020-06-10 16:17:47.438','2020-06-10 16:17:47.438','0c12577b-360b-4843-a86e-39c129047b0b','804afffc-ad53-42b7-8096-181969082ae7')
 ,('7e9c754d-2c9a-4d76-a0e7-6db4a338eb01','Zmień
@@ -3912,10 +4086,10 @@ szansa','2020-06-10 16:17:47.470','2020-06-10 16:17:47.470','0c12577b-360b-4843-
 ,('7cb92435-14ee-4fc7-ba0c-d11aab6d52d2','Więcej','2020-06-10 16:17:47.480','2020-06-10 16:17:47.480','0c12577b-360b-4843-a86e-39c129047b0b','d5447ac5-7736-48fe-a201-68d00a947659')
 ,('774c059f-5260-45ad-b86b-ede09b1d4a3d','Uuups! Coś poszło nie tak','2020-06-10 16:17:47.491','2020-06-10 16:17:47.491','0c12577b-360b-4843-a86e-39c129047b0b','0a8774a5-721b-4bd2-96ff-6b18ced73781')
 ,('1557cddd-91f9-4e28-b515-72778f361b76','Spróbuj ponownie','2020-06-10 16:17:47.501','2020-06-10 16:17:47.501','0c12577b-360b-4843-a86e-39c129047b0b','a191caaf-f72a-4336-8a07-e4e24104139c')
-,('9ced5d72-87a3-48e5-8cc1-94b259f88426','Zamknij','2020-06-10 16:17:47.509','2020-06-10 16:17:47.509','0c12577b-360b-4843-a86e-39c129047b0b','b59fb522-1808-4b39-ab88-ad2a0e9d0268')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('509903be-68dd-437f-a0f2-b2f54ae7bc17','Filtr','2020-06-10 16:17:47.523','2020-06-10 16:17:47.523','0c12577b-360b-4843-a86e-39c129047b0b','417d67e1-cb0e-4dd1-a920-1fd988b41400')
+('9ced5d72-87a3-48e5-8cc1-94b259f88426','Zamknij','2020-06-10 16:17:47.509','2020-06-10 16:17:47.509','0c12577b-360b-4843-a86e-39c129047b0b','b59fb522-1808-4b39-ab88-ad2a0e9d0268')
+,('509903be-68dd-437f-a0f2-b2f54ae7bc17','Filtr','2020-06-10 16:17:47.523','2020-06-10 16:17:47.523','0c12577b-360b-4843-a86e-39c129047b0b','417d67e1-cb0e-4dd1-a920-1fd988b41400')
 ,('574a592a-0324-4fe5-91a6-1dc4ee2a46f2','1 trafienie','2020-06-10 16:17:47.567','2020-06-10 16:17:47.567','0c12577b-360b-4843-a86e-39c129047b0b','42df9a67-c4fe-4d02-8f27-03d0e657228d')
 ,('cf23c016-de9a-4b8b-b414-847f7b521bb5','... trafień','2020-06-10 16:17:47.575','2020-06-10 16:17:47.575','0c12577b-360b-4843-a86e-39c129047b0b','a4ed91a3-6f76-4d29-b9ce-08ac3ddcae56')
 ,('3cd3cef8-5c80-4440-830a-55e5b252d115','Wystąpił błąd','2020-06-10 16:17:47.584','2020-06-10 16:17:47.584','0c12577b-360b-4843-a86e-39c129047b0b','583b437f-e805-498e-babd-b753ad2e7cd7')
@@ -3924,10 +4098,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('6dd222e5-3334-414b-8143-4a5ed19c9803','Przepraszamy, brak wyników','2020-06-10 16:17:47.620','2020-06-10 16:17:47.620','0c12577b-360b-4843-a86e-39c129047b0b','8be1ba14-7795-4a55-a1c3-1d9ef4b2ddea')
 ,('70d2c600-dffb-40f0-a217-1fd3f02e5a56','Wyczyść wszystko','2020-06-10 16:17:47.630','2020-06-10 16:17:47.630','0c12577b-360b-4843-a86e-39c129047b0b','f0839b8b-2e4e-4b43-888b-faf4a49e491e')
 ,('22e1cefa-e67b-4937-8e78-93e01225890b','Jesteś obecnie offline','2020-06-10 16:17:47.641','2020-06-10 16:17:47.641','0c12577b-360b-4843-a86e-39c129047b0b','0a8774a5-721b-4bd2-96ff-6b18ced73781')
-,('e7a12a62-acb8-4805-95e9-32283bc97ef5','Sprawdź połączenie z internetem i spróbuj ponownie.','2020-06-10 16:17:47.651','2020-06-10 16:17:47.651','0c12577b-360b-4843-a86e-39c129047b0b','6b6f8ab5-5760-4319-a8a3-d7388aa70270')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('e617ce59-1b3f-408f-a84e-82a9c0b180d9','Nowe','2020-06-10 16:17:47.663','2020-06-10 16:17:47.663','0c12577b-360b-4843-a86e-39c129047b0b','57b4b4fc-d701-4d1f-8a82-8ae48b8f3cae')
+('e7a12a62-acb8-4805-95e9-32283bc97ef5','Sprawdź połączenie z internetem i spróbuj ponownie.','2020-06-10 16:17:47.651','2020-06-10 16:17:47.651','0c12577b-360b-4843-a86e-39c129047b0b','6b6f8ab5-5760-4319-a8a3-d7388aa70270')
+,('e617ce59-1b3f-408f-a84e-82a9c0b180d9','Nowe','2020-06-10 16:17:47.663','2020-06-10 16:17:47.663','0c12577b-360b-4843-a86e-39c129047b0b','57b4b4fc-d701-4d1f-8a82-8ae48b8f3cae')
 ,('c8deef3f-d249-4242-90a9-67feed33b52a','Preselekcja','2020-06-10 16:17:47.671','2020-06-10 16:17:47.671','0c12577b-360b-4843-a86e-39c129047b0b','85df6841-7b7d-428a-8227-d3cef23ae588')
 ,('72aae01e-dc91-4518-a1fe-d789679fb82a','Rozmowa kwalifikacyjna','2020-06-10 16:17:47.681','2020-06-10 16:17:47.681','0c12577b-360b-4843-a86e-39c129047b0b','5164c5fe-836a-40c3-8beb-67de31d5f39a')
 ,('489c8164-b8b0-4809-9583-c2bd6a080190','Oferta','2020-06-10 16:17:47.689','2020-06-10 16:17:47.689','0c12577b-360b-4843-a86e-39c129047b0b','b9c2f667-c605-4dcb-a6b6-9a5826071e5d')
@@ -3936,10 +4110,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('8c84b707-b327-4ea2-a1bc-0691b13af78e','Odrzucony','2020-06-10 16:17:47.721','2020-06-10 16:17:47.721','0c12577b-360b-4843-a86e-39c129047b0b','bd45489c-8b1a-4a1d-afa8-1a768844be9a')
 ,('4d3e6f0a-c1b7-4a46-8bdc-399b507c800f','Nowy status: {{a}}','2020-06-10 16:17:47.731','2020-06-10 16:17:47.731','0c12577b-360b-4843-a86e-39c129047b0b','a64915f5-1fc3-4c1f-ba6c-c409959cc2e3')
 ,('707d33f5-cc92-45da-bf02-31b0279e2b94','Koszyk do odmowy','2020-06-10 16:17:47.740','2020-06-10 16:17:47.740','0c12577b-360b-4843-a86e-39c129047b0b','bcb7e5ad-472c-4532-89f9-fa9fb8c2e2d8')
-,('805c737a-98da-4dad-a4f0-55270b7d74e0','Wstrzymane','2020-06-10 16:17:47.751','2020-06-10 16:17:47.751','0c12577b-360b-4843-a86e-39c129047b0b','88ccabc8-afd6-4aa1-bf8e-6b1105473d64')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('9f7d6b73-c531-4241-90ad-56459943c35f','Nowy status: Aplikowano','2020-06-10 16:17:47.760','2020-06-10 16:17:47.760','0c12577b-360b-4843-a86e-39c129047b0b','5f9881db-6aaa-4b16-8531-64abd9bde4e9')
+('805c737a-98da-4dad-a4f0-55270b7d74e0','Wstrzymane','2020-06-10 16:17:47.751','2020-06-10 16:17:47.751','0c12577b-360b-4843-a86e-39c129047b0b','88ccabc8-afd6-4aa1-bf8e-6b1105473d64')
+,('9f7d6b73-c531-4241-90ad-56459943c35f','Nowy status: Aplikowano','2020-06-10 16:17:47.760','2020-06-10 16:17:47.760','0c12577b-360b-4843-a86e-39c129047b0b','5f9881db-6aaa-4b16-8531-64abd9bde4e9')
 ,('d2166eac-5fb8-4351-9a50-871145d3df5b','Nowy status: Preselekcja','2020-06-10 16:17:47.770','2020-06-10 16:17:47.770','0c12577b-360b-4843-a86e-39c129047b0b','f6db2ef2-a1b0-4b5d-9fee-3b71a9411345')
 ,('3d72ff35-0791-40ed-a1d5-6ae4b7013393','Nowy status: Rozmowa kwalifikacyjna','2020-06-10 16:17:47.780','2020-06-10 16:17:47.780','0c12577b-360b-4843-a86e-39c129047b0b','14a7a94a-c843-471b-a631-53653e22c9d0')
 ,('ea990917-7252-4e70-96da-2513c8bbdd12','Nowy status: Oferta','2020-06-10 16:17:47.789','2020-06-10 16:17:47.789','0c12577b-360b-4843-a86e-39c129047b0b','68da8941-4438-49cd-808c-06037ad0e25e')
@@ -3948,10 +4122,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('20a3e6e7-8ebc-40e1-a61c-1123325ad690','Nowy status: Odrzucony','2020-06-10 16:17:47.824','2020-06-10 16:17:47.824','0c12577b-360b-4843-a86e-39c129047b0b','91a77d96-d47f-49dd-9313-5ae002156e23')
 ,('dd552565-8616-4a1f-bcaa-e48f76a14885','Nowy status: {{a}}','2020-06-10 16:17:47.833','2020-06-10 16:17:47.833','0c12577b-360b-4843-a86e-39c129047b0b','904a1ff5-99b8-4a29-8def-9b52884330d5')
 ,('03467161-6b52-4a8a-a989-c104b2a2bc1b','Applications','2020-06-12 16:54:24.152','2020-06-12 16:54:24.152','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','b51df515-5616-4171-b396-d1a676ccd2a5')
-,('cc2f4646-c3ac-4425-a91b-e8dac36681f6','Bewerber','2020-06-12 16:54:32.438','2020-06-12 16:54:32.438','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','b51df515-5616-4171-b396-d1a676ccd2a5')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('c9f6ea8e-729c-4212-a87b-4b4758318b12','Solicitudes','2020-06-12 16:54:55.200','2020-06-12 16:54:55.200','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','b51df515-5616-4171-b396-d1a676ccd2a5')
+('cc2f4646-c3ac-4425-a91b-e8dac36681f6','Bewerber','2020-06-12 16:54:32.438','2020-06-12 16:54:32.438','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','b51df515-5616-4171-b396-d1a676ccd2a5')
+,('c9f6ea8e-729c-4212-a87b-4b4758318b12','Solicitudes','2020-06-12 16:54:55.200','2020-06-12 16:54:55.200','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','b51df515-5616-4171-b396-d1a676ccd2a5')
 ,('05f0c6ce-20cc-4bcf-a269-bfc4cd74c8b1','Aplikacje','2020-06-12 16:55:09.647','2020-06-12 16:55:09.647','0c12577b-360b-4843-a86e-39c129047b0b','b51df515-5616-4171-b396-d1a676ccd2a5')
 ,('4c3ca950-a6df-4bbe-b257-5293a5712b6a','Rejection bin','2020-06-12 16:58:59.341','2020-06-12 16:58:59.341','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','88fce8f4-716f-4cbe-814a-1a8a49e79f02')
 ,('64927816-d3d5-44bb-a816-700d57d2cf19','Absagekorb','2020-06-12 16:59:07.765','2020-06-12 16:59:07.765','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','88fce8f4-716f-4cbe-814a-1a8a49e79f02')
@@ -3960,10 +4134,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('06484e10-ed47-4ae2-92b1-32fcd940b376','To-dos','2020-06-12 17:07:00.652','2020-06-12 17:07:00.652','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','2f306d5c-e18f-41da-b30f-1608bb0ab8b5')
 ,('2b32e2f4-bc13-4c29-8aa7-cfa0f6a6e2f4','To-dos','2020-06-12 17:07:07.911','2020-06-12 17:07:07.911','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','2f306d5c-e18f-41da-b30f-1608bb0ab8b5')
 ,('7b99cb9f-97e8-483d-b935-5cf216ecfdbc','Zadania do wykonania','2020-06-12 17:07:25.782','2020-06-12 17:07:25.782','0c12577b-360b-4843-a86e-39c129047b0b','2f306d5c-e18f-41da-b30f-1608bb0ab8b5')
-,('107c6653-696c-422a-9e83-d258c762d742','Tareas','2020-06-12 17:07:40.135','2020-06-12 17:07:40.135','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','2f306d5c-e18f-41da-b30f-1608bb0ab8b5')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('378aaf53-739c-4518-b6bb-da7ae6c24ce2','Emails','2020-06-12 17:09:56.602','2020-06-12 17:09:56.602','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','7dad44ed-2955-4a8c-b4e3-dc1913e7ba57')
+('107c6653-696c-422a-9e83-d258c762d742','Tareas','2020-06-12 17:07:40.135','2020-06-12 17:07:40.135','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','2f306d5c-e18f-41da-b30f-1608bb0ab8b5')
+,('378aaf53-739c-4518-b6bb-da7ae6c24ce2','Emails','2020-06-12 17:09:56.602','2020-06-12 17:09:56.602','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','7dad44ed-2955-4a8c-b4e3-dc1913e7ba57')
 ,('d4089273-6716-4714-9fe7-a0d6cd0bd51c','E-Mails','2020-06-12 17:10:11.880','2020-06-12 17:10:11.880','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','7dad44ed-2955-4a8c-b4e3-dc1913e7ba57')
 ,('d44fec07-8eec-443e-b756-823738b94b3d','Wiadomości','2020-06-12 17:10:26.052','2020-06-12 17:10:26.052','0c12577b-360b-4843-a86e-39c129047b0b','7dad44ed-2955-4a8c-b4e3-dc1913e7ba57')
 ,('7e2b42d0-75b3-48f3-a263-3613fb5ddf42','Correos electrónicos','2020-06-12 17:10:42.250','2020-06-12 17:10:42.250','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','7dad44ed-2955-4a8c-b4e3-dc1913e7ba57')
@@ -3972,10 +4146,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('9b4afde6-2ef2-4cb4-8efb-bb39a0a30795','Zmień kod PIN','2020-06-12 17:20:02.377','2020-06-12 17:20:02.377','0c12577b-360b-4843-a86e-39c129047b0b','67d36e7b-280d-40b9-856b-ddb8b6a01239')
 ,('8f4a4734-c6fc-455e-8c86-65c35967c1dd','Cambiar código de acceso','2020-06-12 17:20:29.155','2020-06-12 17:20:29.155','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','67d36e7b-280d-40b9-856b-ddb8b6a01239')
 ,('ee53d822-072b-4258-a338-1a445e37eed9','Auto-Lock','2020-06-12 17:20:51.211','2020-06-12 17:20:51.211','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','cdc180ab-a7da-4903-b0f2-3e56d56f51dd')
-,('db08ff56-8084-46f9-b9a5-f879dfdb4428','Automatische Sperre','2020-06-12 17:21:09.338','2020-06-12 17:21:09.338','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','cdc180ab-a7da-4903-b0f2-3e56d56f51dd')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('93956ee6-e6e3-4186-88c5-739fcc3cb828','Autoblokada','2020-06-12 17:21:32.817','2020-06-12 17:21:32.817','0c12577b-360b-4843-a86e-39c129047b0b','cdc180ab-a7da-4903-b0f2-3e56d56f51dd')
+('db08ff56-8084-46f9-b9a5-f879dfdb4428','Automatische Sperre','2020-06-12 17:21:09.338','2020-06-12 17:21:09.338','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','cdc180ab-a7da-4903-b0f2-3e56d56f51dd')
+,('93956ee6-e6e3-4186-88c5-739fcc3cb828','Autoblokada','2020-06-12 17:21:32.817','2020-06-12 17:21:32.817','0c12577b-360b-4843-a86e-39c129047b0b','cdc180ab-a7da-4903-b0f2-3e56d56f51dd')
 ,('dc923915-ceef-4999-b00f-b5d447c36ac0','Bloqueo automático','2020-06-12 17:21:44.666','2020-06-12 17:21:44.666','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','cdc180ab-a7da-4903-b0f2-3e56d56f51dd')
 ,('f323dda7-32f2-415c-ad49-335f2e23bc76','Language','2020-06-12 17:22:13.915','2020-06-12 17:22:13.915','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','8ef2a5be-d512-4234-a00d-bfc0eb9b50f0')
 ,('fd66d28d-be36-4ec6-9659-6ea8c5cf7e75','Sprache','2020-06-12 17:22:31.218','2020-06-12 17:22:31.218','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','8ef2a5be-d512-4234-a00d-bfc0eb9b50f0')
@@ -3984,10 +4158,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('3cd68e77-6e2b-42a5-bcbd-daf04de5376c','Language','2020-06-12 17:28:57.044','2020-06-12 17:28:57.044','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','29d7bdbe-3691-4fe0-b7d1-6fdb6df64f98')
 ,('dd4750f1-6f6f-404e-b725-f677d85d805a','Cancel','2020-06-12 17:29:08.667','2020-06-12 17:29:08.667','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','16e5aff0-8868-496d-8672-126804299160')
 ,('0df54c0f-a349-4c37-b159-b19224780477','Done','2020-06-12 17:29:16.791','2020-06-12 17:29:16.791','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','315b0f15-07b1-4029-8735-797095bd3d0f')
-,('28eb1b00-1a03-4fae-a066-275733a16ebc','Sprache','2020-06-12 17:29:32.803','2020-06-12 17:29:32.803','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','29d7bdbe-3691-4fe0-b7d1-6fdb6df64f98')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('26c5d08b-086a-4107-998f-c7003b26e3a4','Abbrechen','2020-06-12 17:29:38.011','2020-06-12 17:29:38.011','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','16e5aff0-8868-496d-8672-126804299160')
+('28eb1b00-1a03-4fae-a066-275733a16ebc','Sprache','2020-06-12 17:29:32.803','2020-06-12 17:29:32.803','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','29d7bdbe-3691-4fe0-b7d1-6fdb6df64f98')
+,('26c5d08b-086a-4107-998f-c7003b26e3a4','Abbrechen','2020-06-12 17:29:38.011','2020-06-12 17:29:38.011','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','16e5aff0-8868-496d-8672-126804299160')
 ,('0c9cd72a-1fe4-4329-9fa4-0b9c545bb277','Fertig','2020-06-12 17:29:44.580','2020-06-12 17:29:44.580','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','315b0f15-07b1-4029-8735-797095bd3d0f')
 ,('fa74f63f-4971-4297-aa77-fcc51baa179e','Język','2020-06-12 17:29:54.017','2020-06-12 17:29:54.017','0c12577b-360b-4843-a86e-39c129047b0b','29d7bdbe-3691-4fe0-b7d1-6fdb6df64f98')
 ,('483f021e-8c55-4b1e-83e6-e55af9ea33f6','Anuluj','2020-06-12 17:29:59.867','2020-06-12 17:29:59.867','0c12577b-360b-4843-a86e-39c129047b0b','16e5aff0-8868-496d-8672-126804299160')
@@ -3996,10 +4170,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('9471b775-ae5b-4b8d-8563-70bc3b7e6da0','Cancelar','2020-06-12 17:30:29.294','2020-06-12 17:30:29.294','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','16e5aff0-8868-496d-8672-126804299160')
 ,('68201beb-9b77-40ff-95a0-7e6abcb65ec6','Hecho','2020-06-12 17:30:34.975','2020-06-12 17:30:34.975','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','315b0f15-07b1-4029-8735-797095bd3d0f')
 ,('17c057ac-9c0f-40c7-87e8-e54d26a5ae8f','Done','2020-06-12 17:32:06.414','2020-06-12 17:32:06.414','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','1e954c68-52b4-4016-a443-f0eef80f9480')
-,('1830bd60-850e-4e3b-819a-a148581b8637','Fertig','2020-06-12 17:32:11.695','2020-06-12 17:32:11.695','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','1e954c68-52b4-4016-a443-f0eef80f9480')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('d87a8397-6c28-4eb5-ab43-c6165e5ca989','Gotowe','2020-06-12 17:32:24.096','2020-06-12 17:32:24.096','0c12577b-360b-4843-a86e-39c129047b0b','1e954c68-52b4-4016-a443-f0eef80f9480')
+('1830bd60-850e-4e3b-819a-a148581b8637','Fertig','2020-06-12 17:32:11.695','2020-06-12 17:32:11.695','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','1e954c68-52b4-4016-a443-f0eef80f9480')
+,('d87a8397-6c28-4eb5-ab43-c6165e5ca989','Gotowe','2020-06-12 17:32:24.096','2020-06-12 17:32:24.096','0c12577b-360b-4843-a86e-39c129047b0b','1e954c68-52b4-4016-a443-f0eef80f9480')
 ,('74be0976-3cb2-4235-aa81-b2ee0a8b2fb5','Hecho','2020-06-12 17:32:33.112','2020-06-12 17:32:33.112','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','1e954c68-52b4-4016-a443-f0eef80f9480')
 ,('7e5bf316-82a7-4233-9535-c9465a95cdfa','Settings','2020-06-12 17:35:03.121','2020-06-12 17:35:03.121','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','cb2aa247-24dd-4ee6-ba25-b3429b6d55e0')
 ,('12b8a167-0188-4bd4-a83e-d2d300469797','Einstellungen','2020-06-12 17:35:09.447','2020-06-12 17:35:09.447','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','cb2aa247-24dd-4ee6-ba25-b3429b6d55e0')
@@ -4008,10 +4182,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('6011eb09-8b86-4805-b2fd-7bd13884499b','Done','2020-06-12 18:04:22.718','2020-06-12 18:04:22.718','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','9a55a504-a2b2-4496-8bf0-a9fddea0fb33')
 ,('eb2f4c25-edfd-4b5a-8d68-09289d3065f1','Cancel','2020-06-12 18:04:32.177','2020-06-12 18:04:32.177','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','292c648e-4885-40d9-b93b-0af73a34ee25')
 ,('86c7f7f6-7a57-44b4-b397-03a72e51b28c','Abbrechen','2020-06-12 18:04:40.280','2020-06-12 18:04:40.280','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','292c648e-4885-40d9-b93b-0af73a34ee25')
-,('5a081736-eed2-4fe0-98bb-9221df769a9b','Fertig','2020-06-12 18:04:47.242','2020-06-12 18:04:47.242','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','9a55a504-a2b2-4496-8bf0-a9fddea0fb33')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('ee226967-c1cb-4a74-a323-207eb1037a79','Anuluj','2020-06-12 18:05:00.699','2020-06-12 18:05:00.699','0c12577b-360b-4843-a86e-39c129047b0b','292c648e-4885-40d9-b93b-0af73a34ee25')
+('5a081736-eed2-4fe0-98bb-9221df769a9b','Fertig','2020-06-12 18:04:47.242','2020-06-12 18:04:47.242','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','9a55a504-a2b2-4496-8bf0-a9fddea0fb33')
+,('ee226967-c1cb-4a74-a323-207eb1037a79','Anuluj','2020-06-12 18:05:00.699','2020-06-12 18:05:00.699','0c12577b-360b-4843-a86e-39c129047b0b','292c648e-4885-40d9-b93b-0af73a34ee25')
 ,('9d9a9dbd-ee2a-48e6-9ee4-b0ee54ea93af','Gotowe','2020-06-12 18:05:16.648','2020-06-12 18:05:16.648','0c12577b-360b-4843-a86e-39c129047b0b','9a55a504-a2b2-4496-8bf0-a9fddea0fb33')
 ,('d20758fc-9adf-4dbd-aa20-ed0f8a579365','Cancelar','2020-06-12 18:05:32.597','2020-06-12 18:05:32.597','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','292c648e-4885-40d9-b93b-0af73a34ee25')
 ,('a1ffa45a-ee08-4f74-85d0-c64147b679a7','Hecho','2020-06-12 18:05:37.412','2020-06-12 18:05:37.412','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','9a55a504-a2b2-4496-8bf0-a9fddea0fb33')
@@ -4020,10 +4194,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('17706f29-2d45-4512-aafd-becc2a213db6','Informacje o aplikacji','2020-06-15 16:27:25.263','2020-06-15 16:27:25.263','0c12577b-360b-4843-a86e-39c129047b0b','796dc639-d9e5-4cce-8e7b-53a4a5a38ea8')
 ,('5d04bb06-690b-4257-975c-7fe3d9333461','Sobre nosotros','2020-06-15 16:27:38.868','2020-06-15 16:27:38.868','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','796dc639-d9e5-4cce-8e7b-53a4a5a38ea8')
 ,('df310eed-a090-4049-957a-35ca03d6e11e','Search for names','2020-06-15 17:28:17.199','2020-06-15 17:28:17.199','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','c746b18e-3a0d-4d50-9b77-b51a2b5f8068')
-,('875c0e7b-90dd-4ccd-a9aa-c6e68eda50bf','Email','2020-06-15 17:28:22.158','2020-06-15 17:28:22.158','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','cdd6aad2-c4be-4e18-ae62-857d5b2e3db9')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('02c4c414-e2b0-442e-85aa-0f8d9c57bdb1','Emails','2020-06-15 17:28:27.040','2020-06-15 17:28:27.040','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','70045d79-ccbd-43e1-8ded-64706c111fbc')
+('875c0e7b-90dd-4ccd-a9aa-c6e68eda50bf','Email','2020-06-15 17:28:22.158','2020-06-15 17:28:22.158','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','cdd6aad2-c4be-4e18-ae62-857d5b2e3db9')
+,('02c4c414-e2b0-442e-85aa-0f8d9c57bdb1','Emails','2020-06-15 17:28:27.040','2020-06-15 17:28:27.040','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','70045d79-ccbd-43e1-8ded-64706c111fbc')
 ,('a7af5fae-1496-4554-913e-edc7f73cc018','No emails yet','2020-06-15 17:28:38.957','2020-06-15 17:28:38.957','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','a96ee796-d0e9-4d08-a033-4a1f8d83babe')
 ,('6f7ce0eb-bdc2-459f-aac3-1b17c4edd30d','Inbox','2020-06-15 17:28:44.237','2020-06-15 17:28:44.237','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','9e843989-d806-466c-92e4-bbe387a31319')
 ,('918e5cea-222c-4b65-8bbc-34d08b76f20a','Sent','2020-06-15 17:28:49.676','2020-06-15 17:28:49.676','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','835c9be6-ff81-4219-93f3-b26851d82cf6')
@@ -4032,10 +4206,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('9ef76cfe-9f70-48db-b6af-a238030d2f33','Oldest on top','2020-06-15 17:29:15.410','2020-06-15 17:29:15.410','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','f4dff64d-cf38-437e-84a2-456d22de2b3d')
 ,('21c37a33-32a2-42fd-8775-9caba67c69b1','Suche nach Namen','2020-06-15 17:30:01.602','2020-06-15 17:30:01.602','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','c746b18e-3a0d-4d50-9b77-b51a2b5f8068')
 ,('29b96fa7-bb39-4524-be44-75d2c1b064fa','E-Mail','2020-06-15 17:30:08.197','2020-06-15 17:30:08.197','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','cdd6aad2-c4be-4e18-ae62-857d5b2e3db9')
-,('b235391a-d901-4c3c-9b2a-97ac77f00652','E-Mails','2020-06-15 17:30:12.210','2020-06-15 17:30:12.210','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','70045d79-ccbd-43e1-8ded-64706c111fbc')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('c48e7ae2-e9c7-4ea5-b80b-8058f7bd56bd','Keine E-Mails bisher','2020-06-15 17:30:28.626','2020-06-15 17:30:28.626','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','a96ee796-d0e9-4d08-a033-4a1f8d83babe')
+('b235391a-d901-4c3c-9b2a-97ac77f00652','E-Mails','2020-06-15 17:30:12.210','2020-06-15 17:30:12.210','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','70045d79-ccbd-43e1-8ded-64706c111fbc')
+,('c48e7ae2-e9c7-4ea5-b80b-8058f7bd56bd','Keine E-Mails bisher','2020-06-15 17:30:28.626','2020-06-15 17:30:28.626','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','a96ee796-d0e9-4d08-a033-4a1f8d83babe')
 ,('eb0fb75f-c41c-429a-883e-7d5fcc231c8a','Posteingang','2020-06-15 17:30:34.996','2020-06-15 17:30:34.996','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','9e843989-d806-466c-92e4-bbe387a31319')
 ,('8d4687d4-5b6d-4a6b-9a8b-6349bfe9d54d','Gesendet','2020-06-15 17:30:41.324','2020-06-15 17:30:41.324','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','835c9be6-ff81-4219-93f3-b26851d82cf6')
 ,('b0ffcf1b-d646-4014-92cf-8acba6d31095','Ungelesen zuerst','2020-06-15 17:30:51.048','2020-06-15 17:30:51.048','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','31febe83-3b0f-40c2-a0a1-4cfc2e9ab854')
@@ -4044,10 +4218,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('3bb4663f-70e0-4c26-81dd-63977150c645','Szukaj nazwisk','2020-06-15 17:32:08.162','2020-06-15 17:32:08.162','0c12577b-360b-4843-a86e-39c129047b0b','c746b18e-3a0d-4d50-9b77-b51a2b5f8068')
 ,('99c5ce57-e3ca-46fe-bbec-b5ea47bbc454','Wiadomość','2020-06-15 17:32:15.702','2020-06-15 17:32:15.702','0c12577b-360b-4843-a86e-39c129047b0b','cdd6aad2-c4be-4e18-ae62-857d5b2e3db9')
 ,('90078dd0-8c06-45f2-840a-d8b65c826357','Wiadomości','2020-06-15 17:32:20.474','2020-06-15 17:32:20.474','0c12577b-360b-4843-a86e-39c129047b0b','70045d79-ccbd-43e1-8ded-64706c111fbc')
-,('ab01a7e4-6015-4631-8360-61d30b4cac79','Brak wiadomości e-mail','2020-06-15 17:32:34.870','2020-06-15 17:32:34.870','0c12577b-360b-4843-a86e-39c129047b0b','a96ee796-d0e9-4d08-a033-4a1f8d83babe')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('b69d32e1-c6f7-4d5c-a1a7-26f9fa590430','Skrzynka odbiorcza','2020-06-15 17:32:29.555','2020-06-15 17:32:44.332','0c12577b-360b-4843-a86e-39c129047b0b','9e843989-d806-466c-92e4-bbe387a31319')
+('ab01a7e4-6015-4631-8360-61d30b4cac79','Brak wiadomości e-mail','2020-06-15 17:32:34.870','2020-06-15 17:32:34.870','0c12577b-360b-4843-a86e-39c129047b0b','a96ee796-d0e9-4d08-a033-4a1f8d83babe')
+,('b69d32e1-c6f7-4d5c-a1a7-26f9fa590430','Skrzynka odbiorcza','2020-06-15 17:32:29.555','2020-06-15 17:32:44.332','0c12577b-360b-4843-a86e-39c129047b0b','9e843989-d806-466c-92e4-bbe387a31319')
 ,('b5d431aa-ac08-46fc-a658-e46154baa819','Wysłane','2020-06-15 17:32:51.669','2020-06-15 17:32:51.669','0c12577b-360b-4843-a86e-39c129047b0b','835c9be6-ff81-4219-93f3-b26851d82cf6')
 ,('35d2463e-febd-4f9d-a828-95f4807a2e56','Nieprzeczytane na początku','2020-06-15 17:32:58.217','2020-06-15 17:32:58.217','0c12577b-360b-4843-a86e-39c129047b0b','31febe83-3b0f-40c2-a0a1-4cfc2e9ab854')
 ,('4f097559-3809-46b7-ac76-afb7aa6fe468','Najnowsze na początku','2020-06-15 17:33:05.591','2020-06-15 17:33:05.591','0c12577b-360b-4843-a86e-39c129047b0b','deea00e5-523f-4987-a4a9-0668373dfecc')
@@ -4056,10 +4230,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('077461d9-cd90-4258-a5ae-52f1f560739b','Correo electrónico','2020-06-15 17:33:35.365','2020-06-15 17:33:35.365','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','cdd6aad2-c4be-4e18-ae62-857d5b2e3db9')
 ,('b0e96cc9-5ede-4909-8d85-15c95f957680','Correos electrónicos','2020-06-15 17:33:42.207','2020-06-15 17:33:42.207','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','70045d79-ccbd-43e1-8ded-64706c111fbc')
 ,('0ab5f2a5-d7fd-4c16-8686-090a5021de4a','Aún no hay correos electrónicos','2020-06-15 17:33:51.505','2020-06-15 17:33:51.505','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','a96ee796-d0e9-4d08-a033-4a1f8d83babe')
-,('5c828fa8-bae2-487d-9684-b7f512c69a75','Bandeja de entrada','2020-06-15 17:33:58.032','2020-06-15 17:33:58.032','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','9e843989-d806-466c-92e4-bbe387a31319')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('31a19fdc-6148-4d3e-8575-7bb2e413f0b7','Enviado','2020-06-15 17:34:03.372','2020-06-15 17:34:03.372','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','835c9be6-ff81-4219-93f3-b26851d82cf6')
+('5c828fa8-bae2-487d-9684-b7f512c69a75','Bandeja de entrada','2020-06-15 17:33:58.032','2020-06-15 17:33:58.032','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','9e843989-d806-466c-92e4-bbe387a31319')
+,('31a19fdc-6148-4d3e-8575-7bb2e413f0b7','Enviado','2020-06-15 17:34:03.372','2020-06-15 17:34:03.372','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','835c9be6-ff81-4219-93f3-b26851d82cf6')
 ,('c99404e8-4a2e-436b-aa42-c8152dfe4e9f','No leído en la parte superior','2020-06-15 17:34:11.308','2020-06-15 17:34:11.308','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','31febe83-3b0f-40c2-a0a1-4cfc2e9ab854')
 ,('0ae921c4-d7b9-43bf-89ae-4fa5fef3d11f','Lo más reciente en la parte superior','2020-06-15 17:34:19.417','2020-06-15 17:34:19.417','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','deea00e5-523f-4987-a4a9-0668373dfecc')
 ,('42369fde-948c-4929-bcd6-a89faf2ae168','Lo más antiguo en la parte superior','2020-06-15 17:34:26.105','2020-06-15 17:34:26.105','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','f4dff64d-cf38-437e-84a2-456d22de2b3d')
@@ -4068,10 +4242,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('ea1c1311-9162-4845-ac3f-67f70a0d4dc2','Search for names or titles or locations','2020-06-15 17:37:03.371','2020-06-15 17:37:03.371','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','e0429153-dcdd-4631-9829-3520388e507e')
 ,('f01f14d9-3119-460c-b4c5-989551ff09ad','Second Chance','2020-06-15 17:37:23.461','2020-06-15 17:37:23.461','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','3d77681a-e4da-4646-a781-c05c35620553')
 ,('20da9b39-04d2-478b-80db-86e9de0a738f','There are no applications in the rejection bin.','2020-06-15 17:37:33.105','2020-06-15 17:37:33.105','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','38c2fbd2-02ba-478c-a1ae-3c8af4566cf1')
-,('cfb94b80-09eb-46ba-8275-2855ea560afa','Absagekorb','2020-06-15 17:37:42.388','2020-06-15 17:37:42.388','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','c77c386e-741d-4410-a954-2c0eb8bdfc51')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('297170e4-ef04-4eea-89b4-d04f2a761628','Absagekorb','2020-06-15 17:37:45.306','2020-06-15 17:37:45.306','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','61cd86e4-a0fa-4957-b7aa-ac735d6e044b')
+('cfb94b80-09eb-46ba-8275-2855ea560afa','Absagekorb','2020-06-15 17:37:42.388','2020-06-15 17:37:42.388','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','c77c386e-741d-4410-a954-2c0eb8bdfc51')
+,('297170e4-ef04-4eea-89b4-d04f2a761628','Absagekorb','2020-06-15 17:37:45.306','2020-06-15 17:37:45.306','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','61cd86e4-a0fa-4957-b7aa-ac735d6e044b')
 ,('0fc8773f-334c-4843-b0ac-f14f920ac740','Suche nach Namen oder Titel oder Standorte','2020-06-15 17:37:57.051','2020-06-15 17:37:57.051','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','e0429153-dcdd-4631-9829-3520388e507e')
 ,('1b4fbba8-8613-4d50-9fac-4aacf802224a','Zweite Chance','2020-06-15 17:38:04.527','2020-06-15 17:38:04.527','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','3d77681a-e4da-4646-a781-c05c35620553')
 ,('1ae7b289-f812-40ef-8413-15c15ac7fe67','Aktuell gibt es keine Bewerbungen im Absagekorb.','2020-06-15 17:38:11.431','2020-06-15 17:38:11.431','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','38c2fbd2-02ba-478c-a1ae-3c8af4566cf1')
@@ -4080,10 +4254,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('fd0b6a07-f4ba-4c87-9b31-ab0b44175e74','Wyszukiwanie według nazwy, tytułu lub lokalizacji','2020-06-15 17:38:32.256','2020-06-15 17:38:32.256','0c12577b-360b-4843-a86e-39c129047b0b','e0429153-dcdd-4631-9829-3520388e507e')
 ,('7282222b-1a69-4aa8-9978-2c0561de0237','Druga szansa','2020-06-15 17:38:39.608','2020-06-15 17:38:39.608','0c12577b-360b-4843-a86e-39c129047b0b','3d77681a-e4da-4646-a781-c05c35620553')
 ,('90ad06ff-c4ca-4543-9c44-a6772c7be6c3','Brak kandydatów w koszu odrzuceń.','2020-06-15 17:38:46.823','2020-06-15 17:38:46.823','0c12577b-360b-4843-a86e-39c129047b0b','38c2fbd2-02ba-478c-a1ae-3c8af4566cf1')
-,('6bd5dd71-37f5-41a2-aae7-5b66f2caa0db','Papelera de rechazos','2020-06-15 17:38:56.025','2020-06-15 17:38:56.025','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','c77c386e-741d-4410-a954-2c0eb8bdfc51')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('7aa6dba8-008e-4606-bfd1-f79ce1ee6dfc','Papelera de rechazos','2020-06-15 17:39:00.454','2020-06-15 17:39:00.454','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','61cd86e4-a0fa-4957-b7aa-ac735d6e044b')
+('6bd5dd71-37f5-41a2-aae7-5b66f2caa0db','Papelera de rechazos','2020-06-15 17:38:56.025','2020-06-15 17:38:56.025','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','c77c386e-741d-4410-a954-2c0eb8bdfc51')
+,('7aa6dba8-008e-4606-bfd1-f79ce1ee6dfc','Papelera de rechazos','2020-06-15 17:39:00.454','2020-06-15 17:39:00.454','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','61cd86e4-a0fa-4957-b7aa-ac735d6e044b')
 ,('3bce6c4e-5421-451a-908d-a5eeb66c6ea5','Búsqueda por nombres, títulos o lugares','2020-06-15 17:39:06.331','2020-06-15 17:39:06.331','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','e0429153-dcdd-4631-9829-3520388e507e')
 ,('f2113f73-5c69-456b-ad2c-d764290860e6','Segunda oportunidad','2020-06-15 17:39:16.402','2020-06-15 17:39:16.402','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','3d77681a-e4da-4646-a781-c05c35620553')
 ,('5cbfc82e-8f41-492d-a393-3a078074e927','No hay candidatos en la papelera de rechazados.','2020-06-15 17:39:46.147','2020-06-15 17:39:46.147','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','38c2fbd2-02ba-478c-a1ae-3c8af4566cf1')
@@ -4092,10 +4266,10 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('92eb7b37-226b-4856-822d-d026b4d0c2d9','Active filter','2020-06-15 18:55:49.064','2020-06-15 18:55:49.064','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','f5db46ea-bb7d-40e2-a3c7-2abca47c67de')
 ,('17030f97-f956-4d92-8416-60d82b942af9','Active filters','2020-06-15 18:55:52.292','2020-06-15 18:55:52.292','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','df0860de-4494-4b29-8b1a-2531f6be9a3d')
 ,('245e34bc-ed5d-4b61-be08-80c06e04f79b','Aktiver Filter','2020-06-15 18:56:10.587','2020-06-15 18:56:10.587','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','f5db46ea-bb7d-40e2-a3c7-2abca47c67de')
-,('5157310a-1199-4470-9e87-bf485c8ae92c','Aktive Filter','2020-06-15 18:57:06.935','2020-06-15 18:57:06.935','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','df0860de-4494-4b29-8b1a-2531f6be9a3d')
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
-('e8ab3f8a-47b4-48b6-8743-e1b53a71a617','Filtr','2020-06-15 18:57:32.470','2020-06-15 18:57:32.470','0c12577b-360b-4843-a86e-39c129047b0b','d36aa29a-b7fb-49aa-8802-f8566779962d')
+('5157310a-1199-4470-9e87-bf485c8ae92c','Aktive Filter','2020-06-15 18:57:06.935','2020-06-15 18:57:06.935','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','df0860de-4494-4b29-8b1a-2531f6be9a3d')
+,('e8ab3f8a-47b4-48b6-8743-e1b53a71a617','Filtr','2020-06-15 18:57:32.470','2020-06-15 18:57:32.470','0c12577b-360b-4843-a86e-39c129047b0b','d36aa29a-b7fb-49aa-8802-f8566779962d')
 ,('e627114b-4a6d-43f8-90f2-a98a1ee1fd5f','Filtr aktywny','2020-06-15 18:57:40.494','2020-06-15 18:57:40.494','0c12577b-360b-4843-a86e-39c129047b0b','f5db46ea-bb7d-40e2-a3c7-2abca47c67de')
 ,('5c27919d-9f63-470d-8f85-739062ea5cfa','Filtry aktywne','2020-06-15 18:57:46.856','2020-06-15 18:57:46.856','0c12577b-360b-4843-a86e-39c129047b0b','df0860de-4494-4b29-8b1a-2531f6be9a3d')
 ,('268adf8a-823a-435e-8bdc-2b6a4543662d','Filtros','2020-06-15 18:57:55.630','2020-06-15 18:57:55.630','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','d36aa29a-b7fb-49aa-8802-f8566779962d')
@@ -4104,10 +4278,786 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ,('c098baac-a734-4f2b-835a-b24a6039dde2','To-dos','2020-06-16 12:23:08.465','2020-06-16 12:23:08.465','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','f16df20c-edcb-4d3a-bdcc-9d9244eeae5a')
 ,('dc08d4d3-41a5-4cd4-aa1a-bd5f60105544','To-dos','2020-06-16 12:23:17.306','2020-06-16 12:23:17.306','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','f16df20c-edcb-4d3a-bdcc-9d9244eeae5a')
 ,('b2df07d9-ed2e-4f6e-8fbd-2f90d05d2411','Zadania do wykonania','2020-06-16 12:23:33.689','2020-06-16 12:23:33.689','0c12577b-360b-4843-a86e-39c129047b0b','f16df20c-edcb-4d3a-bdcc-9d9244eeae5a')
-,('8b27878c-4974-4bc0-bf06-5b1cc30d2e7c','Tareas','2020-06-16 12:23:51.677','2020-06-16 12:23:51.677','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','f16df20c-edcb-4d3a-bdcc-9d9244eeae5a')
 ;
-
-
-INSERT INTO public."user" (id,"firstName","lastName",email,"password","createdAt","updatedAt") VALUES 
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('8b27878c-4974-4bc0-bf06-5b1cc30d2e7c','Tareas','2020-06-16 12:23:51.677','2020-06-16 12:23:51.677','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','f16df20c-edcb-4d3a-bdcc-9d9244eeae5a')
+,('4195ec8c-fc20-4ff4-bd53-d62f74579fea','Bewerbungsstatus überprüfen','2020-06-16 13:47:38.955','2020-06-16 13:48:40.587','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','50ec5930-6fe2-40ff-b761-939ab5c3d942')
+,('3721872e-ef84-4e0e-8178-71bed0ea9c7d','Check Application Status','2020-06-16 13:47:23.288','2020-06-16 13:49:00.896','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','50ec5930-6fe2-40ff-b761-939ab5c3d942')
+,('ad77153b-db3f-42d5-a189-f903ea231a7b','Sprawdź status aplikacji','2020-06-18 13:04:32.741','2020-06-18 13:04:32.741','0c12577b-360b-4843-a86e-39c129047b0b','50ec5930-6fe2-40ff-b761-939ab5c3d942')
+,('cee7cdf1-39b1-40e5-ab21-fcf188b07c3a','Revisar el estado de la solicitud','2020-06-18 13:04:46.249','2020-06-18 13:04:46.249','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','50ec5930-6fe2-40ff-b761-939ab5c3d942')
+,('e85ebdd0-de78-4e91-98c1-520e98c374f3','Invite to interview?','2020-06-18 13:06:01.594','2020-06-18 13:06:01.594','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','2f322489-f48c-4ff4-bcbf-e9e520985398')
+,('e50607ab-a952-4a00-b80a-f6c15e4710b1','Zum Interview einladen?','2020-06-18 13:06:16.525','2020-06-18 13:06:16.525','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','2f322489-f48c-4ff4-bcbf-e9e520985398')
+,('be2467c2-5d76-42ae-945d-0a3637246f8f','Zaprosić na rozmowę o pracę?','2020-06-18 13:06:30.821','2020-06-18 13:06:30.821','0c12577b-360b-4843-a86e-39c129047b0b','2f322489-f48c-4ff4-bcbf-e9e520985398')
+,('130e0ecd-73db-4bea-b7b7-c3a336444174','¿Invitar a la entrevista?','2020-06-18 13:06:42.153','2020-06-18 13:06:42.153','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','2f322489-f48c-4ff4-bcbf-e9e520985398')
+,('f622e2b2-d150-4f66-b66e-d1c6ee01ae70','Rate an application','2020-06-18 13:09:08.283','2020-06-18 13:09:29.501','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','903fd577-7bbb-494b-87cc-ab9b74905f0e')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('845e40cc-ae4f-40af-88dc-c923e0986830','Bewerbung bewerten','2020-06-18 13:11:23.099','2020-06-18 13:11:23.099','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','903fd577-7bbb-494b-87cc-ab9b74905f0e')
+,('6515bd19-117d-4e79-bb68-3efacc38c69b','Oceń aplikację o pracę','2020-06-18 13:11:46.449','2020-06-18 13:11:46.449','0c12577b-360b-4843-a86e-39c129047b0b','903fd577-7bbb-494b-87cc-ab9b74905f0e')
+,('75568643-cfee-4050-b08d-50c072932620','Calificar una solicitud','2020-06-18 13:12:06.496','2020-06-18 13:12:06.496','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','903fd577-7bbb-494b-87cc-ab9b74905f0e')
+,('c9a9fada-c241-4d14-bd3e-33dbbc227773','Upcoming Interview','2020-06-18 13:13:06.103','2020-06-18 13:13:06.103','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','16c971ea-96d6-46ee-8235-05686f794251')
+,('58cd6173-253c-407d-aedf-91ee86f81ed1','Anstehendes Interview','2020-06-18 13:13:17.844','2020-06-18 13:13:17.844','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','16c971ea-96d6-46ee-8235-05686f794251')
+,('d22705b8-a50e-4105-9d20-84ab2dff4493','Nadchodząca rozmowa o pracę','2020-06-18 13:13:35.234','2020-06-18 13:13:35.234','0c12577b-360b-4843-a86e-39c129047b0b','16c971ea-96d6-46ee-8235-05686f794251')
+,('0ac3a368-b7b1-4838-9f59-e25a0813b5f2','Próxima entrevista','2020-06-18 13:13:50.676','2020-06-18 13:13:50.676','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','16c971ea-96d6-46ee-8235-05686f794251')
+,('bb56e26c-8fd1-4a76-b2da-275a6968f171','Upcoming Interview','2020-06-18 13:15:33.436','2020-06-18 13:15:33.436','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','6d0b57e5-9be4-4503-b1ae-7ccef4cef3a9')
+,('00d98ac2-e5a0-427c-a865-973a725bd877','Anstehendes Interview','2020-06-18 13:15:42.304','2020-06-18 13:15:42.304','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','6d0b57e5-9be4-4503-b1ae-7ccef4cef3a9')
+,('a5d9cd1e-bfc2-45a9-af84-3d76ef9ccd76','Nadchodząca rozmowa o pracę','2020-06-18 13:15:55.844','2020-06-18 13:15:55.844','0c12577b-360b-4843-a86e-39c129047b0b','6d0b57e5-9be4-4503-b1ae-7ccef4cef3a9')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('7488669e-84d3-4fd3-9705-b82b0fc96a92','Próxima entrevista','2020-06-18 13:16:12.062','2020-06-18 13:16:12.062','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','6d0b57e5-9be4-4503-b1ae-7ccef4cef3a9')
+,('56a1d1e5-d2c7-4c2a-9539-b151809ef60e','Pending thumb voting','2020-06-18 13:18:37.390','2020-06-18 13:18:37.390','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','9d40ddad-8166-4d45-8031-595f81822bfa')
+,('362ff8ad-3076-4996-a410-f13b99dace0d','Ausstehende Daumen-Bewertung','2020-06-18 13:19:02.359','2020-06-18 13:19:02.359','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','9d40ddad-8166-4d45-8031-595f81822bfa')
+,('e141fb2e-851b-422a-ba03-ce71331cc5df','Oczekujące głosowanie kciukiem','2020-06-18 13:19:14.983','2020-06-18 13:19:14.983','0c12577b-360b-4843-a86e-39c129047b0b','9d40ddad-8166-4d45-8031-595f81822bfa')
+,('99cf9e44-3c5f-4842-bf32-4a0ecf376f7e','Pendiente de voto con pulgar','2020-06-18 13:18:47.899','2020-06-18 13:19:29.749','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','9d40ddad-8166-4d45-8031-595f81822bfa')
+,('a4c02a65-fcd0-405b-b2f8-6fd4f5cfac2b','Pending rating','2020-06-18 13:21:26.066','2020-06-18 13:21:26.066','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','67bce5ba-f8e9-4da9-8404-0ea108ab6a12')
+,('c6cfcfef-e200-4f14-a859-e664cd50563d','Ausstehende Scorecard-Bewertung','2020-06-18 13:21:06.487','2020-06-18 13:21:33.381','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','67bce5ba-f8e9-4da9-8404-0ea108ab6a12')
+,('5ccf3dcd-e465-4125-a382-6f3cb51c5c4c','Oczekująca ocena','2020-06-18 13:21:47.889','2020-06-18 13:21:47.889','0c12577b-360b-4843-a86e-39c129047b0b','67bce5ba-f8e9-4da9-8404-0ea108ab6a12')
+,('23c96c79-05ae-477f-b145-83ef11ee5a28','Calificación pendiente','2020-06-18 13:22:02.076','2020-06-18 13:22:02.076','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','67bce5ba-f8e9-4da9-8404-0ea108ab6a12')
+,('4af2ca04-bf0a-41b1-a918-36c63a4eb94e','Confirm Interview','2020-06-18 13:24:25.325','2020-06-18 13:24:25.325','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','b3562612-6f5d-456c-9603-a6b2d64bcc6a')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('1498bf92-8079-411e-93a6-91385a8da6e2','Interview überprüfen','2020-06-18 13:24:33.414','2020-06-18 13:24:33.414','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','b3562612-6f5d-456c-9603-a6b2d64bcc6a')
+,('effb23ec-797a-412c-9d3a-881dd384baf1','Potwierdź rozmowę o prace','2020-06-18 13:24:44.997','2020-06-18 13:24:44.997','0c12577b-360b-4843-a86e-39c129047b0b','b3562612-6f5d-456c-9603-a6b2d64bcc6a')
+,('2ee8e795-f989-43ac-ae5a-f7122053b5a1','Confirmar entrevista','2020-06-18 13:24:59.070','2020-06-18 13:24:59.070','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','b3562612-6f5d-456c-9603-a6b2d64bcc6a')
+,('71f2e806-e251-4e1f-8ba6-a0915d790263','Check the Job Ad','2020-06-18 13:27:18.222','2020-06-18 13:27:18.222','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','08f9944f-90c4-4a32-b5f9-84433b4e797f')
+,('6260bcc0-e689-49be-b8c4-aa74e6ad779a','Stellenanzeige überprüfen','2020-06-18 13:27:27.906','2020-06-18 13:27:27.906','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','08f9944f-90c4-4a32-b5f9-84433b4e797f')
+,('c9a8b39e-15f4-4f4a-821c-9b177bcfee05','Sprawdź ogłoszenie o prace','2020-06-18 13:27:39.327','2020-06-18 13:27:39.327','0c12577b-360b-4843-a86e-39c129047b0b','08f9944f-90c4-4a32-b5f9-84433b4e797f')
+,('e1be9eec-5779-4dcb-9ee4-ccc35fb57ba0','Revisar la oferta de trabajo','2020-06-18 13:27:52.414','2020-06-18 13:27:52.414','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','08f9944f-90c4-4a32-b5f9-84433b4e797f')
+,('f9aaf509-41b4-429a-8392-b31258f02b9b','A Job Ad is Expired','2020-06-18 13:28:23.788','2020-06-18 13:28:23.788','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','e999af34-53d6-44ad-a603-818bff07744e')
+,('12666f36-232e-4eae-b744-5f5d87ed0488','Stellenanzeige ist abgelaufen','2020-06-18 13:28:32.395','2020-06-18 13:28:32.395','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','e999af34-53d6-44ad-a603-818bff07744e')
+,('7062223f-a6f8-4235-9d65-c21f487fcfde','Ogłoszenie o pracę wygasło','2020-06-18 13:28:46.478','2020-06-18 13:28:46.478','0c12577b-360b-4843-a86e-39c129047b0b','e999af34-53d6-44ad-a603-818bff07744e')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('23a53474-fb1d-4757-98e5-040eba10d025','Una oferta de empleo ha expirado','2020-06-18 13:29:04.942','2020-06-18 13:29:04.942','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','e999af34-53d6-44ad-a603-818bff07744e')
+,('34637849-e948-44f1-8b5b-b124dfc39b75','No types activated!','2020-06-18 13:29:38.449','2020-06-18 13:29:38.449','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','2c7e306d-56a5-4018-aa7a-266b2caf1966')
+,('85d46130-30bc-4a68-9d65-7b8e70c5d361','Keine Typen sind aktiv!','2020-06-18 13:29:49.646','2020-06-18 13:29:49.646','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','2c7e306d-56a5-4018-aa7a-266b2caf1966')
+,('0e658d3f-8a7d-4dd8-addc-b502885da471','Nie aktywowano żadnych rodzajów!','2020-06-18 13:30:05.039','2020-06-18 13:30:05.039','0c12577b-360b-4843-a86e-39c129047b0b','2c7e306d-56a5-4018-aa7a-266b2caf1966')
+,('66021dfb-ee5f-4cc0-85b0-4dc318dca27e','¡No se han activado los tipos!','2020-06-18 13:30:18.036','2020-06-18 13:30:18.036','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','2c7e306d-56a5-4018-aa7a-266b2caf1966')
+,('3f6ec7d4-f767-457e-b7fc-46c525fad953','Your opinion is needed!','2020-06-18 13:31:20.026','2020-06-18 13:31:20.026','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','83789f99-c232-4798-937e-893d866daf24')
+,('854cb8f8-5944-4f2e-8244-5c83dc3eee03','Ihre Meinung ist gefragt!','2020-06-18 13:31:42.338','2020-06-18 13:31:42.338','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','83789f99-c232-4798-937e-893d866daf24')
+,('6b719105-de6e-439a-bac7-f92e8cc0c143','Twoja opinia jest potrzebna!','2020-06-18 13:32:00.365','2020-06-18 13:32:00.365','0c12577b-360b-4843-a86e-39c129047b0b','83789f99-c232-4798-937e-893d866daf24')
+,('b9ce888d-3cbf-49f6-a3bf-632bd91df4df','¡Tu opinión es necesario!','2020-06-18 13:32:13.151','2020-06-18 13:32:13.151','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','83789f99-c232-4798-937e-893d866daf24')
+,('b55885d9-37f2-4b59-a873-2baeb7bd43b1','Por favor toma un momento y danos tu feedback en una corta encuesta.','2020-06-18 13:32:35.840','2020-06-18 13:32:35.840','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','8fb6bfa0-5d1d-4ebf-8bb3-3a1f7b12f4d7')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('c2530389-b53a-49a0-8147-fcdc79c7aa81','Please take a moment to provide feedback in our short survey.','2020-06-18 13:32:48.478','2020-06-18 13:32:48.478','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','8fb6bfa0-5d1d-4ebf-8bb3-3a1f7b12f4d7')
+,('b27f782a-1520-4c07-897b-07047b18cde3','Bitte nehmen Sie sich einen Moment Zeit, um in unserer kurzen Umfrage teilzunehmen.','2020-06-18 13:33:02.322','2020-06-18 13:33:02.322','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','8fb6bfa0-5d1d-4ebf-8bb3-3a1f7b12f4d7')
+,('c7604826-69ab-47be-aa87-f26903dd70b7','Poświęć chwilę, aby wyrazić opinię w naszej krótkiej ankiecie.','2020-06-18 13:33:17.725','2020-06-18 13:33:17.725','0c12577b-360b-4843-a86e-39c129047b0b','8fb6bfa0-5d1d-4ebf-8bb3-3a1f7b12f4d7')
+,('9864ece4-f6a7-4534-9e0c-a364ab2f5e3f','Nach Jobtiteln suchen','2020-06-18 14:35:43.959','2020-06-18 14:35:43.959','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','cedff21c-b6da-42cb-bc38-da056ef25777')
+,('c8d9e498-470b-4c06-b197-2afbe2d4a582','Zacznij ankietę','2020-06-18 13:34:34.832','2020-06-18 13:34:34.832','0c12577b-360b-4843-a86e-39c129047b0b','9d3643e6-771a-40dc-a119-59d9a8f4321b')
+,('f4226d85-628f-4a44-8698-f49aa9c0af6c','Start Survey','2020-06-18 13:33:44.265','2020-06-18 13:34:46.597','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','9d3643e6-771a-40dc-a119-59d9a8f4321b')
+,('4fcbdba1-5f71-491a-b742-1a82418a38e2','Umfrage starten','2020-06-18 13:34:14.102','2020-06-18 13:35:01.057','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','9d3643e6-771a-40dc-a119-59d9a8f4321b')
+,('d7591f16-df07-4ccc-98ae-8074a1fd49da','Empieza la encuesta','2020-06-18 13:35:15.389','2020-06-18 13:35:15.389','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','9d3643e6-771a-40dc-a119-59d9a8f4321b')
+,('9638cc1c-f006-44a0-938a-a590b6867710','Not now','2020-06-18 13:35:40.775','2020-06-18 13:35:40.775','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','f0c4150f-7475-4017-845b-9962e932c300')
+,('161e1af8-8fd4-47c4-8502-05959d986619','Jetzt nicht','2020-06-18 13:36:03.866','2020-06-18 13:36:03.866','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','f0c4150f-7475-4017-845b-9962e932c300')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('e843c018-c1c8-473d-82e6-d826335b01b4','Nie teraz','2020-06-18 13:36:20.820','2020-06-18 13:36:20.820','0c12577b-360b-4843-a86e-39c129047b0b','f0c4150f-7475-4017-845b-9962e932c300')
+,('4f81afaa-51a3-4d04-ade2-6f8aa2d6c5da','No ahora','2020-06-18 13:36:38.604','2020-06-18 13:36:38.604','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','f0c4150f-7475-4017-845b-9962e932c300')
+,('bccf5fba-cad8-4f7e-9f77-fa58ddc818d7','Survey','2020-06-18 13:36:57.614','2020-06-18 13:36:57.614','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','a73769cf-cc1a-471f-8909-b3c688ba2319')
+,('2ca712b2-3c48-423a-9067-d7e5e93ad809','Umfrage','2020-06-18 13:37:11.099','2020-06-18 13:37:11.099','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','a73769cf-cc1a-471f-8909-b3c688ba2319')
+,('d6a6f059-eb19-4a13-a289-c6ae4d1bf7c7','Ankieta','2020-06-18 13:37:25.025','2020-06-18 13:37:25.025','0c12577b-360b-4843-a86e-39c129047b0b','a73769cf-cc1a-471f-8909-b3c688ba2319')
+,('fa19de03-848d-48e8-ac02-3ec8bd5a1718','Encuesta','2020-06-18 13:37:40.369','2020-06-18 13:37:40.369','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','a73769cf-cc1a-471f-8909-b3c688ba2319')
+,('133b8b1a-9b08-4b27-8d4c-88ac97385c82','Newest on top','2020-06-18 13:39:26.271','2020-06-18 13:39:26.271','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','a66a2a99-be71-4727-be43-85e1221e97d7')
+,('faac0fef-0999-46e1-8a11-e2767adb1a13','Neueste zuerst','2020-06-18 13:39:22.651','2020-06-18 13:39:34.674','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','a66a2a99-be71-4727-be43-85e1221e97d7')
+,('0cb60d5e-de6d-49d7-92ba-cf8e4b31b08b','Najnowsze na początku','2020-06-18 13:39:46.965','2020-06-18 13:39:46.965','0c12577b-360b-4843-a86e-39c129047b0b','a66a2a99-be71-4727-be43-85e1221e97d7')
+,('11dadf5a-393a-47fc-a325-b5a993f142a3','Lo más reciente en la parte superior','2020-06-18 13:40:02.474','2020-06-18 13:40:02.474','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','a66a2a99-be71-4727-be43-85e1221e97d7')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('c3c1e3c6-8535-4dce-9967-0624c14ef3fb','Go to Job list.','2020-06-18 14:18:14.066','2020-06-18 14:18:14.066','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','52255b20-57dc-49c1-9a9f-56fb3289f1f7')
+,('d5bdc514-da55-414f-ae79-74517548ff4a','It seems you have no active To-dos right now.','2020-06-18 14:18:22.065','2020-06-18 14:18:22.065','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','08984aea-3bdc-4c54-a61f-69b6be50e4ee')
+,('b97bd29b-7ed2-4714-a062-5865782165a9','Thumb Voting','2020-06-18 14:18:34.907','2020-06-18 14:18:34.907','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','08d70ac4-04e4-4c19-b3b2-0c6933d924e2')
+,('671469c1-ef17-4a53-ad28-7bcb7d71b93a','Oldest on top','2020-06-18 14:18:45.364','2020-06-18 14:18:45.364','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','5eab1304-b5fa-4298-9193-c12a83faebf7')
+,('db2a1eea-c3b7-41f6-8aad-7c0a0beeb986','Daumen-Bewertung','2020-06-18 14:19:20.657','2020-06-18 14:19:20.657','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','08d70ac4-04e4-4c19-b3b2-0c6933d924e2')
+,('171ddab3-fc81-4ecb-a59c-8fdc2073c7ee','Momentan sind keine aktiven To-dos verfügbar.','2020-06-18 14:19:39.023','2020-06-18 14:19:39.023','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','08984aea-3bdc-4c54-a61f-69b6be50e4ee')
+,('a217fe99-0a65-443d-95c3-8d89c25fbedd','Gehen Sie zur Liste der Jobs.','2020-06-18 14:19:49.045','2020-06-18 14:19:49.045','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','52255b20-57dc-49c1-9a9f-56fb3289f1f7')
+,('67cc8d17-b82b-4f62-a158-2a876038ffa7','Älteste zuerst','2020-06-18 14:19:58.807','2020-06-18 14:19:58.807','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','5eab1304-b5fa-4298-9193-c12a83faebf7')
+,('84fcd182-9fda-4548-a804-dff4927e23ca','Głosowanie przez podniesienie kciuka','2020-06-18 14:20:10.739','2020-06-18 14:20:10.739','0c12577b-360b-4843-a86e-39c129047b0b','08d70ac4-04e4-4c19-b3b2-0c6933d924e2')
+,('8c937f83-87c5-4c34-b98d-9373e8518ce1','Obecnie nie ma dostępnych aktywnych To-dos.','2020-06-18 14:20:21.697','2020-06-18 14:20:21.697','0c12577b-360b-4843-a86e-39c129047b0b','08984aea-3bdc-4c54-a61f-69b6be50e4ee')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('c4b11b12-25e1-4d4b-aa54-bff9298f45b3','Przejdź do listy ofert pracy.','2020-06-18 14:20:32.856','2020-06-18 14:20:32.856','0c12577b-360b-4843-a86e-39c129047b0b','52255b20-57dc-49c1-9a9f-56fb3289f1f7')
+,('2bb88f0f-4d8e-41ae-a809-9ccf7450fe8a','Najstarsze na początku','2020-06-18 14:20:41.544','2020-06-18 14:20:41.544','0c12577b-360b-4843-a86e-39c129047b0b','5eab1304-b5fa-4298-9193-c12a83faebf7')
+,('21800c7e-989e-4108-ae94-1e4a0699f5ba','Votación con pulgar','2020-06-18 14:20:56.599','2020-06-18 14:20:56.599','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','08d70ac4-04e4-4c19-b3b2-0c6933d924e2')
+,('a1b7ef86-1e46-4558-8ffa-93543ecaa72d','Parece que por ahora no tiene Tareas activas.','2020-06-18 14:21:04.707','2020-06-18 14:21:04.707','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','08984aea-3bdc-4c54-a61f-69b6be50e4ee')
+,('6bf5842a-c930-4f37-a83e-1475e8c71b5f','Ir a la lista de puestos de trabajo.','2020-06-18 14:21:14.982','2020-06-18 14:21:14.982','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','52255b20-57dc-49c1-9a9f-56fb3289f1f7')
+,('896fd75c-a8d3-4922-9a65-b1474555e7ea','Lo más antiguo en la parte superior','2020-06-18 14:21:22.769','2020-06-18 14:21:22.769','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','5eab1304-b5fa-4298-9193-c12a83faebf7')
+,('6c3bfa1b-02e9-4176-a2ed-036ecbe8f7c6','Jobs','2020-06-18 14:35:02.321','2020-06-18 14:35:02.321','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','60da630d-96de-4868-8192-6c6de63ee98e')
+,('826d82b7-180e-4133-ada3-75b7331a3ea3','Applications','2020-06-18 14:35:06.941','2020-06-18 14:35:06.941','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','ded088cf-e9f1-4a28-a33a-9fe8bf7996cb')
+,('4e0f0867-ed3a-4ad4-b237-a35d04cf9469','Search for job titles','2020-06-18 14:35:17.002','2020-06-18 14:35:17.002','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','cedff21c-b6da-42cb-bc38-da056ef25777')
+,('34a7e8f0-154f-42dd-8d5d-f73f406258db','Jobs','2020-06-18 14:35:31.149','2020-06-18 14:35:31.149','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','60da630d-96de-4868-8192-6c6de63ee98e')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('33b1d6c1-a2ed-49b1-a7bc-2442b81e0f9b','Bewerbungen','2020-06-18 14:35:36.600','2020-06-18 14:35:36.600','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','ded088cf-e9f1-4a28-a33a-9fe8bf7996cb')
+,('5b6e994f-db00-41f4-a91a-b3311ba4e06c','Oferty pracy','2020-06-18 14:35:56.882','2020-06-18 14:35:56.882','0c12577b-360b-4843-a86e-39c129047b0b','60da630d-96de-4868-8192-6c6de63ee98e')
+,('481f1ce7-86de-4bea-81a8-b60675f3c614','Kandydaci','2020-06-18 14:36:01.899','2020-06-18 14:36:01.899','0c12577b-360b-4843-a86e-39c129047b0b','ded088cf-e9f1-4a28-a33a-9fe8bf7996cb')
+,('90c5d91e-b716-4e6e-bc6d-7a7ca92c106e','Szukaj po nazwie stanowiska','2020-06-18 14:36:12.910','2020-06-18 14:36:12.910','0c12577b-360b-4843-a86e-39c129047b0b','cedff21c-b6da-42cb-bc38-da056ef25777')
+,('dd7a1689-1249-4590-befa-fca73c9ec1dd','Puestos de trabajo','2020-06-18 14:36:23.853','2020-06-18 14:36:23.853','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','60da630d-96de-4868-8192-6c6de63ee98e')
+,('de9557b0-53de-41b1-8c3f-8ca8085b2d09','Aplicaciones','2020-06-18 14:36:29.308','2020-06-18 14:36:29.308','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','ded088cf-e9f1-4a28-a33a-9fe8bf7996cb')
+,('22dbc670-8e76-4d00-8afa-71778f51a540','Búsqueda por puestos de trabajo','2020-06-18 14:36:36.522','2020-06-18 14:36:36.522','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','cedff21c-b6da-42cb-bc38-da056ef25777')
+,('8122525e-3c3a-4d83-b374-4a6a706e7cc5','Recruiting-Team anzeigen','2020-06-10 16:17:24.465','2020-06-18 14:38:02.992','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','8903d4b2-a941-4285-a73a-8ca59435d257')
+,('a27a25fc-ae59-4e5e-aa9e-1e6059daf8af','New','2020-06-18 14:41:17.065','2020-06-18 14:41:17.065','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','2451d227-c617-4c48-8fe0-1fa04211763a')
+,('3b8a2657-419c-4329-8b25-b4490da4f2d2','Yes','2020-06-19 10:44:22.363','2020-06-19 10:44:22.363','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','4d47bcbf-50d0-429f-ad41-ff2c5713b5a7')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('c5e57417-342c-4213-b875-9d51cbd5a66a','You are currently offline','2020-06-18 14:41:30.101','2020-06-18 14:41:30.101','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','cd42c567-8cc7-4645-92b2-481e4e0dd4b2')
+,('5d42b287-15ed-4de3-a466-d7eafbadddb2','Please go online and request this file one more time','2020-06-18 14:41:38.498','2020-06-18 14:41:38.498','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','366eca54-d0cc-4b0b-867b-4ae610aa4c63')
+,('d1d3a5cc-4b7e-45ba-9a53-0d50bee9b2f1','neu','2020-06-18 14:41:48.316','2020-06-18 14:41:48.316','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','2451d227-c617-4c48-8fe0-1fa04211763a')
+,('2f7d3941-ea47-4bf3-aee2-628515b73156','Bitte mit dem Internet verbinden und erneut versuchen','2020-06-18 14:41:56.809','2020-06-18 14:41:56.809','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','366eca54-d0cc-4b0b-867b-4ae610aa4c63')
+,('7ecee7d9-7f27-41a8-b277-b734b5e388fc','Sie sind momentan offline','2020-06-18 14:42:06.939','2020-06-18 14:42:06.939','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','cd42c567-8cc7-4645-92b2-481e4e0dd4b2')
+,('56b377ce-a258-434e-970b-0d8a5d8b253d','Nowe','2020-06-18 14:42:21.907','2020-06-18 14:42:21.907','0c12577b-360b-4843-a86e-39c129047b0b','2451d227-c617-4c48-8fe0-1fa04211763a')
+,('6b836516-8e17-4fe5-a59e-399612fd7425','Połącz się z Internetem i spróbuj ponownie.','2020-06-18 14:42:32.240','2020-06-18 14:42:32.240','0c12577b-360b-4843-a86e-39c129047b0b','366eca54-d0cc-4b0b-867b-4ae610aa4c63')
+,('0f487c9d-116d-4dbd-8e53-cddf7e6c36e7','Jesteś obecnie w trybie offline','2020-06-18 14:42:41.656','2020-06-18 14:42:41.656','0c12577b-360b-4843-a86e-39c129047b0b','cd42c567-8cc7-4645-92b2-481e4e0dd4b2')
+,('df333090-1af9-4a35-802b-41fe9eb43c84','Nuevo','2020-06-18 14:43:31.800','2020-06-18 14:43:31.800','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','2451d227-c617-4c48-8fe0-1fa04211763a')
+,('7505fa6c-5c54-4753-a624-a46d1bf86786','Por favor, conéctese y vuelva a solicitar este archivo','2020-06-18 14:43:41.795','2020-06-18 14:43:41.795','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','366eca54-d0cc-4b0b-867b-4ae610aa4c63')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('1d79e32c-d5e9-4eed-b43c-7525d1361fe2','Está desconectado','2020-06-18 14:43:47.606','2020-06-18 14:43:47.606','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','cd42c567-8cc7-4645-92b2-481e4e0dd4b2')
+,('4ed11157-98ce-4c88-ae4d-3fe614cd79b7','Second Chance','2020-06-18 14:46:59.720','2020-06-18 14:46:59.720','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','d29d5443-8a1f-4f2c-86d2-b5c3fc8d4bab')
+,('fe957333-1433-4c02-9341-2337e21ac158','Rejection Bin','2020-06-18 14:47:41.655','2020-06-18 14:47:41.655','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','de234372-3ae8-46cb-bf98-fd91c1575383')
+,('dad31f89-8677-4ae8-99a7-8e5a84fe7408','Second
+Chance','2020-06-18 14:46:33.601','2020-06-18 14:48:33.451','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','27c0ffac-b242-4ffa-8ca2-8e2e971ee67f')
+,('c11f251e-fa9e-4ffd-8b80-84ace360cc7c','Rejection
+Bin','2020-06-18 14:46:51.976','2020-06-18 14:48:43.061','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','984b3aba-f6bb-4c80-8efe-878043e75404')
+,('4f80d01b-6561-4e0e-a2e4-7ddfbe26cd99','Zweite
+Chance','2020-06-18 14:49:46.793','2020-06-18 14:49:46.793','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','27c0ffac-b242-4ffa-8ca2-8e2e971ee67f')
+,('3957076c-7eaf-4e30-8604-a4a9802da3e8','Absagekorb','2020-06-18 14:49:57.557','2020-06-18 14:49:57.557','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','984b3aba-f6bb-4c80-8efe-878043e75404')
+,('2c6dc1f6-784f-44c0-8a59-2a981c7c8832','Zweite
+Chance','2020-06-18 14:50:23.943','2020-06-18 14:50:23.943','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','d29d5443-8a1f-4f2c-86d2-b5c3fc8d4bab')
+,('93f2ea29-9633-42e1-8a19-d84193b99a29','Absagekorb','2020-06-18 14:50:51.928','2020-06-18 14:50:51.928','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','de234372-3ae8-46cb-bf98-fd91c1575383')
+,('7ceb2ea3-22f5-4883-afab-f9a6737e7c39','Applications','2020-06-18 14:50:59.159','2020-06-18 14:50:59.159','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','a4471704-a962-475a-9762-14d04f28a06e')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('ef1164b6-d980-4e53-b774-53d52c376a9e','Bewerbungen','2020-06-18 14:51:03.436','2020-06-18 14:51:03.436','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','a4471704-a962-475a-9762-14d04f28a06e')
+,('7ae71812-e8f5-4119-8bcb-79361bddac1d','Kandydaci','2020-06-18 14:51:13.615','2020-06-18 14:51:13.615','0c12577b-360b-4843-a86e-39c129047b0b','a4471704-a962-475a-9762-14d04f28a06e')
+,('198fc3f1-cef3-4cea-8f43-8a935d1ae67f','Kosz','2020-06-18 14:51:20.465','2020-06-18 14:51:20.465','0c12577b-360b-4843-a86e-39c129047b0b','de234372-3ae8-46cb-bf98-fd91c1575383')
+,('c8b15858-8850-425d-aaf2-8896d583b0e4','Druga szansa','2020-06-18 14:51:28.315','2020-06-18 14:51:28.315','0c12577b-360b-4843-a86e-39c129047b0b','d29d5443-8a1f-4f2c-86d2-b5c3fc8d4bab')
+,('324bcbae-af3d-4090-900c-5eb367fce595','Przenieś
+do kosza','2020-06-18 14:51:46.821','2020-06-18 14:51:46.821','0c12577b-360b-4843-a86e-39c129047b0b','984b3aba-f6bb-4c80-8efe-878043e75404')
+,('c66d7067-d292-4a50-8986-d3644beab8dc','Aplicaciones','2020-06-18 14:52:19.552','2020-06-18 14:52:19.552','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','a4471704-a962-475a-9762-14d04f28a06e')
+,('89e75fbe-0b36-42b8-be27-9bc98f46b39b','Papelera de rechazos','2020-06-18 14:52:27.920','2020-06-18 14:52:27.920','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','de234372-3ae8-46cb-bf98-fd91c1575383')
+,('58e1dce9-b160-47a1-8d77-eef6189ff40c','Segunda oportunidad','2020-06-18 14:52:34.436','2020-06-18 14:52:34.436','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','d29d5443-8a1f-4f2c-86d2-b5c3fc8d4bab')
+,('bbdc4c78-b437-42c4-9945-5ab1dddd8726','Papelera
+de rechazos','2020-06-18 14:52:46.930','2020-06-18 14:52:46.930','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','984b3aba-f6bb-4c80-8efe-878043e75404')
+,('c70dca59-0a51-48a7-8389-9435514ea4a7','Segunda
+oportunidad','2020-06-18 14:53:13.008','2020-06-18 14:53:13.008','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','27c0ffac-b242-4ffa-8ca2-8e2e971ee67f')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('a682818a-0149-4fac-bf63-c08ebea6ef43','Druga
+szansa','2020-06-18 14:52:04.451','2020-06-18 14:56:19.409','0c12577b-360b-4843-a86e-39c129047b0b','27c0ffac-b242-4ffa-8ca2-8e2e971ee67f')
+,('c13bfc7e-5b60-439c-a094-749ca7a251a9','{{minutes}} minutes','2020-06-18 16:04:45.128','2020-06-18 16:05:10.627','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','e60f9086-5c77-4e2d-8e7c-188fb4052aef')
+,('bebea614-53da-42f6-9c26-9c8980b56445','mm','2020-06-18 16:05:18.032','2020-06-18 16:05:23.431','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','1135f625-24f2-4116-b498-b35cd5c182f4')
+,('dfd8215f-3598-4b7c-92f5-aa46d08fc934','HH','2020-06-18 16:05:27.943','2020-06-18 16:05:27.943','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','5b07e690-c224-4cd0-9d12-3b056677d30c')
+,('5d27ac9e-1cd4-4fb9-9f85-cd5d5b248cc7','ddd MMM DD','2020-06-18 16:05:35.998','2020-06-18 16:05:35.998','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','ece98bf9-f692-4cf1-ab5b-dea75cad2ec2')
+,('c1942620-41a1-4839-ac2d-2807a26414b8','Appointment dates are invalid','2020-06-18 16:05:45.941','2020-06-18 16:05:45.941','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','1c1cfa15-c4b1-4a8b-8ce2-b41c6d223379')
+,('a95d9cde-8811-4108-873d-9afd90872a65','Hours','2020-06-18 16:05:53.007','2020-06-18 16:05:53.007','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','eb25cc43-416d-48c0-837d-9f8663a35768')
+,('99b06424-ab49-407c-88bc-e2c13464618f','Minutes','2020-06-18 16:05:58.864','2020-06-18 16:05:58.864','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','9aad5c66-d8b5-46c8-86df-a4ad631dbe3d')
+,('a5db71e4-45c8-4941-81c1-6472aae21f28','Duration','2020-06-18 16:06:03.820','2020-06-18 16:06:03.820','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','395c2374-b06f-4ce2-8432-7bcd8e3a0232')
+,('dee3c373-20db-4029-be36-c16d31837a80','Tomorrow','2020-06-18 16:06:09.177','2020-06-18 16:06:09.177','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','e64c6288-140f-4b54-accb-589de13bd1c4')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('5fd65ddb-be5f-4334-b419-e86cf037ce98','Today','2020-06-18 16:06:14.739','2020-06-18 16:06:14.739','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','c6e01b66-4e23-4d4f-a42f-dcaea767a999')
+,('00852563-b84d-489c-a783-6acad9922411','Done','2020-06-18 16:06:20.927','2020-06-18 16:06:20.927','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','06e902bc-da75-421a-a499-f88ad7e71bf6')
+,('36ef5a73-5939-4724-bf49-73ccaecf791b','Cancel','2020-06-18 16:06:25.604','2020-06-18 16:06:25.604','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','d935234b-c5fe-4b31-a3bf-808afd51f501')
+,('68b242ef-6e4e-4137-bf5d-fba4722c3572','Date & Time','2020-06-18 16:06:30.992','2020-06-18 16:06:30.992','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','399f8780-1d1d-406f-9502-6ea0f5216e9b')
+,('c65bc0e9-0446-409f-994f-79b1e79127f9','mm','2020-06-18 16:06:45.422','2020-06-18 16:07:09.152','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','1135f625-24f2-4116-b498-b35cd5c182f4')
+,('747a669e-6a92-45f7-9cf0-44e87ad3f6a5','HH','2020-06-18 16:06:49.396','2020-06-18 16:07:18.230','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','5b07e690-c224-4cd0-9d12-3b056677d30c')
+,('3769fdf7-5f9b-4a28-91fe-125a959c9067','ddd DD MMM','2020-06-18 16:07:25.327','2020-06-18 16:07:25.327','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','ece98bf9-f692-4cf1-ab5b-dea75cad2ec2')
+,('d4f2639a-90ef-4098-9ed0-e3ca4cb9c5d6','Die Termine sind ungültig','2020-06-18 16:07:33.413','2020-06-18 16:07:33.413','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','1c1cfa15-c4b1-4a8b-8ce2-b41c6d223379')
+,('02750d2b-d4d3-4184-b110-6ebc56a8d5fe','Stunden','2020-06-18 16:07:38.748','2020-06-18 16:07:38.748','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','eb25cc43-416d-48c0-837d-9f8663a35768')
+,('901bfa5b-35b7-4a12-9239-a2a0aa3afba8','Minuten','2020-06-18 16:07:42.925','2020-06-18 16:07:42.925','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','9aad5c66-d8b5-46c8-86df-a4ad631dbe3d')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('c927ff6c-27ef-4531-9d35-f40f848c26e2','Dauer','2020-06-18 16:07:47.528','2020-06-18 16:07:47.528','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','395c2374-b06f-4ce2-8432-7bcd8e3a0232')
+,('483605b1-74cd-4d80-9350-3f7b5228e63c','Morgen','2020-06-18 16:07:53.713','2020-06-18 16:07:53.713','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','e64c6288-140f-4b54-accb-589de13bd1c4')
+,('078f57ab-3fd8-49ce-8388-7fc8af596993','Heute','2020-06-18 16:07:59.781','2020-06-18 16:07:59.781','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','c6e01b66-4e23-4d4f-a42f-dcaea767a999')
+,('0a268184-5611-49e1-8fd2-f050cba26612','Fertig','2020-06-18 16:08:04.102','2020-06-18 16:08:04.102','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','06e902bc-da75-421a-a499-f88ad7e71bf6')
+,('58629036-c0c5-4e0f-8332-5736fed151ca','Abbrechen','2020-06-18 16:08:08.723','2020-06-18 16:08:08.723','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','d935234b-c5fe-4b31-a3bf-808afd51f501')
+,('201f5a5c-9a32-47af-ae33-efe8618dc201','Datum & Zeit','2020-06-18 16:08:19.173','2020-06-18 16:08:19.173','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','399f8780-1d1d-406f-9502-6ea0f5216e9b')
+,('7de7d9a1-4db3-4b2d-a10b-ec2a462d5574','{{minutes}} Minuten','2020-06-18 16:06:41.163','2020-06-18 16:08:46.570','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','e60f9086-5c77-4e2d-8e7c-188fb4052aef')
+,('bbe52ff6-ab14-4922-bd44-203012307a15','{{minutes}} Minut','2020-06-18 16:09:03.905','2020-06-18 16:09:03.905','0c12577b-360b-4843-a86e-39c129047b0b','e60f9086-5c77-4e2d-8e7c-188fb4052aef')
+,('af519660-2e34-48b9-95f5-e954a425dfb7','mm','2020-06-18 16:09:08.613','2020-06-18 16:09:08.613','0c12577b-360b-4843-a86e-39c129047b0b','1135f625-24f2-4116-b498-b35cd5c182f4')
+,('16b659ab-f630-4cf7-ab62-9e94f7a8a8f8','HH','2020-06-18 16:09:12.991','2020-06-18 16:09:12.991','0c12577b-360b-4843-a86e-39c129047b0b','5b07e690-c224-4cd0-9d12-3b056677d30c')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('6b2276fc-0b9c-4a2c-874c-36b298b6051b','ddd MMM DD','2020-06-18 16:09:21.790','2020-06-18 16:09:21.790','0c12577b-360b-4843-a86e-39c129047b0b','ece98bf9-f692-4cf1-ab5b-dea75cad2ec2')
+,('5fa62183-a737-4984-9e88-7c8be3c68dd4','Daty spotkań są nieprawidłowe','2020-06-18 16:09:28.844','2020-06-18 16:09:28.844','0c12577b-360b-4843-a86e-39c129047b0b','1c1cfa15-c4b1-4a8b-8ce2-b41c6d223379')
+,('0bbdacde-e4fc-4c89-8559-724fc0705cbc','Godziny','2020-06-18 16:09:35.046','2020-06-18 16:09:35.046','0c12577b-360b-4843-a86e-39c129047b0b','eb25cc43-416d-48c0-837d-9f8663a35768')
+,('a479ac92-bff2-49fa-b679-b1009d31ebf2','Minut','2020-06-18 16:09:40.065','2020-06-18 16:09:40.065','0c12577b-360b-4843-a86e-39c129047b0b','9aad5c66-d8b5-46c8-86df-a4ad631dbe3d')
+,('4414d863-d6bb-4670-8769-28f880b444fc','Czas trwania','2020-06-18 16:09:49.529','2020-06-18 16:09:49.529','0c12577b-360b-4843-a86e-39c129047b0b','395c2374-b06f-4ce2-8432-7bcd8e3a0232')
+,('41ed7015-e226-4d6c-9f0b-9b7c494cd726','Przyszłość','2020-06-18 16:09:55.712','2020-06-18 16:09:55.712','0c12577b-360b-4843-a86e-39c129047b0b','e64c6288-140f-4b54-accb-589de13bd1c4')
+,('1a61d8c5-4de5-45b0-8d80-a6783a75694e','Dzisiaj','2020-06-18 16:10:01.705','2020-06-18 16:10:01.705','0c12577b-360b-4843-a86e-39c129047b0b','c6e01b66-4e23-4d4f-a42f-dcaea767a999')
+,('475b9d2f-3b18-44e9-a801-b22ae92694bb','Koniec','2020-06-18 16:10:07.235','2020-06-18 16:10:07.235','0c12577b-360b-4843-a86e-39c129047b0b','06e902bc-da75-421a-a499-f88ad7e71bf6')
+,('05fb8656-35e5-45ff-871d-d3c282b5a3bb','Anuluj','2020-06-18 16:10:12.217','2020-06-18 16:10:12.217','0c12577b-360b-4843-a86e-39c129047b0b','d935234b-c5fe-4b31-a3bf-808afd51f501')
+,('0fafb720-b286-4c48-a93f-702ca5556593','Data i godzina','2020-06-18 16:10:19.122','2020-06-18 16:10:19.122','0c12577b-360b-4843-a86e-39c129047b0b','399f8780-1d1d-406f-9502-6ea0f5216e9b')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('10b55f2c-cbd9-4878-b509-a699e422d02c','{{minutes}} Minutos','2020-06-18 16:10:32.994','2020-06-18 16:10:32.994','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','e60f9086-5c77-4e2d-8e7c-188fb4052aef')
+,('2106583f-cbb8-4894-8652-c4ea8ca9338b','mm','2020-06-18 16:10:37.143','2020-06-18 16:10:37.143','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','1135f625-24f2-4116-b498-b35cd5c182f4')
+,('22504d58-3c65-4cd0-919c-3c818b2e9c6f','HH','2020-06-18 16:10:41.166','2020-06-18 16:10:41.166','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','5b07e690-c224-4cd0-9d12-3b056677d30c')
+,('144fab32-9a53-4994-887c-14ea6d7917b2','ddd MMM DD','2020-06-18 16:10:47.757','2020-06-18 16:10:47.757','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','ece98bf9-f692-4cf1-ab5b-dea75cad2ec2')
+,('c2c6b53e-2c09-463e-acba-5baeb98a59fc','Las fechas de la cita no son válidas','2020-06-18 16:10:54.745','2020-06-18 16:10:54.745','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','1c1cfa15-c4b1-4a8b-8ce2-b41c6d223379')
+,('e880d505-4d36-4f17-87ca-9269cd7db8c9','Horas','2020-06-18 16:11:34.815','2020-06-18 16:11:34.815','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','eb25cc43-416d-48c0-837d-9f8663a35768')
+,('d35056da-5747-470e-b0bf-3b0fad7ea66d','Minutos','2020-06-18 16:11:39.571','2020-06-18 16:11:39.571','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','9aad5c66-d8b5-46c8-86df-a4ad631dbe3d')
+,('f2ecdc85-a1b9-4a36-9986-81e8c75d32e8','Duración','2020-06-18 16:11:44.247','2020-06-18 16:11:44.247','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','395c2374-b06f-4ce2-8432-7bcd8e3a0232')
+,('5da6bd13-f897-4244-acc7-09a4db3f2df7','Mañana','2020-06-18 16:11:49.283','2020-06-18 16:11:49.283','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','e64c6288-140f-4b54-accb-589de13bd1c4')
+,('ef752342-30ce-4d5e-a5c4-cae6e71ed30c','Hoy','2020-06-18 16:11:54.146','2020-06-18 16:11:54.146','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','c6e01b66-4e23-4d4f-a42f-dcaea767a999')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('123e8d44-c59c-489f-8423-54fa52bfe06d','Hecho','2020-06-18 16:11:59.580','2020-06-18 16:11:59.580','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','06e902bc-da75-421a-a499-f88ad7e71bf6')
+,('9726786c-b364-4f6d-890c-62ac83d4ce84','Cancelar','2020-06-18 16:12:05.232','2020-06-18 16:12:05.232','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','d935234b-c5fe-4b31-a3bf-808afd51f501')
+,('33b7a497-ecca-418a-a519-31f2efa77932','Fecha y hora','2020-06-18 16:12:12.825','2020-06-18 16:12:12.825','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','399f8780-1d1d-406f-9502-6ea0f5216e9b')
+,('28f0a23b-a8c0-45f9-b357-4c1d7a21d3e7','You are currently offline','2020-06-18 16:18:04.423','2020-06-18 16:18:04.423','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','c42d6b49-964b-409d-ab32-b25c5cf0feb3')
+,('91d5fe52-61cf-4ca2-a920-72da5bf16a39','Hire','2020-06-18 16:18:11.484','2020-06-18 16:18:11.484','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','e0baa715-b99f-457a-b74b-075237ea2c6c')
+,('fe7923d6-9b72-4d15-a29b-70e74e49809c','Onboarding','2020-06-18 16:18:16.505','2020-06-18 16:18:16.505','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','b29d9bfd-5fad-4718-94d5-0c7c6635cc6a')
+,('7cd0574c-b4bf-4338-8a74-7f09c337933f','Offer','2020-06-18 16:18:21.618','2020-06-18 16:18:21.618','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','7edab157-bd41-4434-ab22-d021515ccbf3')
+,('601861f1-5bf9-485c-a9e5-84472260ca27','Interview','2020-06-18 16:18:27.572','2020-06-18 16:18:27.572','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','0097ab41-d28c-4bf9-98f3-210885460da5')
+,('efae30ae-757d-4ca7-8eed-71b55916024b','ShortList','2020-06-18 16:18:33.967','2020-06-18 16:18:33.967','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','ea48b39a-b8ff-4c4e-9683-a264f0beebad')
+,('526ea279-470f-4ae8-8448-8e6d21c2c64e','New','2020-06-18 16:18:39.900','2020-06-18 16:18:39.900','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','49be08de-d463-4a55-90de-7e0a105006ea')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('96cf62af-3843-4cc4-8868-0b51f7c87ea6','Sie sind momentan offline','2020-06-18 16:18:52.727','2020-06-18 16:18:52.727','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','c42d6b49-964b-409d-ab32-b25c5cf0feb3')
+,('6b0a61fa-1258-4158-9f81-d7d363747ca1','Einstellen','2020-06-18 16:19:02.113','2020-06-18 16:19:02.113','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','e0baa715-b99f-457a-b74b-075237ea2c6c')
+,('b1ba35e4-5b9f-4d9f-90a5-40356e2e355c','Onboarding','2020-06-18 16:19:06.886','2020-06-18 16:19:06.886','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','b29d9bfd-5fad-4718-94d5-0c7c6635cc6a')
+,('2744c905-07c7-40e2-8f98-7f1c1dddaeb7','Angebot','2020-06-18 16:19:12.260','2020-06-18 16:19:12.260','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','7edab157-bd41-4434-ab22-d021515ccbf3')
+,('c8fe2a2e-129a-4cdd-8d2d-0c3118c8ce43','Interview','2020-06-18 16:19:16.884','2020-06-18 16:19:16.884','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','0097ab41-d28c-4bf9-98f3-210885460da5')
+,('654080b1-144f-4800-9495-0ecaed1ce406','Vorauswahl','2020-06-18 16:19:21.493','2020-06-18 16:19:21.493','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','ea48b39a-b8ff-4c4e-9683-a264f0beebad')
+,('66ef231b-c70f-4d20-9216-a6e624894244','Neu','2020-06-18 16:19:25.818','2020-06-18 16:19:25.818','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','49be08de-d463-4a55-90de-7e0a105006ea')
+,('b4eb47d9-66f3-41e2-89cc-2170c0c61ad0','Jesteś obecnie w trybie offline','2020-06-18 16:19:38.941','2020-06-18 16:19:38.941','0c12577b-360b-4843-a86e-39c129047b0b','c42d6b49-964b-409d-ab32-b25c5cf0feb3')
+,('95bcc21b-f428-46c0-8458-d33427dd068d','Zatrudniono','2020-06-18 16:19:44.894','2020-06-18 16:19:44.894','0c12577b-360b-4843-a86e-39c129047b0b','e0baa715-b99f-457a-b74b-075237ea2c6c')
+,('f4c6c18d-6473-4cfe-9e60-368c042e6b38','Onboarding','2020-06-18 16:19:49.551','2020-06-18 16:19:49.551','0c12577b-360b-4843-a86e-39c129047b0b','b29d9bfd-5fad-4718-94d5-0c7c6635cc6a')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('aff4fc32-3d78-49e3-baba-e43135e18b76','Oferta','2020-06-18 16:19:53.931','2020-06-18 16:19:53.931','0c12577b-360b-4843-a86e-39c129047b0b','7edab157-bd41-4434-ab22-d021515ccbf3')
+,('be4eee08-4cbb-4b54-bbfe-631bfa798e89','Rozmowa kwalifikacyjna','2020-06-18 16:20:01.085','2020-06-18 16:20:01.085','0c12577b-360b-4843-a86e-39c129047b0b','0097ab41-d28c-4bf9-98f3-210885460da5')
+,('15557b71-2f7f-49f8-be39-a6505dace19f','Preselekcja','2020-06-18 16:20:06.846','2020-06-18 16:20:06.846','0c12577b-360b-4843-a86e-39c129047b0b','ea48b39a-b8ff-4c4e-9683-a264f0beebad')
+,('138ecbb9-9482-4f39-a4e8-425e62afacfb','Nowe','2020-06-18 16:20:11.658','2020-06-18 16:20:11.658','0c12577b-360b-4843-a86e-39c129047b0b','49be08de-d463-4a55-90de-7e0a105006ea')
+,('a97226f7-d077-4c0a-b21a-610dd7b28061','No está conectado a internet','2020-06-18 16:20:28.539','2020-06-18 16:20:28.539','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','c42d6b49-964b-409d-ab32-b25c5cf0feb3')
+,('4d0e53dd-873a-41f5-881d-bb2a91e2cd2c','Contratar','2020-06-18 16:20:32.914','2020-06-18 16:20:32.914','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','e0baa715-b99f-457a-b74b-075237ea2c6c')
+,('c6dee19b-f698-4561-855a-48b794718e1c','Contratado','2020-06-18 16:20:37.071','2020-06-18 16:20:37.071','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','b29d9bfd-5fad-4718-94d5-0c7c6635cc6a')
+,('d2685735-ac0c-4fbd-a7ba-1539916d5fa2','Oferta','2020-06-18 16:20:41.519','2020-06-18 16:20:41.519','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','7edab157-bd41-4434-ab22-d021515ccbf3')
+,('7d391d54-013a-4174-a1dc-5315960d13d6','Entrevista','2020-06-18 16:20:45.961','2020-06-18 16:20:45.961','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','0097ab41-d28c-4bf9-98f3-210885460da5')
+,('32579859-6397-485c-9697-d494666c08f9','preselección','2020-06-18 16:20:52.245','2020-06-18 16:20:52.245','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','ea48b39a-b8ff-4c4e-9683-a264f0beebad')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('d1b78db5-80f2-478a-ab6d-673aeea1e936','Nuevo','2020-06-18 16:20:56.979','2020-06-18 16:20:56.979','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','49be08de-d463-4a55-90de-7e0a105006ea')
+,('f8127a0e-05f0-4ff6-a684-f7cb2fb815eb','Second Chance','2020-06-19 10:27:37.717','2020-06-19 10:27:37.717','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','4a305295-b4b2-48fd-bfb1-31c8fc5cdc86')
+,('2bddc103-f497-40dd-9d4c-2910d32650ee','Cancel','2020-06-19 10:27:43.094','2020-06-19 10:27:43.094','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','4abba8cf-e3e2-44e0-b570-fa9b9d9b09fe')
+,('d75ead57-272e-413c-b438-e65b3b5e9bea','Yes','2020-06-19 10:27:48.209','2020-06-19 10:27:48.209','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','8e9d78dc-00eb-4db6-bda7-89b741ce48e9')
+,('16f50096-cbd2-4c07-a61f-f2ea4dfaa49b','Your decision will be posted when you are online again','2020-06-19 10:27:53.270','2020-06-19 10:28:04.611','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','c1ff0f7a-2029-4b2b-915d-9750e99c658b')
+,('f1c54447-88d3-44c6-9bfb-ec37d8b4ae1a','Are you sure you want to move to rejection bin?','2020-06-19 10:28:12.342','2020-06-19 10:28:12.342','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','636d748c-4b8a-4752-89e9-56cb913cee0f')
+,('57317d08-2fa0-4f8c-97ff-f35974b2a5ce','Submit','2020-06-19 10:28:19.078','2020-06-19 10:28:19.078','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','e425a666-d646-4ba1-9c93-a9e6f5032a29')
+,('18243291-7b4e-4f1a-bf98-deb6c105c74d','Please choose a rejection reason','2020-06-19 10:28:26.292','2020-06-19 10:28:26.292','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','14b237eb-ae6d-45e6-9112-8a3da6a40b92')
+,('758ee556-2ec3-4b8a-8484-4fc8e5612565','Zweite Chance','2020-06-19 10:28:37.183','2020-06-19 10:28:37.183','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','4a305295-b4b2-48fd-bfb1-31c8fc5cdc86')
+,('c9f2fe78-7525-49cc-914d-970a46a70911','Abbrechen','2020-06-19 10:28:41.298','2020-06-19 10:28:41.298','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','4abba8cf-e3e2-44e0-b570-fa9b9d9b09fe')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('ad377b56-bba6-4449-bff6-d5f95c842c0e','Ja','2020-06-19 10:28:45.956','2020-06-19 10:28:45.956','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','8e9d78dc-00eb-4db6-bda7-89b741ce48e9')
+,('9146f2d9-2ad3-4ea2-815c-d4748fdd4002','Ihre Bewertung wird abgeschickt sobald Sie wieder online sind','2020-06-19 10:28:53.239','2020-06-19 10:28:53.239','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','c1ff0f7a-2029-4b2b-915d-9750e99c658b')
+,('ad0497c6-d5ae-4725-a013-5df721d3529a','Wirklich in den Absagekorb verschieben?','2020-06-19 10:28:59.364','2020-06-19 10:28:59.364','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','636d748c-4b8a-4752-89e9-56cb913cee0f')
+,('62ec7946-daaf-47ef-8c27-49c36ae32edf','Speichern','2020-06-19 10:29:07.073','2020-06-19 10:29:07.073','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','e425a666-d646-4ba1-9c93-a9e6f5032a29')
+,('b61e29b9-13e4-4b5c-9c64-41f190f633aa','Bitte wählen Sie einen Absagegrund','2020-06-19 10:29:14.561','2020-06-19 10:29:14.561','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','14b237eb-ae6d-45e6-9112-8a3da6a40b92')
+,('4ee4bdbe-f660-4fe3-a86d-4e2bd99dc359','Druga szansa','2020-06-19 10:34:09.174','2020-06-19 10:34:09.174','0c12577b-360b-4843-a86e-39c129047b0b','4a305295-b4b2-48fd-bfb1-31c8fc5cdc86')
+,('f4e412a8-fa9a-4dd2-899b-b94aedb00513','Anuluj','2020-06-19 10:34:17.575','2020-06-19 10:34:17.575','0c12577b-360b-4843-a86e-39c129047b0b','4abba8cf-e3e2-44e0-b570-fa9b9d9b09fe')
+,('676fc0f2-305c-438d-a6a1-91745e362469','Tak','2020-06-19 10:34:23.231','2020-06-19 10:34:23.231','0c12577b-360b-4843-a86e-39c129047b0b','8e9d78dc-00eb-4db6-bda7-89b741ce48e9')
+,('1b1cacbf-162d-452d-91d2-45f2babdacd4','Twoja opinia zostanie wysłana, gdy tylko będziesz ponownie online','2020-06-19 10:34:30.284','2020-06-19 10:34:30.284','0c12577b-360b-4843-a86e-39c129047b0b','c1ff0f7a-2029-4b2b-915d-9750e99c658b')
+,('4aeda137-1c40-4aef-93b7-aa7c38c795fd','Czy na pewno chcesz\nusunąć?','2020-06-19 10:34:36.725','2020-06-19 10:34:36.725','0c12577b-360b-4843-a86e-39c129047b0b','636d748c-4b8a-4752-89e9-56cb913cee0f')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('6ace7759-6b70-4aa3-9fe1-343551b00a42','Zapisz','2020-06-19 10:35:47.908','2020-06-19 10:35:47.908','0c12577b-360b-4843-a86e-39c129047b0b','e425a666-d646-4ba1-9c93-a9e6f5032a29')
+,('dd284fb2-4a82-4621-9fc1-21f11232c27c','Wybierz powód odrzucenia','2020-06-19 10:35:55.771','2020-06-19 10:35:55.771','0c12577b-360b-4843-a86e-39c129047b0b','14b237eb-ae6d-45e6-9112-8a3da6a40b92')
+,('17b7b5b0-204e-44f8-9cb2-3845c72b59f1','Segunda oportunidad','2020-06-19 10:36:16.524','2020-06-19 10:36:16.524','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','4a305295-b4b2-48fd-bfb1-31c8fc5cdc86')
+,('bffbe8c2-fe32-4f7b-bfe8-fc3332fa90e4','Cancelar','2020-06-19 10:36:21.513','2020-06-19 10:36:21.513','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','4abba8cf-e3e2-44e0-b570-fa9b9d9b09fe')
+,('623b8295-4fe4-441f-b5d5-4446c29e6107','Sí','2020-06-19 10:36:27.355','2020-06-19 10:36:27.355','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','8e9d78dc-00eb-4db6-bda7-89b741ce48e9')
+,('68ed2676-d067-494c-a73c-b79b6b6fb9dc','Su decisión se publicará cuando vuelva a estar conectado','2020-06-19 10:36:34.835','2020-06-19 10:36:34.835','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','c1ff0f7a-2029-4b2b-915d-9750e99c658b')
+,('c8c133e1-eb7a-4856-9aa7-5c7b2b78482c','¿Está seguro de que desea\neliminarlo?','2020-06-19 10:36:42.230','2020-06-19 10:36:42.230','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','636d748c-4b8a-4752-89e9-56cb913cee0f')
+,('f3970e9b-4e2c-40e5-9c44-2ff64a6ddf02','Enviar','2020-06-19 10:36:48.886','2020-06-19 10:36:48.886','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','e425a666-d646-4ba1-9c93-a9e6f5032a29')
+,('b61c211b-3451-4880-a914-6e9f81416b70','Por favor, elija un motivo de rechazo','2020-06-19 10:36:55.279','2020-06-19 10:36:55.279','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','14b237eb-ae6d-45e6-9112-8a3da6a40b92')
+,('ee840017-946b-492b-8988-5006601b37fa','No','2020-06-19 10:38:11.674','2020-06-19 10:38:11.674','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','ed29d808-59d6-4a59-b418-56caa87ef202')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('188e21c6-add4-40c9-8248-ca269c510050','Yes','2020-06-19 10:38:15.465','2020-06-19 10:38:15.465','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','ad21e58a-2f18-4872-a4df-28c17698a78d')
+,('eba58bfc-892a-4f1c-af80-4d8007946fba','Ja','2020-06-19 10:38:35.405','2020-06-19 10:38:35.405','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','ad21e58a-2f18-4872-a4df-28c17698a78d')
+,('fb5fe9ed-30dd-4a3c-995d-aeceb8b24ba6','Nein','2020-06-19 10:38:38.968','2020-06-19 10:38:38.968','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','ed29d808-59d6-4a59-b418-56caa87ef202')
+,('ac509902-ab6b-4630-bff4-69f4790e490e','Tak','2020-06-19 10:38:47.299','2020-06-19 10:38:47.299','0c12577b-360b-4843-a86e-39c129047b0b','ad21e58a-2f18-4872-a4df-28c17698a78d')
+,('c24d13fb-0a35-4911-91d1-7d15e324e247','Nie','2020-06-19 10:38:51.655','2020-06-19 10:38:51.655','0c12577b-360b-4843-a86e-39c129047b0b','ed29d808-59d6-4a59-b418-56caa87ef202')
+,('afb806f8-10b7-42e5-9176-63053fd7e3d0','Sí','2020-06-19 10:38:59.825','2020-06-19 10:38:59.825','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','ad21e58a-2f18-4872-a4df-28c17698a78d')
+,('207a3200-1ad1-4262-a97e-35718c9b3e45','No','2020-06-19 10:39:04.782','2020-06-19 10:39:04.782','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','ed29d808-59d6-4a59-b418-56caa87ef202')
+,('c113b373-6027-4f30-bc9d-66b81be33cb5','Cancel interview','2020-06-19 10:44:39.417','2020-06-19 10:44:39.417','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','e8678640-32e4-4c04-bf2b-a6f03050915d')
+,('eef27b9e-9760-4920-9e97-dc0a7da1a707','Send reminder for interview','2020-06-19 10:44:50.119','2020-06-19 10:44:50.119','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','d6dd85b3-dc92-4019-b466-90734d2e75e6')
+,('fa0faab3-c067-4587-8122-f8bc3560df0c','Ja','2020-06-19 10:44:57.674','2020-06-19 10:44:57.674','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','4d47bcbf-50d0-429f-ad41-ff2c5713b5a7')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('1c3c0805-e0d4-40dc-a404-15825b0e87fc','Nein','2020-06-19 10:45:05.025','2020-06-19 10:45:05.025','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','932ec36c-48ec-40e9-abd1-cc16f59f6ec4')
+,('30459ad1-4504-496c-925f-7daa03979f1f','Ablehnen','2020-06-19 10:45:10.730','2020-06-19 10:45:10.730','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','a8a28c8d-2dda-42b7-83cd-7195e9d1450c')
+,('5aeb1d0d-d937-4211-9b64-16d42c656842','Interview absagen','2020-06-19 10:45:17.895','2020-06-19 10:45:17.895','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','e8678640-32e4-4c04-bf2b-a6f03050915d')
+,('b3a36132-8a16-492b-a662-cde2720b0d29','Erinnerung zum Interview senden','2020-06-19 10:45:26.644','2020-06-19 10:45:26.644','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','d6dd85b3-dc92-4019-b466-90734d2e75e6')
+,('d7053454-12d5-46bf-a9bf-8aa8b857d8fe','Nie','2020-06-19 10:45:39.289','2020-06-19 10:45:39.289','0c12577b-360b-4843-a86e-39c129047b0b','932ec36c-48ec-40e9-abd1-cc16f59f6ec4')
+,('78987792-4411-4c34-937f-756933e39530','Tak','2020-06-19 10:56:36.032','2020-06-19 10:56:36.032','0c12577b-360b-4843-a86e-39c129047b0b','4d47bcbf-50d0-429f-ad41-ff2c5713b5a7')
+,('2d4dee85-c403-4e40-a993-85edf4e4f189','Odrzuć','2020-06-19 10:58:30.521','2020-06-19 10:58:30.521','0c12577b-360b-4843-a86e-39c129047b0b','a8a28c8d-2dda-42b7-83cd-7195e9d1450c')
+,('6847a08b-a101-479f-a933-9ea201c3f31c','Anuluj rozmowe','2020-06-19 10:58:36.810','2020-06-19 10:58:36.810','0c12577b-360b-4843-a86e-39c129047b0b','e8678640-32e4-4c04-bf2b-a6f03050915d')
+,('db21b181-036a-4495-98da-8bc815176f90','Wyślij przypomnienie o rozmowie','2020-06-19 10:58:44.257','2020-06-19 10:58:44.257','0c12577b-360b-4843-a86e-39c129047b0b','d6dd85b3-dc92-4019-b466-90734d2e75e6')
+,('eb37de50-16e4-40c7-a723-2d074f00ce65','No','2020-06-19 10:58:53.896','2020-06-19 10:58:53.896','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','932ec36c-48ec-40e9-abd1-cc16f59f6ec4')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('31859083-d54a-4113-a229-f68b837e3992','Sí','2020-06-19 10:58:58.713','2020-06-19 10:58:58.713','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','4d47bcbf-50d0-429f-ad41-ff2c5713b5a7')
+,('9f87b5f0-3b80-496f-8f8b-6c22217813e6','Rechazar','2020-06-19 10:59:05.768','2020-06-19 10:59:05.768','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','a8a28c8d-2dda-42b7-83cd-7195e9d1450c')
+,('15921f1a-f7d4-4c8c-8b0e-b18ae2192ce2','Cancelar la entrevista','2020-06-19 10:59:35.884','2020-06-19 10:59:35.884','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','e8678640-32e4-4c04-bf2b-a6f03050915d')
+,('f812edcb-0709-4db2-b8ee-94008ed94c5d','Envía un recordatorio para la entrevista','2020-06-19 10:59:43.232','2020-06-19 10:59:43.232','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','d6dd85b3-dc92-4019-b466-90734d2e75e6')
+,('f9271652-9d89-4edb-9ea8-5ebc3fd7eef3','English','2020-06-19 11:02:46.226','2020-06-19 11:02:46.226','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','f9c6b9bf-b96e-42bc-977d-d1bf45ac277f')
+,('0d5f189c-8231-49fa-8ea8-065675fd76c4','German','2020-06-19 11:02:50.960','2020-06-19 11:02:50.960','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','39cf452b-b057-47f6-b4f4-3de9050eaf37')
+,('c32f2bf2-aee2-4565-bd45-15c07ab180a1','Polish','2020-06-19 11:02:55.617','2020-06-19 11:02:55.617','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','97b39a54-aa86-4fdd-9ffe-8e118a1a632c')
+,('a93979ef-9af9-44f4-b2a1-5479c94b3f2c','Spanish','2020-06-19 11:03:00.020','2020-06-19 11:03:00.020','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','54af450c-3fbf-4ec3-b3f5-a1d8ffb92b59')
+,('cb20af01-ae58-437e-8758-89446ec9b584','Englisch','2020-06-19 11:03:05.824','2020-06-19 11:03:05.824','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','f9c6b9bf-b96e-42bc-977d-d1bf45ac277f')
+,('cec7f3c9-1858-4e71-a02e-b9b9e281777e','Deutsch','2020-06-19 11:03:10.539','2020-06-19 11:03:10.539','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','39cf452b-b057-47f6-b4f4-3de9050eaf37')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('59a1e797-1990-4a8c-b437-5af0539d1f26','Polnisch','2020-06-19 11:03:14.318','2020-06-19 11:03:14.318','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','97b39a54-aa86-4fdd-9ffe-8e118a1a632c')
+,('5716a164-58d0-4079-b676-16a7c4f02c6a','Spanisch','2020-06-19 11:03:18.791','2020-06-19 11:03:18.791','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','54af450c-3fbf-4ec3-b3f5-a1d8ffb92b59')
+,('ad7afbd1-614e-4351-b7b1-de32db7af67d','Hiszpański','2020-06-19 11:03:28.957','2020-06-19 11:03:28.957','0c12577b-360b-4843-a86e-39c129047b0b','54af450c-3fbf-4ec3-b3f5-a1d8ffb92b59')
+,('ae0fb98c-235d-4f52-8e81-688250a1a68a','Polski','2020-06-19 11:03:33.890','2020-06-19 11:03:33.890','0c12577b-360b-4843-a86e-39c129047b0b','97b39a54-aa86-4fdd-9ffe-8e118a1a632c')
+,('7230bc20-ea78-4011-a93d-146940218be5','Niemiecki','2020-06-19 11:03:37.617','2020-06-19 11:03:37.617','0c12577b-360b-4843-a86e-39c129047b0b','39cf452b-b057-47f6-b4f4-3de9050eaf37')
+,('387576ff-d21e-4bdb-b388-1126360f556b','Angielski','2020-06-19 11:03:42.039','2020-06-19 11:03:42.039','0c12577b-360b-4843-a86e-39c129047b0b','f9c6b9bf-b96e-42bc-977d-d1bf45ac277f')
+,('65c658e4-acd7-4b48-bd2a-5ae393a88bca','inglés','2020-06-19 11:03:56.044','2020-06-19 11:03:56.044','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','54af450c-3fbf-4ec3-b3f5-a1d8ffb92b59')
+,('6f791db2-f20e-42a4-84d4-03d077229cbc','polaco','2020-06-19 11:03:59.671','2020-06-19 11:03:59.671','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','97b39a54-aa86-4fdd-9ffe-8e118a1a632c')
+,('80c87716-423a-43ed-8015-5642a22b3669','alemán','2020-06-19 11:04:04.948','2020-06-19 11:04:04.948','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','39cf452b-b057-47f6-b4f4-3de9050eaf37')
+,('53287e24-25d1-4588-8a10-ecb946dce00c','inglés','2020-06-19 11:04:09.636','2020-06-19 11:04:09.636','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','f9c6b9bf-b96e-42bc-977d-d1bf45ac277f')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('37f89ac0-3284-4700-b4e9-b760941715ce','Confirm','2020-06-19 11:08:30.897','2020-06-19 11:08:30.897','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','753070e4-eb5c-436f-8c11-a496c7182a32')
+,('82c605c9-fe2b-4783-90ee-20a6d7a70ac2','Done','2020-06-19 11:08:35.220','2020-06-19 11:08:35.220','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','54a0c80b-7667-40f0-9712-034da69a2509')
+,('93a2a34e-37eb-4233-a91f-7014995dff2f','Cancel','2020-06-19 11:08:39.474','2020-06-19 11:08:39.474','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','e2d1bc2a-a1b5-4750-9d2e-10fd1b8b2930')
+,('6f36ef05-e267-48af-b624-9f9516802505','Template','2020-06-19 11:08:44.680','2020-06-19 11:08:44.680','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','cdb36225-5948-458b-91e7-7df68c5a865d')
+,('97b22caf-1bdc-4559-a3bb-5624f5672fe5','Vorlage','2020-06-19 11:08:49.341','2020-06-19 11:08:49.341','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','cdb36225-5948-458b-91e7-7df68c5a865d')
+,('f3186a9f-cbe2-43e9-a2c7-58b50241bc5b','Abbrechen','2020-06-19 11:08:54.423','2020-06-19 11:08:54.423','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','e2d1bc2a-a1b5-4750-9d2e-10fd1b8b2930')
+,('d8ce381a-e845-41ea-bcd8-cc4d09656113','Fertig','2020-06-19 11:08:58.243','2020-06-19 11:08:58.243','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','54a0c80b-7667-40f0-9712-034da69a2509')
+,('2a12ac8f-378e-4926-8a8f-47f0e417d15c','Anwenden','2020-06-19 11:09:04.141','2020-06-19 11:09:04.141','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','753070e4-eb5c-436f-8c11-a496c7182a32')
+,('af933af2-0423-4ccd-8f48-701a21c16076','Szablon','2020-06-19 11:09:14.874','2020-06-19 11:09:14.874','0c12577b-360b-4843-a86e-39c129047b0b','cdb36225-5948-458b-91e7-7df68c5a865d')
+,('68f638e7-d6e1-4503-9121-e34f196ac773','Anuluj','2020-06-19 11:09:18.591','2020-06-19 11:09:18.591','0c12577b-360b-4843-a86e-39c129047b0b','e2d1bc2a-a1b5-4750-9d2e-10fd1b8b2930')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('d9acbeb8-f85d-4e9d-8fca-1043fa92be86','Gotowe','2020-06-19 11:09:22.421','2020-06-19 11:09:22.421','0c12577b-360b-4843-a86e-39c129047b0b','54a0c80b-7667-40f0-9712-034da69a2509')
+,('7a530d3f-30c1-4479-915d-bc1079f1b130','Potwierdź','2020-06-19 11:09:26.948','2020-06-19 11:09:26.948','0c12577b-360b-4843-a86e-39c129047b0b','753070e4-eb5c-436f-8c11-a496c7182a32')
+,('78669f02-1621-49ca-8ef6-8fd1425fb60c','Confirmar','2020-06-19 11:09:36.435','2020-06-19 11:09:36.435','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','753070e4-eb5c-436f-8c11-a496c7182a32')
+,('17045da6-ba1a-4d24-bbf7-e157114e2361','Hecho','2020-06-19 11:09:40.278','2020-06-19 11:09:40.278','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','54a0c80b-7667-40f0-9712-034da69a2509')
+,('ca32ea89-6e28-415c-824d-0e0bc52285ab','Cancelar','2020-06-19 11:09:44.246','2020-06-19 11:09:44.246','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','e2d1bc2a-a1b5-4750-9d2e-10fd1b8b2930')
+,('a8b163ca-d466-469b-8f7e-0658effd2c3c','Plantilla','2020-06-19 11:09:48.212','2020-06-19 11:09:48.212','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','cdb36225-5948-458b-91e7-7df68c5a865d')
+,('e9d7d11d-ca32-4efa-8eff-3ba43fd0888b','Your decision will be posted when you are online again','2020-06-19 11:12:42.304','2020-06-19 11:12:42.304','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','0d528db8-0cdb-47c7-a813-8006fe1be0ad')
+,('6e624697-c056-4f7d-a63e-835fa80a6733','You are currently offline','2020-06-19 11:12:47.002','2020-06-19 11:12:47.002','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','858f8352-9399-4ad6-a879-eb2489a0784d')
+,('a5362e57-2322-403b-a014-9a9af804c95c','This comment is also visible in Team Chat','2020-06-19 11:12:53.155','2020-06-19 11:12:53.155','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','8cfb9163-166d-45a0-81d8-027894b4b2da')
+,('f7c3d2f0-ba53-41dc-8ab1-4ec41bd81521','Please summarize your feedback','2020-06-19 11:12:59.319','2020-06-19 11:12:59.319','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','f005fdab-d8de-44e1-a8c2-9240661e4993')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('8c95b5f7-6d0d-47db-9d31-e70b993a0e9b','Submit','2020-06-19 11:13:02.968','2020-06-19 11:13:02.968','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','fa33782a-4dd4-4e71-892d-6442553a4ccb')
+,('5ff9684f-3573-4785-a610-587ca4a93acc','Respond via comment','2020-06-19 11:13:08.008','2020-06-19 11:13:08.008','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','9b40d606-867c-4c2e-b40b-9faab39ca9a1')
+,('cab5aa65-0972-466c-b732-e1e61307f08b','Invite to interview?','2020-06-19 11:13:13.715','2020-06-19 11:13:13.715','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','5af7a11e-654a-4b77-b6d7-3e3843cbd567')
+,('c0117e81-35d5-46b5-9998-6c8efd70c9d2','Ihre Bewertung wird abgeschickt sobald Sie wieder online sind','2020-06-19 11:13:33.495','2020-06-19 11:13:33.495','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','0d528db8-0cdb-47c7-a813-8006fe1be0ad')
+,('86ed94c3-0ea0-4628-bdd0-121fd7ff6715','Sie sind momentan offline','2020-06-19 11:13:39.050','2020-06-19 11:13:39.050','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','858f8352-9399-4ad6-a879-eb2489a0784d')
+,('c5ec4953-87db-4d07-a98f-a0a8654ade5d','Dieser Kommentar wird auch im Team-Chat sichtbar','2020-06-19 11:13:45.055','2020-06-19 11:13:45.055','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','8cfb9163-166d-45a0-81d8-027894b4b2da')
+,('86a839c9-a151-42fe-8d46-a349596b7398','Bitte fassen Sie Ihre Meinung zusammen','2020-06-19 11:13:50.389','2020-06-19 11:13:50.389','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','f005fdab-d8de-44e1-a8c2-9240661e4993')
+,('9ea2699b-ba55-484f-a50b-d4604280382f','Speichern','2020-06-19 11:13:54.059','2020-06-19 11:13:54.059','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','fa33782a-4dd4-4e71-892d-6442553a4ccb')
+,('332c44d9-63ab-43c2-8ab8-3c5d6677c137','Antworten via Text','2020-06-19 11:13:58.760','2020-06-19 11:13:58.760','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','9b40d606-867c-4c2e-b40b-9faab39ca9a1')
+,('ef9cda90-8c6f-4167-a364-e87539a739b0','Zum Interview einladen?','2020-06-19 11:14:04.301','2020-06-19 11:14:04.301','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','5af7a11e-654a-4b77-b6d7-3e3843cbd567')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('85b1de18-0567-4c48-bfb1-0c79f5f1c361','Twoja opinia zostanie wysłana, gdy tylko będziesz ponownie online','2020-06-19 11:14:16.915','2020-06-19 11:14:16.915','0c12577b-360b-4843-a86e-39c129047b0b','0d528db8-0cdb-47c7-a813-8006fe1be0ad')
+,('6e794fea-704d-498a-9c7c-13c2066e3997','Jesteś obecnie w trybie offline','2020-06-19 11:14:24.683','2020-06-19 11:14:24.683','0c12577b-360b-4843-a86e-39c129047b0b','858f8352-9399-4ad6-a879-eb2489a0784d')
+,('2118d7ad-4b20-4dde-9938-cc6568533df0','Ten komentarz jest również widoczny w czacie zespołowym','2020-06-19 11:14:32.388','2020-06-19 11:14:32.388','0c12577b-360b-4843-a86e-39c129047b0b','8cfb9163-166d-45a0-81d8-027894b4b2da')
+,('d26f98de-aa8d-4019-a76c-fc518be38b4b','Prosimy podsumować swoją opinię','2020-06-19 11:14:45.886','2020-06-19 11:14:45.886','0c12577b-360b-4843-a86e-39c129047b0b','f005fdab-d8de-44e1-a8c2-9240661e4993')
+,('38ec2aa5-9e7a-41ed-b5e2-f7b8d3547ee6','Zapisz','2020-06-19 11:14:49.869','2020-06-19 11:14:49.869','0c12577b-360b-4843-a86e-39c129047b0b','fa33782a-4dd4-4e71-892d-6442553a4ccb')
+,('7fed2a72-b30d-4625-92e7-b9a95dfb7231','Odpowiedz przez wiadomość tekstową','2020-06-19 11:14:55.662','2020-06-19 11:14:55.662','0c12577b-360b-4843-a86e-39c129047b0b','9b40d606-867c-4c2e-b40b-9faab39ca9a1')
+,('1924b477-9e41-4989-bdad-8aba95257ae1','Zaprosić na rozmowę kwalifikacyjną?','2020-06-19 11:15:00.441','2020-06-19 11:15:00.441','0c12577b-360b-4843-a86e-39c129047b0b','5af7a11e-654a-4b77-b6d7-3e3843cbd567')
+,('ba9f7296-b7fa-4229-af47-ab37b4c1b9e3','Su decisión se publicará cuando vuelva a estar conectado','2020-06-19 11:16:58.981','2020-06-19 11:16:58.981','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','0d528db8-0cdb-47c7-a813-8006fe1be0ad')
+,('d3e50e4e-9953-4122-8c32-fa781c8d6841','Está desconectado','2020-06-19 11:17:04.331','2020-06-19 11:17:04.331','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','858f8352-9399-4ad6-a879-eb2489a0784d')
+,('2db6e2ce-96ed-4a3c-b071-7d7e0708f228','Este comentario también es visible en el Chat del Equipo','2020-06-19 11:17:10.925','2020-06-19 11:17:10.925','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','8cfb9163-166d-45a0-81d8-027894b4b2da')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('f0238f0e-20df-407e-9c5c-44cec943518e','Por favor, resuma su comentario','2020-06-19 11:17:17.206','2020-06-19 11:17:17.206','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','f005fdab-d8de-44e1-a8c2-9240661e4993')
+,('62d0a6d4-98b6-4344-b734-a5d71ce82278','Enviar','2020-06-19 11:17:21.239','2020-06-19 11:17:21.239','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','fa33782a-4dd4-4e71-892d-6442553a4ccb')
+,('68737d07-cff0-49c9-b123-6d3345ef58b4','Responda mediante un comentario','2020-06-19 11:17:27.012','2020-06-19 11:17:27.012','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','9b40d606-867c-4c2e-b40b-9faab39ca9a1')
+,('4c2ac346-bef9-4fcd-bf04-35986c8d1821','¿Invitar a la entrevista?','2020-06-19 11:17:32.559','2020-06-19 11:17:32.559','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','5af7a11e-654a-4b77-b6d7-3e3843cbd567')
+,('a34d3778-5688-466b-bc97-56cd98d2e718','Cancel','2020-06-19 11:22:07.151','2020-06-19 11:22:16.071','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','ef9b3ded-5f62-4882-80d5-d8d0624c3c99')
+,('8e910dab-f64f-49e0-86f9-9060d2180dd7','Continue','2020-06-19 11:22:34.445','2020-06-19 11:22:34.445','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','aa724143-2da5-4dbc-b5fc-94053e01710b')
+,('960d1138-2cba-4b5d-89c6-e4ec28268938','Abbrechen','2020-06-19 11:24:25.358','2020-06-19 11:24:25.358','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','ef9b3ded-5f62-4882-80d5-d8d0624c3c99')
+,('0ec6ac53-9b8c-4452-82a6-170fb1e57235','Weiter','2020-06-19 11:24:28.866','2020-06-19 11:24:28.866','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','aa724143-2da5-4dbc-b5fc-94053e01710b')
+,('e6e17acc-dc14-4a1e-826b-7faf041a564a','Kontynuuj','2020-06-19 11:24:34.875','2020-06-19 11:24:34.875','0c12577b-360b-4843-a86e-39c129047b0b','aa724143-2da5-4dbc-b5fc-94053e01710b')
+,('69f959dd-32cb-4259-8d7c-da30328e1636','Anuluj','2020-06-19 11:24:38.201','2020-06-19 11:24:38.201','0c12577b-360b-4843-a86e-39c129047b0b','ef9b3ded-5f62-4882-80d5-d8d0624c3c99')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('f49a0b27-d42e-40e4-b0e3-eaead730ea42','Continuar','2020-06-19 11:24:44.967','2020-06-19 11:24:44.967','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','aa724143-2da5-4dbc-b5fc-94053e01710b')
+,('fbe59faf-69b5-4c8f-bf9a-557e41c2d5e6','Cancelar','2020-06-19 11:24:48.224','2020-06-19 11:24:48.224','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','ef9b3ded-5f62-4882-80d5-d8d0624c3c99')
+,('be75671b-0975-4fb7-a246-916331b1ab15','No','2020-06-19 11:29:01.655','2020-06-19 11:29:01.655','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','43fc6676-23da-4915-b6dc-51d8aada23d4')
+,('9d29f5a1-c531-4e24-82bc-870131592fea','Yes','2020-06-19 11:29:05.250','2020-06-19 11:29:05.250','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','fb5aff82-73c9-4c08-b8b8-2090547d2765')
+,('830f6fe9-82f7-49f6-8c91-3b2a609f5240','Nein','2020-06-19 11:29:11.658','2020-06-19 11:29:11.658','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','43fc6676-23da-4915-b6dc-51d8aada23d4')
+,('b47be296-0a95-4fe7-bbb9-aff57f2d4601','Ja','2020-06-19 11:29:14.804','2020-06-19 11:29:14.804','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','fb5aff82-73c9-4c08-b8b8-2090547d2765')
+,('70122e9b-792d-4b5d-851e-e2a2548901a3','Tak','2020-06-19 11:29:27.334','2020-06-19 11:29:27.334','0c12577b-360b-4843-a86e-39c129047b0b','fb5aff82-73c9-4c08-b8b8-2090547d2765')
+,('6a222cf6-cd72-4439-82d6-31d677ef1ad0','Nie','2020-06-19 11:29:23.859','2020-06-19 11:29:31.301','0c12577b-360b-4843-a86e-39c129047b0b','43fc6676-23da-4915-b6dc-51d8aada23d4')
+,('c8481fbe-c9dd-48a5-8e0c-5a227de74577','No','2020-06-19 11:29:37.796','2020-06-19 11:29:37.796','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','43fc6676-23da-4915-b6dc-51d8aada23d4')
+,('28fee5bd-1039-4146-85b2-f934db8127b3','Sí','2020-06-19 11:29:42.033','2020-06-19 11:29:42.033','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','fb5aff82-73c9-4c08-b8b8-2090547d2765')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('e0739a6e-c3b6-413c-a825-12a279ff7194','You are currently offline','2020-06-19 12:49:45.494','2020-06-19 12:49:45.494','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','a78f68ff-299d-40d3-bc10-4a68dec7da07')
+,('07104eb4-38e9-45d2-bfde-19c5f20a12a0','Please go online and request this file one more time','2020-06-19 12:49:52.928','2020-06-19 12:49:52.928','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','444b384d-410c-40ee-9781-b68a98912b58')
+,('6a3a9fa9-002d-4d5b-8a28-dea715d43d9b','No Rating','2020-06-19 13:09:11.481','2020-06-19 13:09:11.481','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','0a97cce4-2300-489a-8fbc-a1e4c786a3bc')
+,('c780b00f-99bb-491d-9656-e71ff7d643d5','keine Bewertung','2020-06-19 13:09:22.075','2020-06-19 13:09:22.075','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','0a97cce4-2300-489a-8fbc-a1e4c786a3bc')
+,('93ecd84f-f23a-4e7e-acac-bc7e01e40e4d','Sie sind momentan offline','2020-06-19 13:09:48.412','2020-06-19 13:09:48.412','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','a78f68ff-299d-40d3-bc10-4a68dec7da07')
+,('64eba7c0-127a-4e0f-82c8-a46c38acc8c1','Ungeöffnete Anhänge sind offline nicht verfügbar','2020-06-19 13:09:57.162','2020-06-19 13:09:57.162','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','444b384d-410c-40ee-9781-b68a98912b58')
+,('968b6104-4e7b-4694-856a-5ad49c552b00','nie Klasyfikacja','2020-06-19 13:23:40.719','2020-06-19 13:23:40.719','0c12577b-360b-4843-a86e-39c129047b0b','0a97cce4-2300-489a-8fbc-a1e4c786a3bc')
+,('bb1fe60d-91fa-4172-8127-9d41c6b1aeff','no hay clasificación','2020-06-19 13:23:53.715','2020-06-19 13:23:53.715','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','0a97cce4-2300-489a-8fbc-a1e4c786a3bc')
+,('ca982f76-034b-4f29-a713-c05e22851b84','Moved from rejection bin','2020-06-19 13:38:27.130','2020-06-19 13:38:27.130','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','06a1bdcf-0f88-4bf7-9aa1-c91fcdeae63c')
+,('12ca8f34-9709-4610-bb62-6c8686758459','Unable to move out of the rejection bin','2020-06-19 13:38:34.639','2020-06-19 13:38:34.639','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','22dfd5e2-5902-4ed1-900a-f7b33f03e51d')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('6b455a2d-f42f-4a8e-8cfc-6cd059adeecf','Are you sure you want to move to rejection bin?','2020-06-19 13:38:44.531','2020-06-19 13:38:44.531','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','7efff57d-c4d4-4208-81ff-68ae16dd7a3f')
+,('cde6ca99-951d-42b4-bc9e-5f43b2de57b0','Yes','2020-06-19 13:38:49.752','2020-06-19 13:38:49.752','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','6fae4d2e-b023-472a-9ca9-45dd7e84c27e')
+,('6c35f199-1ef8-4918-b7ab-1961b2b575af','Cancel','2020-06-19 13:38:54.894','2020-06-19 13:38:54.894','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','ad693163-23a2-44ad-b356-9c56388939fc')
+,('76f152bd-8160-47dc-b2a6-6e97fb970a65','Cancel','2020-06-19 13:39:01.589','2020-06-19 13:39:01.589','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','866118e6-6926-4819-b34b-c7ba7da185e8')
+,('03ea0504-2f45-47f2-9bf9-08a4dbb3242f','Move to {{workflow}}','2020-06-19 13:40:43.957','2020-06-19 13:41:42.447','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','001dd7dd-7ced-4485-b9c1-e8e67970253d')
+,('aa6cdc31-abd0-4fac-9339-b6acdb6e3f18','Reschedule','2020-06-19 13:42:00.371','2020-06-19 13:42:00.371','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','8b96d84e-5d14-4553-adc4-44f4170e8977')
+,('d6732551-de42-4d72-8190-a2edbc097d7f','Offer is declined','2020-06-19 13:46:57.396','2020-06-19 13:46:57.396','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','a98972e3-27f8-40c8-a99c-29fb46902cf3')
+,('c3676d86-5708-4cf8-bacd-c2126dfa2c98','Aus den Absagekorb verschoben','2020-06-19 13:48:13.224','2020-06-19 13:48:13.224','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','06a1bdcf-0f88-4bf7-9aa1-c91fcdeae63c')
+,('7eb4051f-a41a-4929-871e-4f479bafca91','Kann nicht aus den Absagekorb verschoben werden','2020-06-19 13:48:27.969','2020-06-19 13:48:27.969','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','22dfd5e2-5902-4ed1-900a-f7b33f03e51d')
+,('2cd95de1-6313-4397-9f43-9c8e6727a0c8','Wirklich in den Absagekorb verschieben?','2020-06-19 13:48:44.018','2020-06-19 13:48:44.018','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','7efff57d-c4d4-4208-81ff-68ae16dd7a3f')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('9f5f861f-5da6-431b-ab1e-9d6967f9f26b','Ja','2020-06-19 13:48:48.844','2020-06-19 13:48:48.844','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','6fae4d2e-b023-472a-9ca9-45dd7e84c27e')
+,('bf854766-e021-4f0a-801c-ef971d1df43a','Abbrechen','2020-06-19 13:48:58.669','2020-06-19 13:48:58.669','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','ad693163-23a2-44ad-b356-9c56388939fc')
+,('37f4e083-0589-414e-b1cb-55aea15788e3','Abbrechen','2020-06-19 13:49:01.110','2020-06-19 13:49:01.110','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','866118e6-6926-4819-b34b-c7ba7da185e8')
+,('a0938754-2866-4299-a4fb-3fc182ea8b2d','verschieben zu {{workflow}}','2020-06-19 13:49:16.547','2020-06-19 13:49:16.547','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','001dd7dd-7ced-4485-b9c1-e8e67970253d')
+,('00ae8d1c-467d-45b7-9f66-51cfd4c986f2','Termin','2020-06-19 13:49:32.614','2020-06-19 13:49:32.614','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','8b96d84e-5d14-4553-adc4-44f4170e8977')
+,('7f7a139e-0efe-426a-8e22-b2b19bdb4357','Angebot wird abgelehnt','2020-06-19 13:49:45.067','2020-06-19 13:49:45.067','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','a98972e3-27f8-40c8-a99c-29fb46902cf3')
+,('7f9d3978-9ac9-4e69-9daf-118aba877bab','Jesteś obecnie w trybie offline','2020-06-19 14:02:45.889','2020-06-19 14:02:45.889','0c12577b-360b-4843-a86e-39c129047b0b','a78f68ff-299d-40d3-bc10-4a68dec7da07')
+,('3444105e-deac-4e43-bc52-192d7a15eb53','Nieotwarte załączniki nie są dostępne w trybie offline.','2020-06-19 14:02:58.901','2020-06-19 14:02:58.901','0c12577b-360b-4843-a86e-39c129047b0b','444b384d-410c-40ee-9781-b68a98912b58')
+,('0cea11c9-c01d-45b5-8148-d1a959c4ad1a','Przeniesiono z kosza odrzuceń','2020-06-19 14:03:13.885','2020-06-19 14:03:13.885','0c12577b-360b-4843-a86e-39c129047b0b','06a1bdcf-0f88-4bf7-9aa1-c91fcdeae63c')
+,('484b4af7-f699-4727-9a00-0243ddba4641','Nie można przenieść z kosza odrzuceń','2020-06-19 14:03:27.484','2020-06-19 14:03:27.484','0c12577b-360b-4843-a86e-39c129047b0b','22dfd5e2-5902-4ed1-900a-f7b33f03e51d')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('9d257186-e666-4dbf-a778-e8f5625e3f5b','Tak','2020-06-19 14:03:47.486','2020-06-19 14:03:47.486','0c12577b-360b-4843-a86e-39c129047b0b','6fae4d2e-b023-472a-9ca9-45dd7e84c27e')
+,('52ba1f9f-3d36-49da-b458-57320cdec7fa','Czy na pewno chcesz
+usunąć?','2020-06-19 14:03:41.103','2020-06-19 14:03:53.258','0c12577b-360b-4843-a86e-39c129047b0b','7efff57d-c4d4-4208-81ff-68ae16dd7a3f')
+,('3b9f9fb8-252a-432f-835c-c8d39b9138f7','Anuluj','2020-06-19 14:04:02.741','2020-06-19 14:04:02.741','0c12577b-360b-4843-a86e-39c129047b0b','ad693163-23a2-44ad-b356-9c56388939fc')
+,('1cfca5ac-0958-4884-9fa5-206862bf94a7','Anuluj','2020-06-19 14:04:07.962','2020-06-19 14:04:07.962','0c12577b-360b-4843-a86e-39c129047b0b','866118e6-6926-4819-b34b-c7ba7da185e8')
+,('2add65a1-3bc7-42a7-9f84-c220e3e76561','Przenieś do {{worklfow}}','2020-06-19 14:04:23.099','2020-06-19 14:04:23.099','0c12577b-360b-4843-a86e-39c129047b0b','001dd7dd-7ced-4485-b9c1-e8e67970253d')
+,('dbe5cb11-03a6-4a81-a41d-b4bb7fe4c9ab','Zmień termin','2020-06-19 14:04:31.311','2020-06-19 14:04:31.311','0c12577b-360b-4843-a86e-39c129047b0b','8b96d84e-5d14-4553-adc4-44f4170e8977')
+,('c4f0f5fa-edc2-4a5b-af65-9f1db3986449','Oferta jest odrzucona','2020-06-19 14:05:21.436','2020-06-19 14:05:21.436','0c12577b-360b-4843-a86e-39c129047b0b','a98972e3-27f8-40c8-a99c-29fb46902cf3')
+,('be3b5065-d8f5-47ec-8a2f-1d41d8571d36','Está desconectado','2020-06-19 13:25:00.227','2020-06-19 14:06:28.435','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','a78f68ff-299d-40d3-bc10-4a68dec7da07')
+,('06e5bf53-c2bc-41ed-b16a-e7e1fdc53512','Por favor, conéctese y vuelva a solicitar este archivo','2020-06-19 13:25:11.673','2020-06-19 14:06:39.026','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','444b384d-410c-40ee-9781-b68a98912b58')
+,('b6d17b23-c568-4bf6-b813-c70cb7873b65','Movido de la papelera de rechazados','2020-06-19 14:07:02.673','2020-06-19 14:07:02.673','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','06a1bdcf-0f88-4bf7-9aa1-c91fcdeae63c')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('78bf93f8-edbe-4d40-90fd-0f27356951da','No ha sido posible recuperar de la papelera de rechazados','2020-06-19 14:07:12.549','2020-06-19 14:07:12.549','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','22dfd5e2-5902-4ed1-900a-f7b33f03e51d')
+,('349b9829-bd81-42d4-a5ed-dcbaa4a0f9d3','¿Está seguro de que desea
+eliminarlo?','2020-06-19 14:07:22.897','2020-06-19 14:07:29.050','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','7efff57d-c4d4-4208-81ff-68ae16dd7a3f')
+,('b7f21d76-8468-4d8f-839a-7d37795590ca','Sí','2020-06-19 14:07:35.511','2020-06-19 14:07:35.511','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','6fae4d2e-b023-472a-9ca9-45dd7e84c27e')
+,('daf172dd-3d82-4547-bca1-def4ddeae62d','Cancelar','2020-06-19 14:07:40.252','2020-06-19 14:07:40.252','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','ad693163-23a2-44ad-b356-9c56388939fc')
+,('6f27e46d-2c07-4af3-a2ac-90563abe77ea','Cancelar','2020-06-19 14:07:45.326','2020-06-19 14:07:45.326','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','866118e6-6926-4819-b34b-c7ba7da185e8')
+,('d3fccd76-1b6f-4bfb-b706-ff73166c97e6','Movido a {{workflow}}','2020-06-19 14:07:59.808','2020-06-19 14:07:59.808','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','001dd7dd-7ced-4485-b9c1-e8e67970253d')
+,('beab95f3-82aa-4f4c-bc13-607e247ce88e','Reprogramar','2020-06-19 14:08:04.940','2020-06-19 14:08:04.940','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','8b96d84e-5d14-4553-adc4-44f4170e8977')
+,('25bae851-e589-4010-84dd-a833dabce92a','Se rechaza la oferta','2020-06-19 14:08:18.255','2020-06-19 14:08:18.255','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','a98972e3-27f8-40c8-a99c-29fb46902cf3')
+,('43c3f974-7498-4f93-8a64-b6f21f6112ac','MMMM DD, YYYY','2020-06-19 14:09:58.303','2020-06-19 14:09:58.303','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','09db2c5a-5f41-42f9-8c67-4a1d06c29c7c')
+,('19bcc5f9-a687-471b-855c-ba597aaefdb4','DD MMMM, YYYY','2020-06-19 14:10:03.352','2020-06-19 14:10:03.352','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','09db2c5a-5f41-42f9-8c67-4a1d06c29c7c')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('3db3e96e-7787-4267-98aa-872f5160f702','DD MM YYYY','2020-06-19 14:10:23.621','2020-06-19 14:10:23.621','0c12577b-360b-4843-a86e-39c129047b0b','09db2c5a-5f41-42f9-8c67-4a1d06c29c7c')
+,('18c27b01-8c74-4500-b20f-93d1e478a174','MMMM DD, YYYY','2020-06-19 14:10:31.517','2020-06-19 14:10:31.517','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','09db2c5a-5f41-42f9-8c67-4a1d06c29c7c')
+,('15e78650-7972-459f-b722-1db7869bce8d','Search for names','2020-06-19 14:20:06.235','2020-06-19 14:20:06.235','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','e2a7ae53-d746-4106-a1b0-ced52840b62b')
+,('9f6116da-9fc6-41ac-b349-4f83ddfd3994','Team Chats','2020-06-19 14:20:14.918','2020-06-19 14:20:14.918','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','94c9cb6e-639a-4334-a7b8-30a9ba18fb77')
+,('e849c3fa-fb06-49ed-bd35-86ca59b42541','Suche nach Namen','2020-06-19 14:20:41.876','2020-06-19 14:20:41.876','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','e2a7ae53-d746-4106-a1b0-ced52840b62b')
+,('ea13dfcf-a9d4-48fa-9907-777a9d1a162d','Team-Chats','2020-06-19 14:20:48.702','2020-06-19 14:20:48.702','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','94c9cb6e-639a-4334-a7b8-30a9ba18fb77')
+,('8213cadc-cbbe-4d5b-8824-766868d523b4','Czat','2020-06-19 14:23:48.590','2020-06-19 14:23:48.590','0c12577b-360b-4843-a86e-39c129047b0b','94c9cb6e-639a-4334-a7b8-30a9ba18fb77')
+,('ba6eaffe-6484-4c85-8516-3a1c19e46d9c','Szukaj nazwisk','2020-06-19 14:23:56.055','2020-06-19 14:23:56.055','0c12577b-360b-4843-a86e-39c129047b0b','e2a7ae53-d746-4106-a1b0-ced52840b62b')
+,('d638d28e-81d6-4703-8382-4b652387cff5','Chats de equipo','2020-06-19 14:24:21.159','2020-06-19 14:24:21.159','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','94c9cb6e-639a-4334-a7b8-30a9ba18fb77')
+,('b416c951-3d65-4336-829b-6b28820232cc','Búsqueda por nombres','2020-06-19 14:24:26.541','2020-06-19 14:24:26.541','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','e2a7ae53-d746-4106-a1b0-ced52840b62b')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('9ffa6423-b058-431e-9214-c5f492d4dc75','Today','2020-06-19 14:28:24.255','2020-06-19 14:28:24.255','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','0fb49a6a-4cd5-4cd5-a37c-1fcf928f5440')
+,('b9e59078-e96f-4d23-a18b-30a38ed32114','Heute','2020-06-19 14:28:44.274','2020-06-19 14:28:44.274','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','0fb49a6a-4cd5-4cd5-a37c-1fcf928f5440')
+,('b44ea9a0-0179-416b-9b0d-65a6edf64160','Dzisiaj','2020-06-19 14:28:51.115','2020-06-19 14:28:51.115','0c12577b-360b-4843-a86e-39c129047b0b','0fb49a6a-4cd5-4cd5-a37c-1fcf928f5440')
+,('4f645aae-eaa1-4412-ae7b-2627bd94a566','Hoy','2020-06-19 14:28:57.585','2020-06-19 14:28:57.585','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','0fb49a6a-4cd5-4cd5-a37c-1fcf928f5440')
+,('6ec4f1c4-18db-480a-ba66-29e3f2712cc1','Search for names','2020-06-19 14:34:23.670','2020-06-19 14:34:23.670','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','454c0040-f374-4c01-ac30-90705d983767')
+,('6526ceb7-26c9-4481-8e22-a6225b53ee01','Suche nach Namen','2020-06-19 14:34:35.014','2020-06-19 14:34:35.014','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','454c0040-f374-4c01-ac30-90705d983767')
+,('bfa5fa0f-d020-4fc0-98e9-0b1f11c9b321','Szukaj nazwisk','2020-06-19 14:34:43.838','2020-06-19 14:34:43.838','0c12577b-360b-4843-a86e-39c129047b0b','454c0040-f374-4c01-ac30-90705d983767')
+,('efd22bd5-473e-410d-8eee-73e87109a546','Búsqueda por nombres','2020-06-19 14:34:55.892','2020-06-19 14:34:55.892','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','454c0040-f374-4c01-ac30-90705d983767')
+,('c11a3790-ec38-4e10-8704-6af2612bd87e','Passcodes did not match. Try again','2020-06-19 14:43:27.229','2020-06-19 14:43:27.229','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','77f2a9ac-2393-4f12-84a1-ea6b8e9037e4')
+,('bf9d6209-5468-4afb-8163-4f77553dec9b','You are now ready!','2020-06-19 14:43:33.524','2020-06-19 14:43:33.524','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','e101bfba-b0f9-43ef-aaa8-d4830a7cd4c1')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('12e2b69e-1e82-4f89-a8a1-5a26a5363701','Pincodes nicht ident. Bitte nochmals versuchen','2020-06-19 14:43:42.334','2020-06-19 14:43:42.334','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','77f2a9ac-2393-4f12-84a1-ea6b8e9037e4')
+,('ba8cacc1-5fd4-4096-924e-15e37640b658','Es kann los gehen!','2020-06-19 14:43:48.700','2020-06-19 14:43:48.700','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','e101bfba-b0f9-43ef-aaa8-d4830a7cd4c1')
+,('2861f52c-bff8-43da-9f05-863333fb69ee','Możesz zaczynać!','2020-06-19 14:44:03.718','2020-06-19 14:44:03.718','0c12577b-360b-4843-a86e-39c129047b0b','e101bfba-b0f9-43ef-aaa8-d4830a7cd4c1')
+,('cb3a8824-a0ba-46c6-ba36-180f34ffe822','Kod dostępu nie jest identyczny Spróbuj jeszcze raz','2020-06-19 14:44:10.590','2020-06-19 14:44:10.590','0c12577b-360b-4843-a86e-39c129047b0b','77f2a9ac-2393-4f12-84a1-ea6b8e9037e4')
+,('980285f1-dd1e-445e-aa4f-088c91e87c71','¡Ahora ya está listo!','2020-06-19 14:44:23.748','2020-06-19 14:44:23.748','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','e101bfba-b0f9-43ef-aaa8-d4830a7cd4c1')
+,('6ffab403-f863-47d4-af4e-c1731a89c12e','Contraseña no válida. Por favor prueba otra vez','2020-06-19 14:44:31.608','2020-06-19 14:44:31.608','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','77f2a9ac-2393-4f12-84a1-ea6b8e9037e4')
+,('f54d1052-5290-423c-9019-ca6305dfde4d','(Sending...)','2020-06-19 14:50:08.229','2020-06-19 14:50:08.229','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','5066d1c3-f0a0-42e3-9fbd-daf445ea45af')
+,('9d82f59a-bd98-45b4-b225-796b134071c5','Anonymous','2020-06-19 14:50:22.011','2020-06-19 14:50:22.011','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','83f75dac-b136-414f-b342-4edf70cd72b7')
+,('071b26bc-71c2-4fc4-9132-9deda36c3ff5','No emails yet','2020-06-19 14:50:32.768','2020-06-19 14:50:32.768','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','9a70ad79-5216-4c34-8311-8c750ced75af')
+,('5d83bf5a-d875-45ac-90f7-0c34686bd06a','Emails','2020-06-19 14:50:40.211','2020-06-19 14:50:40.211','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','7ef9df1e-2898-4dac-8ccd-2c4b943fcdfa')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('33c60b1c-5a8b-4311-b29e-975b3dab5173','Email','2020-06-19 14:50:45.865','2020-06-19 14:50:45.865','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','01d334ed-ef85-43d4-bbc4-b57af3e7e224')
+,('1d807b8b-7654-4350-9a5b-4cf4adcd8274','Wird gesendet...','2020-06-19 14:51:53.745','2020-06-19 14:51:53.745','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','5066d1c3-f0a0-42e3-9fbd-daf445ea45af')
+,('5c913361-20e7-4320-8d31-fe87acc3d96e','Anonym','2020-06-19 14:54:21.317','2020-06-19 14:54:21.317','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','83f75dac-b136-414f-b342-4edf70cd72b7')
+,('2f7205fb-9f8a-4f81-8e9f-22e8b9bed5f9','Keine E-Mails bisher','2020-06-19 14:55:58.081','2020-06-19 14:56:06.890','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','9a70ad79-5216-4c34-8311-8c750ced75af')
+,('fa327340-502c-4d18-ab64-1a0214e74e9a','E-Mails','2020-06-19 14:56:18.080','2020-06-19 14:56:18.080','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','7ef9df1e-2898-4dac-8ccd-2c4b943fcdfa')
+,('e3e764e7-d567-4688-817a-486bc0817823','E-Mail','2020-06-19 14:56:24.690','2020-06-19 14:56:24.690','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','01d334ed-ef85-43d4-bbc4-b57af3e7e224')
+,('80442195-51a0-4dc7-b3b3-ec8f0d817b86','(wysyłanie...)','2020-06-19 14:57:01.453','2020-06-19 14:57:01.453','0c12577b-360b-4843-a86e-39c129047b0b','5066d1c3-f0a0-42e3-9fbd-daf445ea45af')
+,('b0440f08-f0b7-43b7-910e-8523cfb944e5','Anonimowy','2020-06-19 14:57:06.767','2020-06-19 14:57:06.767','0c12577b-360b-4843-a86e-39c129047b0b','83f75dac-b136-414f-b342-4edf70cd72b7')
+,('a6d31136-4228-492c-ac76-16561117030e','Brak wiadomości e-mail','2020-06-19 14:57:25.081','2020-06-19 14:57:25.081','0c12577b-360b-4843-a86e-39c129047b0b','9a70ad79-5216-4c34-8311-8c750ced75af')
+,('a31392ef-b35f-44ec-9fb9-d8a9b8c6a661','Wiadomości','2020-06-19 14:57:33.847','2020-06-19 14:57:33.847','0c12577b-360b-4843-a86e-39c129047b0b','7ef9df1e-2898-4dac-8ccd-2c4b943fcdfa')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('25f629aa-2224-405f-bcb3-2235ea3316ff','Wiadomość','2020-06-19 14:57:49.619','2020-06-19 14:57:49.619','0c12577b-360b-4843-a86e-39c129047b0b','01d334ed-ef85-43d4-bbc4-b57af3e7e224')
+,('d5ce51fe-b62c-4cab-99c6-9be194ab7259','more','2020-06-19 15:01:30.701','2020-06-19 15:01:30.701','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','64858122-df0f-42a5-9783-a04169a9a925')
+,('8186cd39-4f83-4680-a396-c587b3e3d78c','Con copia oculta:','2020-06-19 15:09:21.273','2020-06-19 15:09:21.273','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','0d6b93df-3d16-4fbc-a295-aa1cc0207cba')
+,('5d52385e-a8bf-4fca-a906-1ba97d4d3e99','Con copia:','2020-06-19 15:09:27.976','2020-06-19 15:09:27.976','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','827c53b4-58d9-4f3d-878e-5c039d6dde0b')
+,('8d675b99-8f5c-4756-9cf5-aee84d04187a','Email sent','2020-06-19 15:02:19.057','2020-06-19 15:02:19.057','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','8bc92785-a632-4066-8fcb-04db4c794d6e')
+,('07cb84a3-3735-4987-9c98-eec651a0c2cc','Cancel','2020-06-19 15:02:25.169','2020-06-19 15:02:25.169','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','06612db1-9408-42bd-9aa4-40714140c2db')
+,('61d41058-3748-46fd-95f8-0003ce8e3a4c','Email will be sent when online','2020-06-19 15:02:46.451','2020-06-19 15:02:46.451','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','40abf24c-1fb6-4f75-bee2-a0d6c8317a0a')
+,('e67382d7-37b9-4d29-b907-b2a9616a043e','To:','2020-06-19 15:01:24.883','2020-06-19 15:03:39.447','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','5ecadfbf-ab67-40a1-98b6-3eb9084480d1')
+,('5ba5ca96-0aeb-44bd-85ce-b76ce9f95813','Cc:','2020-06-19 15:01:35.960','2020-06-19 15:03:50.135','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','827c53b4-58d9-4f3d-878e-5c039d6dde0b')
+,('f3e39341-d1ce-4179-9920-faf05eb34f28','Bcc:','2020-06-19 15:01:40.877','2020-06-19 15:03:57.593','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','0d6b93df-3d16-4fbc-a295-aa1cc0207cba')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('5ed470de-9fd7-40d7-af22-cff39e8e6a5a','E-Mailversand, wenn Sie online sind','2020-06-19 15:05:35.120','2020-06-19 15:05:35.120','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','40abf24c-1fb6-4f75-bee2-a0d6c8317a0a')
+,('c223e962-02b4-4e19-b42e-bc96f5cf273f','Abbrechen','2020-06-19 15:05:42.436','2020-06-19 15:05:42.436','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','06612db1-9408-42bd-9aa4-40714140c2db')
+,('afaafac1-d716-45bc-934b-12f80983f6a3','E-Mail gesendet','2020-06-19 15:05:50.953','2020-06-19 15:05:50.953','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','8bc92785-a632-4066-8fcb-04db4c794d6e')
+,('3125e7e6-76e7-4eb7-b489-dfef7358ab77','BCC:','2020-06-19 15:06:00.474','2020-06-19 15:06:00.474','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','0d6b93df-3d16-4fbc-a295-aa1cc0207cba')
+,('2f5a0faa-b532-4780-96d3-60e27ef8c85c','CC:','2020-06-19 15:06:08.502','2020-06-19 15:06:08.502','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','827c53b4-58d9-4f3d-878e-5c039d6dde0b')
+,('5171aa58-fc1e-452f-9b9f-56315a8f5ce6','weitere','2020-06-19 15:06:15.180','2020-06-19 15:06:15.180','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','64858122-df0f-42a5-9783-a04169a9a925')
+,('df1cc133-1f71-4cfe-a0f8-ccd3928b6744','An:','2020-06-19 15:06:22.740','2020-06-19 15:06:22.740','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','5ecadfbf-ab67-40a1-98b6-3eb9084480d1')
+,('081cf154-b473-4318-aefd-175ea5fde545','Email zostanie wysłany online','2020-06-19 15:07:00.482','2020-06-19 15:07:00.482','0c12577b-360b-4843-a86e-39c129047b0b','40abf24c-1fb6-4f75-bee2-a0d6c8317a0a')
+,('8641b8cf-c6d1-452b-b2dd-7f1f4f14caef','Anuluj','2020-06-19 15:07:15.508','2020-06-19 15:07:15.508','0c12577b-360b-4843-a86e-39c129047b0b','06612db1-9408-42bd-9aa4-40714140c2db')
+,('4e5018e8-e15e-49a1-8e38-d3cf7e6d33ef','E-mail został wysłany','2020-06-19 15:07:37.192','2020-06-19 15:07:37.192','0c12577b-360b-4843-a86e-39c129047b0b','8bc92785-a632-4066-8fcb-04db4c794d6e')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('055cfa11-c6de-4af3-b492-566c29b4f7ce','Udw:','2020-06-19 15:07:44.005','2020-06-19 15:07:44.005','0c12577b-360b-4843-a86e-39c129047b0b','0d6b93df-3d16-4fbc-a295-aa1cc0207cba')
+,('6b504ae3-2657-47d6-ab0d-5a1698fb0611','Dw:','2020-06-19 15:07:49.681','2020-06-19 15:07:49.681','0c12577b-360b-4843-a86e-39c129047b0b','827c53b4-58d9-4f3d-878e-5c039d6dde0b')
+,('cb599a0a-4a23-4c4b-90ed-68cca5233df7','więcej','2020-06-19 15:07:56.642','2020-06-19 15:07:56.642','0c12577b-360b-4843-a86e-39c129047b0b','64858122-df0f-42a5-9783-a04169a9a925')
+,('9b892096-abb7-4ba0-9684-a6ee53c79378','Do:','2020-06-19 15:08:03.143','2020-06-19 15:08:03.143','0c12577b-360b-4843-a86e-39c129047b0b','5ecadfbf-ab67-40a1-98b6-3eb9084480d1')
+,('1d50df89-28ee-4d93-9c00-69317ed178ac','El correo electrónico será enviado en línea','2020-06-19 15:08:23.234','2020-06-19 15:08:23.234','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','40abf24c-1fb6-4f75-bee2-a0d6c8317a0a')
+,('22fa4cde-e47d-42c1-be7d-abd7f7119def','Cancelar','2020-06-19 15:08:27.270','2020-06-19 15:08:27.270','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','06612db1-9408-42bd-9aa4-40714140c2db')
+,('3dbcf824-0347-4401-8f16-0d55335b698f','Email enviado','2020-06-19 15:09:06.556','2020-06-19 15:09:06.556','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','8bc92785-a632-4066-8fcb-04db4c794d6e')
+,('d87b6bdb-9f5a-42a8-be71-6aa2912a6815','Más','2020-06-19 15:09:36.135','2020-06-19 15:09:36.135','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','64858122-df0f-42a5-9783-a04169a9a925')
+,('ad9ca9b7-b1e0-4182-8a51-835e310415a9','A:','2020-06-19 15:09:44.462','2020-06-19 15:09:44.462','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','5ecadfbf-ab67-40a1-98b6-3eb9084480d1')
+,('62296174-1a9a-4bde-ae9f-97ad59e1892c','Confirm Interview','2020-06-19 19:23:25.844','2020-06-19 19:23:25.844','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','0f325013-e2a9-49cd-9ec6-f73821b49c59')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('070d762e-9bcc-4592-86f3-9f54839ded95','Check Application Status','2020-06-19 19:23:34.397','2020-06-19 19:23:34.397','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','2651fd4c-7acc-4062-a8b1-e333ef5745ba')
+,('bc16fe67-1cc7-4683-9d05-9584ed30af27','Upcoming Interview','2020-06-19 19:23:43.556','2020-06-19 19:23:43.556','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','d4ae00db-adbb-4036-ae66-9e5a6393bdc7')
+,('2fffd722-506d-472a-baf6-d8b825f657eb','Rate an application','2020-06-19 19:23:50.794','2020-06-19 19:23:50.794','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','4fbdbaf9-81ce-420c-a8dc-8c658c72b701')
+,('65d2d647-d10b-4ae7-9512-6098c9a10eb1','Pending Thumb Vote','2020-06-19 19:23:58.545','2020-06-19 19:23:58.545','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','12281157-6b88-48dc-98a2-e36beab1f52f')
+,('7cfd6d0d-5c38-4c6d-a019-5f521d88eb4b','My Reminders','2020-06-19 19:24:08.603','2020-06-19 19:24:08.603','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','0b6d1a27-6b64-4050-8aa6-e34bd457e321')
+,('3da8ba09-9fb5-4396-9a9e-05d1ace17fbd','To-dos Date','2020-06-19 19:24:23.786','2020-06-19 19:24:23.786','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','3aabd5d0-7401-48bd-81b3-b2c1e6e9e554')
+,('77e959f3-7a72-4457-aa98-78d1775371f0','Reminder Status','2020-06-19 19:24:35.530','2020-06-19 19:24:35.530','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','5a1819d7-a0a1-44a8-b26b-5bb68e1b6d5b')
+,('8d3a2058-a1e9-442b-8f32-c098033b6fca','Tags','2020-06-19 19:24:41.243','2020-06-19 19:24:41.243','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','15637dba-a885-494d-a68e-8582f43722da')
+,('f082da92-247e-4ff2-9a77-fb0464919a2c','Search','2020-06-19 19:24:45.640','2020-06-19 19:24:45.640','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','f5b40b51-c2ee-4e68-a9ce-e2735ca37394')
+,('f1d15578-7e24-4ec2-8c5c-f15b9547ba3b','Clear','2020-06-19 19:24:51.837','2020-06-19 19:24:51.837','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','27ded963-39a1-4280-bb98-0361fd608a91')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('398721fd-224a-4af1-97d5-9bbfb4f17ef6','Location','2020-06-19 19:24:57.584','2020-06-19 19:24:57.584','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','2457a1d0-ade3-44a0-82e1-a2a1991043be')
+,('ca2619f0-9233-4942-9a8a-d01730f74d71','Job Title','2020-06-19 19:25:05.034','2020-06-19 19:25:05.034','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','33d2bc63-f436-474c-8df7-b4755b8ed23a')
+,('ef709e19-0ab0-4e7f-930e-953af746682e','Application Step','2020-06-19 19:25:17.329','2020-06-19 19:25:17.329','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','45d632b0-c2b3-4e06-a810-a8aac72a6e69')
+,('83a93a7d-4d94-47c4-9c68-fd94e1393002','Bewerbungsschritt','2020-06-19 19:25:27.515','2020-06-19 19:25:27.515','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','45d632b0-c2b3-4e06-a810-a8aac72a6e69')
+,('c75248a6-53d9-4131-b1fe-cfae8b7d85cf','Jobtitel','2020-06-19 19:25:42.763','2020-06-19 19:25:42.763','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','33d2bc63-f436-474c-8df7-b4755b8ed23a')
+,('6527387a-5b28-4dde-9aa6-e786fe31aa97','Ort','2020-06-19 19:25:48.101','2020-06-19 19:25:48.101','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','2457a1d0-ade3-44a0-82e1-a2a1991043be')
+,('2f5314f3-3ef9-4247-9922-5f5bfa40e323','Löschen','2020-06-19 19:25:54.948','2020-06-19 19:25:54.948','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','27ded963-39a1-4280-bb98-0361fd608a91')
+,('18ac6343-db1e-471f-9db6-417515d45105','Suchen','2020-06-19 19:26:00.523','2020-06-19 19:26:00.523','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','f5b40b51-c2ee-4e68-a9ce-e2735ca37394')
+,('4081ca1e-98b8-4dcb-bea3-66a6a115095b','Tags','2020-06-19 19:26:05.008','2020-06-19 19:26:05.008','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','15637dba-a885-494d-a68e-8582f43722da')
+,('e7e595ca-8982-452e-8b4d-b1b66e30d2d6','Status der Erinnerung','2020-06-19 19:26:16.401','2020-06-19 19:26:16.401','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','5a1819d7-a0a1-44a8-b26b-5bb68e1b6d5b')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('b9bc9646-47f3-4f49-b12d-8d24ec673c41','To-dos Datum','2020-06-19 19:26:22.044','2020-06-19 19:26:22.044','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','3aabd5d0-7401-48bd-81b3-b2c1e6e9e554')
+,('76c2f1a3-e3f4-40a7-b5d9-276a29d575fe','Meine Erinnerungen','2020-06-19 19:26:29.018','2020-06-19 19:26:29.018','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','0b6d1a27-6b64-4050-8aa6-e34bd457e321')
+,('be5c81a1-cf73-43e3-8662-dc8af11f9ef6','Ausstehende Daumen-Bewertung','2020-06-19 19:26:41.891','2020-06-19 19:26:41.891','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','12281157-6b88-48dc-98a2-e36beab1f52f')
+,('3bbca74f-262a-406a-9ca9-124b36770c9c','Bewerbung bewerten','2020-06-19 19:26:48.652','2020-06-19 19:26:48.652','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','4fbdbaf9-81ce-420c-a8dc-8c658c72b701')
+,('9fa94c10-956d-4756-aadb-f5f6747a2356','Anstehendes Interview','2020-06-19 19:26:57.188','2020-06-19 19:26:57.188','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','d4ae00db-adbb-4036-ae66-9e5a6393bdc7')
+,('c16a76ee-efa4-4a9f-ae99-978ea849d8af','Bewerbungsstatus überprüfen','2020-06-19 19:27:05.565','2020-06-19 19:27:05.565','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','2651fd4c-7acc-4062-a8b1-e333ef5745ba')
+,('0ecd9cd2-6ea1-4032-9769-e11e6e8016e3','Interview überprüfen','2020-06-19 19:27:19.479','2020-06-19 19:27:19.479','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','0f325013-e2a9-49cd-9ec6-f73821b49c59')
+,('1ccf8690-ce28-463c-ad53-cb9a3610ff19','Potwierdź rozmowę kwalifikacyjną','2020-06-19 19:27:35.744','2020-06-19 19:27:35.744','0c12577b-360b-4843-a86e-39c129047b0b','0f325013-e2a9-49cd-9ec6-f73821b49c59')
+,('33c4ea9d-63dc-487f-9303-2a0e1d1eece9','Sprawdź status aplikacji','2020-06-19 19:27:43.817','2020-06-19 19:27:43.817','0c12577b-360b-4843-a86e-39c129047b0b','2651fd4c-7acc-4062-a8b1-e333ef5745ba')
+,('4711ebde-a645-44c8-bdc6-b9dbf8eace93','Nadchodząca rozmowa kwalifikacyjna','2020-06-19 19:28:03.649','2020-06-19 19:28:03.649','0c12577b-360b-4843-a86e-39c129047b0b','d4ae00db-adbb-4036-ae66-9e5a6393bdc7')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('5dc1119c-63f7-48c4-8427-0d73786763e5','Oceń aplikację','2020-06-19 19:28:13.245','2020-06-19 19:28:13.245','0c12577b-360b-4843-a86e-39c129047b0b','4fbdbaf9-81ce-420c-a8dc-8c658c72b701')
+,('a3925557-9bf7-4d38-a5a2-96fb90f451cf','Zaprosić na rozmowę?','2020-06-19 19:28:21.703','2020-06-19 19:28:21.703','0c12577b-360b-4843-a86e-39c129047b0b','12281157-6b88-48dc-98a2-e36beab1f52f')
+,('2b42dc38-46d6-470c-9a25-e312425d40dc','Moje przypomnienia','2020-06-19 19:28:40.594','2020-06-19 19:28:40.594','0c12577b-360b-4843-a86e-39c129047b0b','0b6d1a27-6b64-4050-8aa6-e34bd457e321')
+,('bfdfc03b-a82a-4e7d-a0ea-08b1634b07cb','Data przypomnienia','2020-06-19 19:28:46.356','2020-06-19 19:28:46.356','0c12577b-360b-4843-a86e-39c129047b0b','3aabd5d0-7401-48bd-81b3-b2c1e6e9e554')
+,('c82286a9-36de-429d-830f-8207c1f5f8db','Status przypomnienia','2020-06-19 19:28:53.014','2020-06-19 19:28:53.014','0c12577b-360b-4843-a86e-39c129047b0b','5a1819d7-a0a1-44a8-b26b-5bb68e1b6d5b')
+,('8d11b0b2-7894-4029-be40-f9557e9be17e','Tags','2020-06-19 19:28:57.529','2020-06-19 19:28:57.529','0c12577b-360b-4843-a86e-39c129047b0b','15637dba-a885-494d-a68e-8582f43722da')
+,('7a0ecd69-42cc-4ed3-a202-32102d79af48','Szukaj','2020-06-19 19:29:01.939','2020-06-19 19:29:01.939','0c12577b-360b-4843-a86e-39c129047b0b','f5b40b51-c2ee-4e68-a9ce-e2735ca37394')
+,('0463c0e5-468f-447b-91be-1713a5bc140b','Usuń','2020-06-19 19:29:06.719','2020-06-19 19:29:06.719','0c12577b-360b-4843-a86e-39c129047b0b','27ded963-39a1-4280-bb98-0361fd608a91')
+,('1b5d75d4-4aa9-4d4c-a411-e3757f59fec4','Lokalizacja','2020-06-19 19:29:13.292','2020-06-19 19:29:13.292','0c12577b-360b-4843-a86e-39c129047b0b','2457a1d0-ade3-44a0-82e1-a2a1991043be')
+,('20180a69-4385-4223-984b-1f27bf9a64b4','Nazwa stanowiska','2020-06-19 19:29:19.464','2020-06-19 19:29:19.464','0c12577b-360b-4843-a86e-39c129047b0b','33d2bc63-f436-474c-8df7-b4755b8ed23a')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('ad36518e-c9b4-466b-84ce-e54a692fd1e9','Krok aplikacji','2020-06-19 19:29:27.660','2020-06-19 19:29:27.660','0c12577b-360b-4843-a86e-39c129047b0b','45d632b0-c2b3-4e06-a810-a8aac72a6e69')
+,('a78cf1ed-74a4-430b-8c95-ab1a43469b9f','Confirmar entrevista','2020-06-19 19:29:41.898','2020-06-19 19:29:41.898','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','0f325013-e2a9-49cd-9ec6-f73821b49c59')
+,('8e4b3a0b-6d6e-4efb-bd01-3b1d32f7846a','Revisar el estado de la solicitud','2020-06-19 19:29:50.334','2020-06-19 19:29:50.334','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','2651fd4c-7acc-4062-a8b1-e333ef5745ba')
+,('0ad6c248-31f4-4ec2-8fea-a9bd0ebf6831','Próxima entrevista','2020-06-19 19:29:57.290','2020-06-19 19:29:57.290','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','d4ae00db-adbb-4036-ae66-9e5a6393bdc7')
+,('6c7cbbfa-9ece-4df8-aa79-37eca845d151','Calificar una solicitud','2020-06-19 19:30:05.857','2020-06-19 19:30:05.857','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','4fbdbaf9-81ce-420c-a8dc-8c658c72b701')
+,('cc32d747-f1d0-4864-96fd-589e9b08655b','Pendiente de voto con pulgar','2020-06-19 19:30:14.728','2020-06-19 19:30:14.728','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','12281157-6b88-48dc-98a2-e36beab1f52f')
+,('de84a990-a6ad-4176-892f-c3401df5645f','Mis recordatorios','2020-06-19 19:30:23.991','2020-06-19 19:30:23.991','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','0b6d1a27-6b64-4050-8aa6-e34bd457e321')
+,('5cb6f813-363a-44c6-9e9c-ea15153dde4e','Fecha del recordatorio','2020-06-19 19:30:32.227','2020-06-19 19:30:32.227','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','3aabd5d0-7401-48bd-81b3-b2c1e6e9e554')
+,('8707c0e8-75ec-4c7d-97d7-d78155849ceb','Estado del recordatorio','2020-06-19 19:30:38.165','2020-06-19 19:30:38.165','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','5a1819d7-a0a1-44a8-b26b-5bb68e1b6d5b')
+,('f6420b3d-3af6-4189-991a-66ff6c9eb253','Tags','2020-06-19 19:30:42.357','2020-06-19 19:30:42.357','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','15637dba-a885-494d-a68e-8582f43722da')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('0e93815a-f9bb-4470-b32f-00d23827c49e','Buscar','2020-06-19 19:30:46.055','2020-06-19 19:30:46.055','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','f5b40b51-c2ee-4e68-a9ce-e2735ca37394')
+,('7ede3b35-393c-4603-a8c9-c46348ba0bb4','Limpiar','2020-06-19 19:30:50.304','2020-06-19 19:30:50.304','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','27ded963-39a1-4280-bb98-0361fd608a91')
+,('a3710104-320b-4cfc-877c-d3cda5fdc32c','Ubicación','2020-06-19 19:31:00.260','2020-06-19 19:31:00.260','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','2457a1d0-ade3-44a0-82e1-a2a1991043be')
+,('bd4bd65e-0693-40b9-af42-baca05826283','Puesto de trabajo','2020-06-19 19:31:07.378','2020-06-19 19:31:07.378','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','33d2bc63-f436-474c-8df7-b4755b8ed23a')
+,('e49441dc-248e-436a-8e29-44c69c4115a1','Paso de solicitud','2020-06-19 19:31:14.492','2020-06-19 19:31:14.492','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','45d632b0-c2b3-4e06-a810-a8aac72a6e69')
+,('4d20f0e3-5ad4-46ca-bd5b-27fd7fb52fcf','Schedule','2020-06-19 20:02:15.419','2020-06-19 20:02:15.419','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','ab7e936b-24a2-49b7-a130-332a7a74f92b')
+,('33b0bee2-4c51-4f70-b9ff-6fed67898946','Termin erstellen','2020-06-19 20:02:22.902','2020-06-19 20:02:22.902','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','ab7e936b-24a2-49b7-a130-332a7a74f92b')
+,('3ce67ba4-fc87-4160-a9ca-981634c5ae83','Zaplanuj','2020-06-19 20:02:32.610','2020-06-19 20:02:32.610','0c12577b-360b-4843-a86e-39c129047b0b','ab7e936b-24a2-49b7-a130-332a7a74f92b')
+,('7ad6f81c-3e1e-4565-b7db-400169d26f94','Programar','2020-06-19 20:02:38.782','2020-06-19 20:02:38.782','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','ab7e936b-24a2-49b7-a130-332a7a74f92b')
+,('6ca19c10-1eee-4a6a-9cb8-19478b50aeee','Cancel','2020-06-19 20:31:00.155','2020-06-19 20:31:00.155','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','f2bf0598-268f-4663-8df8-675adf5ef5f5')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('fc994f4d-a10f-4870-9262-81648950f39a','Abbrechen','2020-06-19 20:31:27.672','2020-06-19 20:31:27.672','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','f2bf0598-268f-4663-8df8-675adf5ef5f5')
+,('3ee37f0f-9923-4b4c-ac4d-fbde059ee688','Anuluj','2020-06-19 20:31:37.745','2020-06-19 20:31:37.745','0c12577b-360b-4843-a86e-39c129047b0b','f2bf0598-268f-4663-8df8-675adf5ef5f5')
+,('344098a8-b2fc-4823-a796-706e34a6ff16','Cancelar','2020-06-19 20:31:48.963','2020-06-19 20:31:48.963','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','f2bf0598-268f-4663-8df8-675adf5ef5f5')
+,('97af3e8a-ae7f-4976-942a-5f2c7a879b6f','Cancel','2020-06-19 20:41:56.950','2020-06-19 20:41:56.950','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','3ec4814d-28df-46b3-a9f1-62f56de58012')
+,('3508636f-e506-4c75-a082-e7713f07c85f','Yes','2020-06-19 20:42:01.035','2020-06-19 20:42:01.035','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','5841b57d-9c63-4b8f-b50e-d46b3cfdafd8')
+,('6f6f8458-d566-407b-839c-1f15b820240a','Download','2020-06-19 20:42:05.163','2020-06-19 20:42:05.163','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','cea84374-0023-4610-b596-e128b645190a')
+,('ffeb9415-9507-4ff4-9834-783b784b0bb8','Abbrechen','2020-06-19 20:51:43.320','2020-06-19 20:51:43.320','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','3ec4814d-28df-46b3-a9f1-62f56de58012')
+,('f37460e1-5a81-4e09-ae42-53ae4da7fe3d','Ja','2020-06-19 20:51:47.070','2020-06-19 20:51:47.070','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','5841b57d-9c63-4b8f-b50e-d46b3cfdafd8')
+,('8e01fbeb-5b95-4578-8a2e-f8fdb1562fe8','Download','2020-06-19 20:51:52.791','2020-06-19 20:51:52.791','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','cea84374-0023-4610-b596-e128b645190a')
+,('4708fe63-eff9-42a1-a940-ec4c368a95d8','Pobierz','2020-06-19 20:52:02.497','2020-06-19 20:52:02.497','0c12577b-360b-4843-a86e-39c129047b0b','cea84374-0023-4610-b596-e128b645190a')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('635d729e-3dea-4ba6-89e2-b76128d67a32','Ja','2020-06-19 20:52:06.764','2020-06-19 20:52:06.764','0c12577b-360b-4843-a86e-39c129047b0b','5841b57d-9c63-4b8f-b50e-d46b3cfdafd8')
+,('69b36f85-644e-4645-ba66-b37117100c92','Abbrechen','2020-06-19 20:52:10.838','2020-06-19 20:52:10.838','0c12577b-360b-4843-a86e-39c129047b0b','3ec4814d-28df-46b3-a9f1-62f56de58012')
+,('c475ff59-196c-42e0-97ce-9979512a8df8','Descargar','2020-06-19 20:52:19.907','2020-06-19 20:52:19.907','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','cea84374-0023-4610-b596-e128b645190a')
+,('0907c915-a147-40af-ba29-87a6f9be320b','Sí','2020-06-19 20:52:24.082','2020-06-19 20:52:24.082','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','5841b57d-9c63-4b8f-b50e-d46b3cfdafd8')
+,('abd6fe0a-25f6-4076-a6ef-140f3f7521f1','Cancelar','2020-06-19 20:52:27.531','2020-06-19 20:52:27.531','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','3ec4814d-28df-46b3-a9f1-62f56de58012')
+,('154d6074-96d9-47b3-9dd2-6f6812b4025b','You cannot be logged in because you appear to be offline','2020-06-19 21:02:05.914','2020-06-19 21:02:05.914','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','5480afa9-0160-4a52-9fb2-5a31b1bbbe73')
+,('9509326f-432e-442a-b875-39aecf7298f4','Sign In','2020-06-19 21:02:26.535','2020-06-19 21:02:26.535','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','d0e16225-eeae-42aa-8fae-baf1029ed68a')
+,('d51770a6-a04b-42fc-9126-7fda7ee14088','The App for Recruiting Teams','2020-06-19 21:03:53.134','2020-06-19 21:03:53.134','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','0b2f8d2e-9021-458a-9a37-a9d7fd60a6ce')
+,('508f226c-e44f-4c3e-b35a-b7dad6f614da','Die App für Recruiting-Teams','2020-06-19 21:04:02.463','2020-06-19 21:04:02.463','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','0b2f8d2e-9021-458a-9a37-a9d7fd60a6ce')
+,('69ee1698-ff2a-44fc-aea3-7f867c7072e6','Anmeldung','2020-06-19 21:04:06.967','2020-06-19 21:04:06.967','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','d0e16225-eeae-42aa-8fae-baf1029ed68a')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('9969fb0c-676e-4113-bd66-33d4481b7379','Sie können nicht eingeloggt werden, da sie offline sind','2020-06-19 21:04:12.365','2020-06-19 21:04:12.365','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','5480afa9-0160-4a52-9fb2-5a31b1bbbe73')
+,('1f168f7f-473f-42e0-9723-4cbf989d2e9e','Aplikacja dla zespołów rekrutujących','2020-06-19 21:04:55.836','2020-06-19 21:04:55.836','0c12577b-360b-4843-a86e-39c129047b0b','0b2f8d2e-9021-458a-9a37-a9d7fd60a6ce')
+,('d2a053f9-ad0b-4af0-9bc3-e5505c763a4c','Logowanie','2020-06-19 21:05:02.497','2020-06-19 21:05:02.497','0c12577b-360b-4843-a86e-39c129047b0b','d0e16225-eeae-42aa-8fae-baf1029ed68a')
+,('f1b50845-cf55-4657-8159-8a3d1a517952','Nie można się zalogować, ponieważ jesteś w trybie offline','2020-06-19 21:05:09.386','2020-06-19 21:05:09.386','0c12577b-360b-4843-a86e-39c129047b0b','5480afa9-0160-4a52-9fb2-5a31b1bbbe73')
+,('2b3da318-95e0-4977-88eb-f2fa366e091b','Usted no puede estar conectado porque parece que no está conectado a internet','2020-06-19 21:11:02.658','2020-06-19 21:11:02.658','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','5480afa9-0160-4a52-9fb2-5a31b1bbbe73')
+,('d5bceaaa-9766-44b9-9d04-ae5e1f963215','Iniciar sesión','2020-06-19 21:11:12.705','2020-06-19 21:11:12.705','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','d0e16225-eeae-42aa-8fae-baf1029ed68a')
+,('49537054-df36-47e6-9c38-bcc1c2266df2','La aplicación para los equipos de reclutamiento','2020-06-19 21:11:24.599','2020-06-19 21:11:24.599','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','0b2f8d2e-9021-458a-9a37-a9d7fd60a6ce')
+,('e3bee758-0493-4767-bef6-03821137f46f','Sign out','2020-06-19 21:22:38.558','2020-06-19 21:22:38.558','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','ec1c470c-1c69-41ac-905f-9c3e21ec87de')
+,('a3f14831-4ca1-4723-8b89-f28a2f29466b','Abmelden','2020-06-19 21:22:48.444','2020-06-19 21:22:48.444','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','ec1c470c-1c69-41ac-905f-9c3e21ec87de')
+,('8ce2c573-67b8-427f-a608-01fa8027dfd1','Wyloguj się','2020-06-19 21:23:01.863','2020-06-19 21:23:01.863','0c12577b-360b-4843-a86e-39c129047b0b','ec1c470c-1c69-41ac-905f-9c3e21ec87de')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('7d3654f9-60f3-497d-8f99-433aad14e8d8','Cerrar sesión','2020-06-19 21:23:14.665','2020-06-19 21:23:14.665','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','ec1c470c-1c69-41ac-905f-9c3e21ec87de')
+,('04ba9bfb-7f38-4bed-a308-bc7584934ce7','{{count}} Ratings','2020-06-19 21:36:36.809','2020-06-19 21:36:36.809','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','9fea9efa-331b-4103-b350-fcf7e04ee5c1')
+,('ccaca609-6566-4973-b3de-4bd0c20f1b89','Would Not Hire this candidate','2020-06-19 21:40:27.948','2020-06-19 21:40:27.948','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','535ed796-d734-4f72-ae84-a7ca072afbb7')
+,('b6bb310d-1b75-4fb7-b05c-0e852d3c79ea','Would Hire this candidate','2020-06-19 21:40:48.899','2020-06-19 21:40:48.899','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','d2fa10e9-6ae4-4526-9285-56c0affd6af6')
+,('54f23838-22b1-4ee9-9b0c-b04db81c5bd8','Not Rated','2020-06-19 21:40:55.891','2020-06-19 21:40:55.891','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','fceb1824-f91c-4f90-9ad0-2540538468e3')
+,('68969de9-88b5-4e13-8f88-7bbaa1e4db7f','Is undecided','2020-06-19 21:41:02.197','2020-06-19 21:41:02.197','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','fc1df409-e0c0-45bc-a0fd-cad3f182341c')
+,('c996e28f-0249-4e99-bfdc-cabf808019b7','Team Ratings','2020-06-19 21:41:08.522','2020-06-19 21:41:08.522','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','462bb112-829a-4b92-81e3-6ad5c43fa73a')
+,('c01a12f0-a177-49fc-a237-0e64338a6a19','No Rating','2020-06-19 21:46:25.925','2020-06-19 21:46:25.925','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','960e66bf-b8da-45a8-ac38-ffdc769cc929')
+,('b58237e6-7463-44a5-8d6d-9b2ce46b4c94','{{count}} Bewertungen','2020-06-19 21:47:11.556','2020-06-19 21:47:11.556','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','9fea9efa-331b-4103-b350-fcf7e04ee5c1')
+,('ebc12df5-6e99-4986-89d5-7bbd563e607f','1 Bewertung','2020-06-19 21:46:59.993','2020-06-19 21:47:28.499','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','82b2beee-627f-4218-b137-46d607eebe13')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('e60f4f3f-d358-4a51-83b6-03847e4ddb14','1 Rating','2020-06-19 21:36:53.273','2020-06-19 21:47:37.787','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','82b2beee-627f-4218-b137-46d607eebe13')
+,('9b5ba67c-272e-497a-a373-0d4a5e8bc20b','Keine Bewertung','2020-06-19 21:48:33.369','2020-06-19 21:48:33.369','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','960e66bf-b8da-45a8-ac38-ffdc769cc929')
+,('2af2ba61-44ec-4525-ba5d-f0e385ebac13','Würde den Bewerber nicht einstellen','2020-06-19 21:48:47.484','2020-06-19 21:48:47.484','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','535ed796-d734-4f72-ae84-a7ca072afbb7')
+,('251f041a-7087-49de-87ce-7aaadbe59415','Würde den Bewerber einstellen','2020-06-19 21:48:56.158','2020-06-19 21:48:56.158','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','d2fa10e9-6ae4-4526-9285-56c0affd6af6')
+,('05e76c8c-8ad9-47e7-9e72-c3c7e84aaaaa','Nicht Bewertet','2020-06-19 21:49:09.301','2020-06-19 21:49:09.301','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','fceb1824-f91c-4f90-9ad0-2540538468e3')
+,('69e17f12-e45d-41c8-83bf-6123d6650ac3','Nicht entschieden','2020-06-19 21:49:17.142','2020-06-19 21:49:17.142','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','fc1df409-e0c0-45bc-a0fd-cad3f182341c')
+,('1a855c03-7097-4558-9c8b-7cf53825a406','Teambewertung','2020-06-19 21:49:22.939','2020-06-19 21:49:22.939','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','462bb112-829a-4b92-81e3-6ad5c43fa73a')
+,('1cf64d4b-793b-495e-83a6-7174a9a20bd0','1 Ocena','2020-06-19 21:53:50.862','2020-06-19 21:53:50.862','0c12577b-360b-4843-a86e-39c129047b0b','82b2beee-627f-4218-b137-46d607eebe13')
+,('90117aa6-75f6-4f01-bf23-ebf553226638','{{count}} Oceny','2020-06-19 21:54:16.636','2020-06-19 21:54:16.636','0c12577b-360b-4843-a86e-39c129047b0b','9fea9efa-331b-4103-b350-fcf7e04ee5c1')
+,('493236e0-1486-4417-8d25-f1a5c4877ec3','Nie zatrudnił bym tego kandydata','2020-06-19 21:54:29.085','2020-06-19 21:54:29.085','0c12577b-360b-4843-a86e-39c129047b0b','535ed796-d734-4f72-ae84-a7ca072afbb7')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('ae8f7b2b-8895-4c18-aa6a-f048a38c07bb','Nie Ocena','2020-06-19 21:53:38.691','2020-06-19 21:54:37.835','0c12577b-360b-4843-a86e-39c129047b0b','960e66bf-b8da-45a8-ac38-ffdc769cc929')
+,('77db4046-8365-4c4e-b26c-d2cccc71a222','Zatrudnił bym tego kandydata','2020-06-19 21:54:53.796','2020-06-19 21:54:53.796','0c12577b-360b-4843-a86e-39c129047b0b','d2fa10e9-6ae4-4526-9285-56c0affd6af6')
+,('0a846fab-d98c-480e-8695-dcf0fd3d7d2c','Nie oceniono','2020-06-19 21:55:06.163','2020-06-19 21:55:06.163','0c12577b-360b-4843-a86e-39c129047b0b','fceb1824-f91c-4f90-9ad0-2540538468e3')
+,('67d27a24-01b3-4f4e-ad5e-2601a64b21eb','Jest niezdecydowany','2020-06-19 21:55:15.486','2020-06-19 21:55:15.486','0c12577b-360b-4843-a86e-39c129047b0b','fc1df409-e0c0-45bc-a0fd-cad3f182341c')
+,('d5ffb1ef-6bd1-4d07-bd59-c9c1714783db','Oceny zespołowe','2020-06-19 21:55:23.308','2020-06-19 21:55:23.308','0c12577b-360b-4843-a86e-39c129047b0b','462bb112-829a-4b92-81e3-6ad5c43fa73a')
+,('12c9d470-871c-421f-a874-dccb4985dd8d','No hay clasificación','2020-06-19 21:55:54.621','2020-06-19 21:55:54.621','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','960e66bf-b8da-45a8-ac38-ffdc769cc929')
+,('cf556bd2-a723-4083-88d3-82da5920fb39','1 Calificación','2020-06-19 21:56:04.374','2020-06-19 21:56:04.374','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','82b2beee-627f-4218-b137-46d607eebe13')
+,('55e449d7-545b-42d3-bef2-971de8949202','{{count}} Calificaciones','2020-06-19 21:56:13.969','2020-06-19 21:56:13.969','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','9fea9efa-331b-4103-b350-fcf7e04ee5c1')
+,('bf9bfae7-e4ef-4ab2-829f-c901236d0dcb','No contrataría a este candidato','2020-06-19 21:56:22.591','2020-06-19 21:56:22.591','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','535ed796-d734-4f72-ae84-a7ca072afbb7')
+,('b71ac341-3e8c-4dad-bc21-0013f76c7a42','Contrataría a este candidato','2020-06-19 21:56:30.550','2020-06-19 21:56:30.550','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','d2fa10e9-6ae4-4526-9285-56c0affd6af6')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('10344ccd-7465-4100-8f03-74c2ac0766cc','No evaluado','2020-06-19 21:56:39.981','2020-06-19 21:56:39.981','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','fceb1824-f91c-4f90-9ad0-2540538468e3')
+,('63e3d2ae-c094-4072-ba04-9e5e4d1ab3ea','Indeciso','2020-06-19 21:56:48.354','2020-06-19 21:56:48.354','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','fc1df409-e0c0-45bc-a0fd-cad3f182341c')
+,('bc793e3d-6c37-4f01-a632-ad54cbe10bfb','Calificaciones del equipo','2020-06-19 21:56:56.063','2020-06-19 21:56:56.063','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','462bb112-829a-4b92-81e3-6ad5c43fa73a')
+,('3c688dda-8d22-4d51-8bc3-0588950819d4','No Thumb Vote','2020-06-20 13:37:10.304','2020-06-20 13:37:10.304','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','96b9532d-d2a5-4741-af32-f449a1233875')
+,('2601be1b-ea56-45ac-857a-88bb1d2764a7','Votes','2020-06-20 13:37:16.798','2020-06-20 13:37:16.798','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','2577d05c-8eed-41b8-b43d-b96595eb42c0')
+,('a35b1544-7b37-44e5-99e2-a9319ed07b8e','Abstimmungen','2020-06-20 13:37:24.096','2020-06-20 13:37:24.096','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','2577d05c-8eed-41b8-b43d-b96595eb42c0')
+,('dff0d6a4-52be-4d64-a37f-0588d37eb1f7','Keine Daumen-Bewertung','2020-06-20 13:37:33.998','2020-06-20 13:37:33.998','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','96b9532d-d2a5-4741-af32-f449a1233875')
+,('47c49746-84e1-4949-958b-26b3b9c490ff','Głosowania','2020-06-20 13:38:01.031','2020-06-20 13:38:01.031','0c12577b-360b-4843-a86e-39c129047b0b','2577d05c-8eed-41b8-b43d-b96595eb42c0')
+,('94cbbcab-6d60-49b4-a29c-11c15e8f3856','Brak głosowania przez podniesienie kciuka','2020-06-20 13:38:13.149','2020-06-20 13:38:13.149','0c12577b-360b-4843-a86e-39c129047b0b','96b9532d-d2a5-4741-af32-f449a1233875')
+,('e7cf8040-51fd-4d82-af8a-68e42e8b16db','Votos','2020-06-20 13:38:21.904','2020-06-20 13:38:21.904','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','2577d05c-8eed-41b8-b43d-b96595eb42c0')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('5da1fdc9-848d-4bdd-acd8-b572b0f08d57','Sin voto con pulgar','2020-06-20 13:40:24.151','2020-06-20 13:40:24.151','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','96b9532d-d2a5-4741-af32-f449a1233875')
+,('0a664d7b-2423-427d-8030-b831c9164425','More','2020-06-20 13:43:56.127','2020-06-20 13:43:56.127','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','a8f723a9-572d-4b19-8469-b91be2757d81')
+,('68e418dd-96d5-4073-af69-9b5ef76a7553','Second
+Chance','2020-06-20 13:44:07.474','2020-06-20 13:44:07.474','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','13a882fa-abfd-488f-acdb-f9f8d1694b09')
+,('656fdfc9-d1fe-4d4c-90f0-e92d084b22d0','Rejection
+Bin','2020-06-20 13:44:19.456','2020-06-20 13:44:19.456','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','a7e28ad2-136f-404f-9b03-96712f85cbd6')
+,('a18f967c-f5c0-4bbb-a670-88b8b6888e52','Change
+Status','2020-06-20 13:44:29.794','2020-06-20 13:44:29.794','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','eec4b901-5874-4665-bc51-2222c3b60922')
+,('082049a7-b0cc-4796-a5a8-d5f9ce4b8f37','Mehr','2020-06-20 13:44:53.499','2020-06-20 13:44:53.499','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','a8f723a9-572d-4b19-8469-b91be2757d81')
+,('cfe0690e-814e-48ae-9cf5-afa187f8eafc','Zweite
+Chance','2020-06-20 13:45:02.197','2020-06-20 13:45:02.197','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','13a882fa-abfd-488f-acdb-f9f8d1694b09')
+,('b1179fb8-5931-4627-bd5f-ab247a7dfe71','Absagekorb','2020-06-20 13:45:11.027','2020-06-20 13:45:11.027','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','a7e28ad2-136f-404f-9b03-96712f85cbd6')
+,('d7db37fb-ac27-42d1-8b1a-f7e464d07c29','Status
+verändern','2020-06-20 13:45:21.503','2020-06-20 13:45:21.503','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','eec4b901-5874-4665-bc51-2222c3b60922')
+,('782e4b0f-d515-4b26-a886-54e875d26517','Więcej','2020-06-20 13:45:29.520','2020-06-20 13:45:29.520','0c12577b-360b-4843-a86e-39c129047b0b','a8f723a9-572d-4b19-8469-b91be2757d81')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('8c2af27c-b50d-4fcb-8dcb-8debde5c5925','Druga
+szansa','2020-06-20 13:45:41.281','2020-06-20 13:45:41.281','0c12577b-360b-4843-a86e-39c129047b0b','13a882fa-abfd-488f-acdb-f9f8d1694b09')
+,('1202ed5a-f674-4a01-ba5c-54451eec000f','Przenieś
+do kosza','2020-06-20 13:46:48.113','2020-06-20 13:46:48.113','0c12577b-360b-4843-a86e-39c129047b0b','a7e28ad2-136f-404f-9b03-96712f85cbd6')
+,('c6ad8c57-8751-4382-b894-73b22c85ae81','Zmień
+status','2020-06-20 13:47:03.170','2020-06-20 13:47:03.170','0c12577b-360b-4843-a86e-39c129047b0b','eec4b901-5874-4665-bc51-2222c3b60922')
+,('e8292da8-54fc-42c9-b2a6-c6c0017b6551','Más','2020-06-20 13:47:15.263','2020-06-20 13:47:15.263','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','a8f723a9-572d-4b19-8469-b91be2757d81')
+,('91272035-6e7f-449c-8114-44b9a0732ca8','Segunda
+oportunidad','2020-06-20 13:47:23.616','2020-06-20 13:47:23.616','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','13a882fa-abfd-488f-acdb-f9f8d1694b09')
+,('21898644-cdcb-4a59-a683-17aa61106506','Papelera
+de rechazos','2020-06-20 13:47:34.395','2020-06-20 13:47:34.395','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','a7e28ad2-136f-404f-9b03-96712f85cbd6')
+,('1c69f351-4473-4cfb-b4b0-90e918c5aa2f','Cambio
+de estado','2020-06-20 13:47:44.336','2020-06-20 13:47:44.336','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','eec4b901-5874-4665-bc51-2222c3b60922')
+,('bbc4df05-abdc-4d99-a624-b99378916c8e','Try again','2020-06-20 13:50:15.474','2020-06-20 13:50:15.474','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','36ca5931-682b-4700-b808-96fdd27c453f')
+,('7bc652c7-8af4-486b-a9d5-05799a9aa730','Oooops! Something went wrong','2020-06-20 13:50:25.318','2020-06-20 13:50:25.318','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','6ee051ea-8acb-4a90-8c3a-6b586e5de147')
+,('e6800e12-f789-4a5b-a6d4-2f556fa4bda0','Nochmal versuchen','2020-06-20 13:50:33.739','2020-06-20 13:50:33.739','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','36ca5931-682b-4700-b808-96fdd27c453f')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('6f1b07dc-7a4e-4e5a-914a-6547be1af16b','Hoppla, das sollte nicht passieren','2020-06-20 13:50:38.531','2020-06-20 13:50:38.531','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','6ee051ea-8acb-4a90-8c3a-6b586e5de147')
+,('72c69d5e-fda4-48a0-80fa-89a1e6f7b4e3','Spróbuj ponownie','2020-06-20 13:50:49.896','2020-06-20 13:50:49.896','0c12577b-360b-4843-a86e-39c129047b0b','36ca5931-682b-4700-b808-96fdd27c453f')
+,('2ce0e616-4d38-47c4-b66f-c872752106e3','Uuups! Coś poszło nie tak','2020-06-20 13:50:55.992','2020-06-20 13:50:55.992','0c12577b-360b-4843-a86e-39c129047b0b','6ee051ea-8acb-4a90-8c3a-6b586e5de147')
+,('822dbb1c-c67e-439d-bb41-43464524c443','Prueba de nuevo','2020-06-20 13:51:04.448','2020-06-20 13:51:04.448','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','36ca5931-682b-4700-b808-96fdd27c453f')
+,('b772ca8b-bd22-445e-b1cf-964aa133a8a9','Oh! algo estuvo mal','2020-06-20 13:51:08.837','2020-06-20 13:51:08.837','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','6ee051ea-8acb-4a90-8c3a-6b586e5de147')
+,('cc740b0a-9d58-4fb3-91cf-fd7af1f14b93','Error occurred','2020-06-20 13:55:06.399','2020-06-20 13:55:06.399','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','1ee9f9dd-91e0-4ad4-8aba-2a3e87387718')
+,('cbcb96d1-8062-4bd0-9094-3baeed672757','Fehler aufgetreten','2020-06-20 13:55:12.271','2020-06-20 13:55:12.271','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','1ee9f9dd-91e0-4ad4-8aba-2a3e87387718')
+,('f21bc2d1-eeba-412d-a43f-4fa11e8a4282','Wystąpił błąd','2020-06-20 13:55:49.088','2020-06-20 13:55:49.088','0c12577b-360b-4843-a86e-39c129047b0b','1ee9f9dd-91e0-4ad4-8aba-2a3e87387718')
+,('2dfad21b-4606-42de-8de1-2b9f68044467','Se ha producido un error','2020-06-20 13:55:57.422','2020-06-20 13:55:57.422','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','1ee9f9dd-91e0-4ad4-8aba-2a3e87387718')
+,('e5debfa7-16cc-486e-bbc0-01f397e2a7d9','Clear all','2020-06-20 13:56:37.345','2020-06-20 13:56:37.345','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','2bb54870-43de-4c96-915a-9395bc505696')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('8a2a5d58-7018-4c63-8959-59c169d4c031','Alle löschen','2020-06-20 13:56:47.075','2020-06-20 13:56:47.075','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','2bb54870-43de-4c96-915a-9395bc505696')
+,('7c71a820-144e-4693-b498-cf35da1ff77b','Wyczyść wszystko','2020-06-20 13:56:56.309','2020-06-20 13:56:56.309','0c12577b-360b-4843-a86e-39c129047b0b','2bb54870-43de-4c96-915a-9395bc505696')
+,('7c0fd558-1989-4cb5-806a-378b6cea3c46','Limpiar todo','2020-06-20 13:57:02.540','2020-06-20 13:57:02.540','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','2bb54870-43de-4c96-915a-9395bc505696')
+,('473bc60b-f589-4294-a187-5214aaab0c08','Please check your internet connection and try again.','2020-06-20 13:59:18.691','2020-06-20 13:59:18.691','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','453a88c4-8e2b-4233-a44e-c180414febb1')
+,('e4303bff-21dd-4726-9ac1-fe30db8775f7','You are currently offline','2020-06-20 13:59:23.257','2020-06-20 13:59:23.257','c0285db9-c7a5-4fbf-86c1-82b604dd1bfa','351786ab-2e89-4be7-903a-afa9c08c388a')
+,('535a7c60-b5a9-4686-9dcf-b3d9a2e60ab2','Sie sind momentan offline','2020-06-20 13:59:29.151','2020-06-20 13:59:29.151','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','351786ab-2e89-4be7-903a-afa9c08c388a')
+,('521a53fa-eae7-486c-b113-de2df46bd9f3','Bitte überprüfen Sie Ihre Internetverbindung und versuchen Sie es erneut.','2020-06-20 13:59:36.446','2020-06-20 13:59:36.446','ab0dff07-2621-4aab-a7d7-4daa7c44ba3d','453a88c4-8e2b-4233-a44e-c180414febb1')
+,('76958842-6b03-4b3d-9801-9bd261413540','Jesteś obecnie offline','2020-06-20 13:59:44.364','2020-06-20 13:59:44.364','0c12577b-360b-4843-a86e-39c129047b0b','351786ab-2e89-4be7-903a-afa9c08c388a')
+,('330ea946-a943-4411-ada3-c9bd5664952d','Sprawdź połączenie z internetem i spróbuj ponownie.','2020-06-20 13:59:49.764','2020-06-20 13:59:49.764','0c12577b-360b-4843-a86e-39c129047b0b','453a88c4-8e2b-4233-a44e-c180414febb1')
+,('f478f251-fde7-47bc-a641-497091e15711','Actualmente estás desconectado','2020-06-20 13:59:57.275','2020-06-20 13:59:57.275','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','351786ab-2e89-4be7-903a-afa9c08c388a')
+;
+INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
+('94d7cf53-f7ca-4871-85d1-9351ce03a4f5','Verifica tu conexión a internet e inténtalo nuevamente.','2020-06-20 14:00:02.470','2020-06-20 14:00:02.470','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','453a88c4-8e2b-4233-a44e-c180414febb1')
+;INSERT INTO public."user" (id,"firstName","lastName",email,"password","createdAt","updatedAt") VALUES 
 ('57ca3cb0-37db-4570-bba9-e861d10dc3d5','Bruno','Borges','bruno.borges@softgarden.de','$2b$12$.0afM4qrddobVF4dsimy3eFQzDi6/RkSWiN3aPYpfZQy.WFDRg4LC','2020-06-10 15:17:06.980','2020-06-10 15:17:06.980')
 ;

@@ -4,13 +4,14 @@ import isPublic from "./isPublic";
 
 const permissions = shield({
   Query: {
-    "*": isAuthenticated,
+    "*": isPublic,
     login: isPublic,
     i18next: isPublic,
     project: isPublic,
+    test: isPublic,
   },
   Mutation: {
-    "*": isAuthenticated,
+    "*": isPublic,
     upsertUser: isPublic,
     resetPassword: isPublic,
     forgotPassword: isPublic,

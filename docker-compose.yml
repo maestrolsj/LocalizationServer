@@ -8,11 +8,19 @@ services:
     env_file:
       - ./.env
     ports:
+<<<<<<< HEAD
       - "4000:4000"
     networks:
       - our_net
     expose:
       - "4000"
+=======
+      - "${PORT}:${PORT}"
+    networks:
+      - our_net
+    expose:
+      - "${PORT}"
+>>>>>>> cf708d49aaa4d46571d1175407fc4a30eb1341ee
 
   translation-tool-db:
     image: postgres
@@ -25,8 +33,13 @@ services:
       - /app/src/db/seed/postgres
     environment:
       POSTGRES_USER: "postgres"
+<<<<<<< HEAD
       POSTGRES_PASSWORD: "gkseorb12"
       POSTGRES_DB: "public"
+=======
+      POSTGRES_PASSWORD: "bluebird2011"
+      POSTGRES_DB: "LocalizationServer"
+>>>>>>> cf708d49aaa4d46571d1175407fc4a30eb1341ee
       PGDATA: "/app/src/db/seed/postgres"
     networks:
       - our_net

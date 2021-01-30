@@ -14,9 +14,11 @@ export default gql`
     key(where: KeyWhereInput!): Key!
     translation(where: TranslationWhereInput!): Translation!
     i18next(key: String!): JSON
+    test: String!
   }
 
   type Mutation {
+    deleteProject(data: DeleteProjectDataInput!): Project
     upsertTranslation(
       data: UpsertTranslationDataInput!
       where: UpsertTranslationWhereInput

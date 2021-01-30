@@ -1,4 +1,7 @@
 export type Maybe<T> = T | null;
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -25,6 +28,7 @@ export type Query = {
   key: Key;
   translation: Translation;
   i18next?: Maybe<Scalars['JSON']>;
+  test: Scalars['String'];
 };
 
 
@@ -83,6 +87,7 @@ export type Mutation = {
   upsertProject?: Maybe<Project>;
   upsertScreen?: Maybe<Project>;
   resetPassword?: Maybe<AuthenticationPayload>;
+  forgotPassword?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -130,6 +135,11 @@ export type MutationUpsertScreenArgs = {
 export type MutationResetPasswordArgs = {
   password: Scalars['String'];
   token: Scalars['String'];
+};
+
+
+export type MutationForgotPasswordArgs = {
+  email: Scalars['String'];
 };
 
 export type ProjectsWhereInput = {
@@ -300,7 +310,7 @@ export type User = {
   updatedAt: Scalars['DateTime'];
 };
 
-export type HomePage_ProjectsQueryVariables = {};
+export type HomePage_ProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type HomePage_ProjectsQuery = (
@@ -311,9 +321,9 @@ export type HomePage_ProjectsQuery = (
   )> }
 );
 
-export type KeyFormModal_KeyQueryVariables = {
+export type KeyFormModal_KeyQueryVariables = Exact<{
   id: Scalars['ID'];
-};
+}>;
 
 
 export type KeyFormModal_KeyQuery = (
@@ -324,12 +334,12 @@ export type KeyFormModal_KeyQuery = (
   ) }
 );
 
-export type KeyFormModal_UpsertKeyMutationVariables = {
+export type KeyFormModal_UpsertKeyMutationVariables = Exact<{
   id?: Maybe<Scalars['ID']>;
   name: Scalars['String'];
   plural: Scalars['Boolean'];
   screenId: Scalars['ID'];
-};
+}>;
 
 
 export type KeyFormModal_UpsertKeyMutation = (
@@ -340,9 +350,9 @@ export type KeyFormModal_UpsertKeyMutation = (
   )> }
 );
 
-export type LocaleFormModal_LocaleQueryVariables = {
+export type LocaleFormModal_LocaleQueryVariables = Exact<{
   id: Scalars['ID'];
-};
+}>;
 
 
 export type LocaleFormModal_LocaleQuery = (
@@ -353,13 +363,13 @@ export type LocaleFormModal_LocaleQuery = (
   ) }
 );
 
-export type LocaleFormModal_UpsertLocaleMutationVariables = {
+export type LocaleFormModal_UpsertLocaleMutationVariables = Exact<{
   id?: Maybe<Scalars['ID']>;
   name: Scalars['String'];
   nativeName: Scalars['String'];
   code: Scalars['String'];
   projectId: Scalars['ID'];
-};
+}>;
 
 
 export type LocaleFormModal_UpsertLocaleMutation = (
@@ -370,9 +380,9 @@ export type LocaleFormModal_UpsertLocaleMutation = (
   )> }
 );
 
-export type ProjectFormModal_ProjectQueryVariables = {
+export type ProjectFormModal_ProjectQueryVariables = Exact<{
   id: Scalars['ID'];
-};
+}>;
 
 
 export type ProjectFormModal_ProjectQuery = (
@@ -383,12 +393,12 @@ export type ProjectFormModal_ProjectQuery = (
   ) }
 );
 
-export type ProjectFormModal_UpsertProjectMutationVariables = {
+export type ProjectFormModal_UpsertProjectMutationVariables = Exact<{
   id?: Maybe<Scalars['ID']>;
   key: Scalars['String'];
   name: Scalars['String'];
   description: Scalars['String'];
-};
+}>;
 
 
 export type ProjectFormModal_UpsertProjectMutation = (
@@ -399,9 +409,9 @@ export type ProjectFormModal_UpsertProjectMutation = (
   )> }
 );
 
-export type Screen_ProjectQueryVariables = {
+export type Screen_ProjectQueryVariables = Exact<{
   id: Scalars['ID'];
-};
+}>;
 
 
 export type Screen_ProjectQuery = (
@@ -419,9 +429,9 @@ export type Screen_ProjectQuery = (
   ) }
 );
 
-export type ScreenFormModal_ScreenQueryVariables = {
+export type ScreenFormModal_ScreenQueryVariables = Exact<{
   id: Scalars['ID'];
-};
+}>;
 
 
 export type ScreenFormModal_ScreenQuery = (
@@ -432,13 +442,13 @@ export type ScreenFormModal_ScreenQuery = (
   ) }
 );
 
-export type ScreenFormModal_UpsertScreenMutationVariables = {
+export type ScreenFormModal_UpsertScreenMutationVariables = Exact<{
   id?: Maybe<Scalars['ID']>;
   key: Scalars['String'];
   name: Scalars['String'];
   description: Scalars['String'];
   projectId: Scalars['ID'];
-};
+}>;
 
 
 export type ScreenFormModal_UpsertScreenMutation = (
@@ -449,9 +459,9 @@ export type ScreenFormModal_UpsertScreenMutation = (
   )> }
 );
 
-export type TranslatePage_ProjectQueryVariables = {
+export type TranslatePage_ProjectQueryVariables = Exact<{
   id: Scalars['ID'];
-};
+}>;
 
 
 export type TranslatePage_ProjectQuery = (
@@ -465,9 +475,9 @@ export type TranslatePage_ProjectQuery = (
   ) }
 );
 
-export type TranslatePage_ScreenQueryVariables = {
+export type TranslatePage_ScreenQueryVariables = Exact<{
   id: Scalars['ID'];
-};
+}>;
 
 
 export type TranslatePage_ScreenQuery = (
@@ -490,9 +500,9 @@ export type TranslatePage_ScreenQuery = (
   ) }
 );
 
-export type TranslatePage_DeleteKeyMutationVariables = {
+export type TranslatePage_DeleteKeyMutationVariables = Exact<{
   id: Scalars['ID'];
-};
+}>;
 
 
 export type TranslatePage_DeleteKeyMutation = (
@@ -500,9 +510,9 @@ export type TranslatePage_DeleteKeyMutation = (
   & Pick<Mutation, 'deleteKey'>
 );
 
-export type TranslationFormModal_TranslationQueryVariables = {
+export type TranslationFormModal_TranslationQueryVariables = Exact<{
   id: Scalars['ID'];
-};
+}>;
 
 
 export type TranslationFormModal_TranslationQuery = (
@@ -513,12 +523,12 @@ export type TranslationFormModal_TranslationQuery = (
   ) }
 );
 
-export type TranslationFormModal_UpsertTranslationMutationVariables = {
+export type TranslationFormModal_UpsertTranslationMutationVariables = Exact<{
   id?: Maybe<Scalars['ID']>;
   value: Scalars['String'];
   keyId: Scalars['ID'];
   localeId: Scalars['ID'];
-};
+}>;
 
 
 export type TranslationFormModal_UpsertTranslationMutation = (
@@ -529,10 +539,10 @@ export type TranslationFormModal_UpsertTranslationMutation = (
   )> }
 );
 
-export type LoginPage_LoginQueryVariables = {
+export type LoginPage_LoginQueryVariables = Exact<{
   email: Scalars['String'];
   password: Scalars['String'];
-};
+}>;
 
 
 export type LoginPage_LoginQuery = (
@@ -547,10 +557,10 @@ export type LoginPage_LoginQuery = (
   )> }
 );
 
-export type RedefinePasswordPage_ResetPasswordMutationVariables = {
+export type RedefinePasswordPage_ResetPasswordMutationVariables = Exact<{
   password: Scalars['String'];
   token: Scalars['String'];
-};
+}>;
 
 
 export type RedefinePasswordPage_ResetPasswordMutation = (
@@ -565,11 +575,11 @@ export type RedefinePasswordPage_ResetPasswordMutation = (
   )> }
 );
 
-export type RegisterPage_UpsertUserMutationVariables = {
+export type RegisterPage_UpsertUserMutationVariables = Exact<{
   firstName: Scalars['String'];
   lastName: Scalars['String'];
   email: Scalars['String'];
-};
+}>;
 
 
 export type RegisterPage_UpsertUserMutation = (

@@ -49,7 +49,9 @@
                     "ofType": null
                   }
                 },
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               },
               {
                 "name": "password",
@@ -63,7 +65,9 @@
                     "ofType": null
                   }
                 },
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {
@@ -86,7 +90,9 @@
                   "name": "ProjectsWhereInput",
                   "ofType": null
                 },
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {
@@ -125,7 +131,9 @@
                     "ofType": null
                   }
                 },
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {
@@ -152,7 +160,9 @@
                   "name": "ScreensWhereInput",
                   "ofType": null
                 },
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {
@@ -191,7 +201,9 @@
                     "ofType": null
                   }
                 },
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {
@@ -222,7 +234,9 @@
                     "ofType": null
                   }
                 },
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {
@@ -253,7 +267,9 @@
                     "ofType": null
                   }
                 },
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {
@@ -284,7 +300,9 @@
                     "ofType": null
                   }
                 },
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {
@@ -315,13 +333,31 @@
                     "ofType": null
                   }
                 },
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {
               "kind": "SCALAR",
               "name": "JSON",
               "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "test",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -348,6 +384,35 @@
         "description": null,
         "fields": [
           {
+            "name": "deleteProject",
+            "description": null,
+            "args": [
+              {
+                "name": "data",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "DeleteProjectDataInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Project",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "upsertTranslation",
             "description": null,
             "args": [
@@ -363,7 +428,9 @@
                     "ofType": null
                   }
                 },
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               },
               {
                 "name": "where",
@@ -373,7 +440,9 @@
                   "name": "UpsertTranslationWhereInput",
                   "ofType": null
                 },
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {
@@ -400,7 +469,9 @@
                     "ofType": null
                   }
                 },
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               },
               {
                 "name": "where",
@@ -410,7 +481,9 @@
                   "name": "UpsertKeyWhereInput",
                   "ofType": null
                 },
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {
@@ -437,7 +510,9 @@
                     "ofType": null
                   }
                 },
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {
@@ -464,7 +539,9 @@
                     "ofType": null
                   }
                 },
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               },
               {
                 "name": "where",
@@ -474,7 +551,9 @@
                   "name": "UpsertLocaleWhereInput",
                   "ofType": null
                 },
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {
@@ -501,7 +580,9 @@
                     "ofType": null
                   }
                 },
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               },
               {
                 "name": "where",
@@ -511,7 +592,9 @@
                   "name": "UpsertUserWhereInput",
                   "ofType": null
                 },
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {
@@ -538,7 +621,9 @@
                     "ofType": null
                   }
                 },
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               },
               {
                 "name": "where",
@@ -548,7 +633,9 @@
                   "name": "UpsertProjectWhereInput",
                   "ofType": null
                 },
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {
@@ -602,7 +689,9 @@
                     "ofType": null
                   }
                 },
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               },
               {
                 "name": "where",
@@ -612,7 +701,9 @@
                   "name": "UpsertScreenWhereInput",
                   "ofType": null
                 },
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {
@@ -639,7 +730,9 @@
                     "ofType": null
                   }
                 },
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               },
               {
                 "name": "token",
@@ -653,7 +746,9 @@
                     "ofType": null
                   }
                 },
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {
@@ -680,7 +775,9 @@
                     "ofType": null
                   }
                 },
-                "defaultValue": null
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {
@@ -721,7 +818,9 @@
               "name": "ID",
               "ofType": null
             },
-            "defaultValue": null
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "interfaces": null,
@@ -752,7 +851,9 @@
               "name": "ID",
               "ofType": null
             },
-            "defaultValue": null
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           },
           {
             "name": "key",
@@ -762,7 +863,9 @@
               "name": "String",
               "ofType": null
             },
-            "defaultValue": null
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "interfaces": null,
@@ -787,7 +890,9 @@
                 "ofType": null
               }
             },
-            "defaultValue": null
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "interfaces": null,
@@ -812,7 +917,9 @@
                 "ofType": null
               }
             },
-            "defaultValue": null
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "interfaces": null,
@@ -837,7 +944,9 @@
                 "ofType": null
               }
             },
-            "defaultValue": null
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "interfaces": null,
@@ -858,7 +967,9 @@
               "name": "ID",
               "ofType": null
             },
-            "defaultValue": null
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "interfaces": null,
@@ -883,7 +994,9 @@
                 "ofType": null
               }
             },
-            "defaultValue": null
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "interfaces": null,
@@ -908,7 +1021,9 @@
                 "ofType": null
               }
             },
-            "defaultValue": null
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "interfaces": null,
@@ -933,7 +1048,9 @@
                 "ofType": null
               }
             },
-            "defaultValue": null
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           },
           {
             "name": "name",
@@ -947,7 +1064,9 @@
                 "ofType": null
               }
             },
-            "defaultValue": null
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           },
           {
             "name": "description",
@@ -961,7 +1080,36 @@
                 "ofType": null
               }
             },
-            "defaultValue": null
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "DeleteProjectDataInput",
+        "description": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "id",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "interfaces": null,
@@ -1007,7 +1155,9 @@
               "name": "ID",
               "ofType": null
             },
-            "defaultValue": null
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "interfaces": null,
@@ -1032,7 +1182,9 @@
                 "ofType": null
               }
             },
-            "defaultValue": null
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           },
           {
             "name": "keyId",
@@ -1046,7 +1198,9 @@
                 "ofType": null
               }
             },
-            "defaultValue": null
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           },
           {
             "name": "localeId",
@@ -1060,7 +1214,9 @@
                 "ofType": null
               }
             },
-            "defaultValue": null
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "interfaces": null,
@@ -1081,7 +1237,9 @@
               "name": "ID",
               "ofType": null
             },
-            "defaultValue": null
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "interfaces": null,
@@ -1106,7 +1264,9 @@
                 "ofType": null
               }
             },
-            "defaultValue": null
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           },
           {
             "name": "plural",
@@ -1120,7 +1280,9 @@
                 "ofType": null
               }
             },
-            "defaultValue": null
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           },
           {
             "name": "screenId",
@@ -1134,7 +1296,9 @@
                 "ofType": null
               }
             },
-            "defaultValue": null
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "interfaces": null,
@@ -1155,7 +1319,9 @@
               "name": "ID",
               "ofType": null
             },
-            "defaultValue": null
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "interfaces": null,
@@ -1180,7 +1346,9 @@
                 "ofType": null
               }
             },
-            "defaultValue": null
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           },
           {
             "name": "nativeName",
@@ -1194,7 +1362,9 @@
                 "ofType": null
               }
             },
-            "defaultValue": null
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           },
           {
             "name": "code",
@@ -1208,7 +1378,9 @@
                 "ofType": null
               }
             },
-            "defaultValue": null
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           },
           {
             "name": "projectId",
@@ -1222,7 +1394,9 @@
                 "ofType": null
               }
             },
-            "defaultValue": null
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "interfaces": null,
@@ -1243,7 +1417,9 @@
               "name": "ID",
               "ofType": null
             },
-            "defaultValue": null
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "interfaces": null,
@@ -1268,7 +1444,9 @@
                 "ofType": null
               }
             },
-            "defaultValue": null
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           },
           {
             "name": "name",
@@ -1282,7 +1460,9 @@
                 "ofType": null
               }
             },
-            "defaultValue": null
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           },
           {
             "name": "description",
@@ -1296,7 +1476,9 @@
                 "ofType": null
               }
             },
-            "defaultValue": null
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           },
           {
             "name": "projectId",
@@ -1310,7 +1492,9 @@
                 "ofType": null
               }
             },
-            "defaultValue": null
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "interfaces": null,
@@ -1331,7 +1515,9 @@
               "name": "ID",
               "ofType": null
             },
-            "defaultValue": null
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "interfaces": null,
@@ -1356,7 +1542,9 @@
                 "ofType": null
               }
             },
-            "defaultValue": null
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           },
           {
             "name": "lastName",
@@ -1370,7 +1558,9 @@
                 "ofType": null
               }
             },
-            "defaultValue": null
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           },
           {
             "name": "email",
@@ -1384,7 +1574,9 @@
                 "ofType": null
               }
             },
-            "defaultValue": null
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "interfaces": null,
@@ -1405,7 +1597,9 @@
               "name": "ID",
               "ofType": null
             },
-            "defaultValue": null
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           },
           {
             "name": "email",
@@ -1419,7 +1613,9 @@
                 "ofType": null
               }
             },
-            "defaultValue": null
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "interfaces": null,
@@ -2419,7 +2615,9 @@
                   "name": "Boolean",
                   "ofType": null
                 },
-                "defaultValue": "false"
+                "defaultValue": "false",
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {
@@ -2490,7 +2688,9 @@
                   "name": "Boolean",
                   "ofType": null
                 },
-                "defaultValue": "false"
+                "defaultValue": "false",
+                "isDeprecated": false,
+                "deprecationReason": null
               }
             ],
             "type": {
@@ -2521,7 +2721,13 @@
                   "name": "Boolean",
                   "ofType": null
                 },
+<<<<<<< HEAD
                 "defaultValue": "false"
+=======
+                "defaultValue": "false",
+                "isDeprecated": false,
+                "deprecationReason": null
+>>>>>>> cf708d49aaa4d46571d1175407fc4a30eb1341ee
               }
             ],
             "type": {
@@ -2662,7 +2868,13 @@
                   "name": "Boolean",
                   "ofType": null
                 },
+<<<<<<< HEAD
                 "defaultValue": "false"
+=======
+                "defaultValue": "false",
+                "isDeprecated": false,
+                "deprecationReason": null
+>>>>>>> cf708d49aaa4d46571d1175407fc4a30eb1341ee
               }
             ],
             "type": {
@@ -3149,7 +3361,9 @@
                 "ofType": null
               }
             },
-            "defaultValue": null
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ]
       },
@@ -3175,7 +3389,9 @@
                 "ofType": null
               }
             },
-            "defaultValue": null
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ]
       },
@@ -3198,7 +3414,35 @@
               "name": "String",
               "ofType": null
             },
-            "defaultValue": "\"No longer supported\""
+            "defaultValue": "\"No longer supported\"",
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ]
+      },
+      {
+        "name": "specifiedBy",
+        "description": "Exposes a URL that specifies the behaviour of this scalar.",
+        "isRepeatable": false,
+        "locations": [
+          "SCALAR"
+        ],
+        "args": [
+          {
+            "name": "url",
+            "description": "The URL that specifies the behaviour of this scalar.",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ]
       },

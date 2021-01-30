@@ -1,20 +1,24 @@
+import { ApolloProvider } from "@apollo/react-hooks";
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
-import App from "./App";
-import * as serviceWorker from "./serviceWorker";
-import { UserProvider } from "./context/UserContext";
-import { ApolloProvider } from "@apollo/react-hooks";
-
 import client from "./apollo";
+import App from "./App";
+import { UserProvider } from "./context/UserContext";
+import "./index.css";
+import * as serviceWorker from "./serviceWorker";
+require("dotenv").config();
+
+console.log(process.env.REACT_APP_ACCESS_TOKEN_SECRET);
+console.log(process.env.REACT_APP_API_BASE_URL);
+console.log(process.env.NODE_ENV);
+
 ReactDOM.render(
-  // <React.StrictMode>
   <ApolloProvider client={client}>
     <UserProvider>
       <App />
     </UserProvider>
   </ApolloProvider>,
-  // </React.StrictMode>,
+
   document.getElementById("root")
 );
 

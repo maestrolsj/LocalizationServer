@@ -27,14 +27,13 @@ export const seed = async (connection) => {
   const user = await connection
     .getRepository(User)
     .findOne({ email: "bruno.borges@softgarden.de" });
-  if (!user) {
-    connection.getRepository(User).save({
-      firstName: "Bruno",
-      lastName: "Borges",
-      email: "bruno.borges@softgarden.de",
-      password: await password.encrypt("1234"),
-    });
-  }
+
+  connection.getRepository(User).save({
+    firstName: "daekyu",
+    lastName: "han",
+    email: "admin@softgarden.de",
+    password: await password.encrypt("1234"),
+  });
 
   const isProject = await connection
     .getRepository(Project)

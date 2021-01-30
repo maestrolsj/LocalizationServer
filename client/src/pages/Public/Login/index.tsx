@@ -1,12 +1,23 @@
-import React, { useContext, useCallback, useState } from "react";
-import { TextField, Button, Typography, Theme } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core";
+import { gql, useApolloClient, useQuery } from "@apollo/client";
+import {
+  Button,
+  makeStyles,
+  TextField,
+  Theme,
+  Typography,
+} from "@material-ui/core";
 import clsx from "clsx";
+import React, { useCallback, useContext, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { UserContext } from "../../../context/UserContext";
-import { useApolloClient } from "@apollo/react-hooks";
-import loginQuery from "./gql";
 import { useURLQuery } from "../../../hooks/useURLQuery";
+import loginQuery from "./gql";
+
+const testQuery = gql`
+  query TestQuery {
+    test
+  }
+`;
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -43,7 +54,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const Login: React.SFC<any> = (props) => {
+const Login: React.FC<any> = (props) => {
   const classes = useStyles();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -53,31 +64,27 @@ const Login: React.SFC<any> = (props) => {
   const client = useApolloClient();
   const query = useURLQuery();
 
+  const { loading, data } = useQuery(testQuery);
+
   const login = useCallback(
     async (e) => {
       e.preventDefault();
       try {
-        if (
-          email.split("").reverse().slice(0, 14).reverse().join("") !==
-          "@softgarden.de"
-        ) {
-          setErrorText("Must be a softgarden email");
-        } else {
-          const { data } = await client.query({
-            query: loginQuery,
-            variables: { email, password },
-          });
+        const { data } = await client.query({
+          query: loginQuery,
+          variables: { email, password },
+        });
 
-          setUser({ ...data.login.user, accessToken: data.login.accessToken });
-          const redirectUrl = query.get("redirectUrl");
-          if (redirectUrl) {
-            history.push(redirectUrl);
-          } else {
-            history.push("/home");
-          }
+        setUser({ ...data.login.user, accessToken: data.login.accessToken });
+        const redirectUrl = query.get("redirectUrl");
+        if (redirectUrl) {
+          history.push(redirectUrl);
+        } else {
+          history.push("/home");
         }
       } catch (err) {
         setErrorText(err?.graphQLErrors[0]?.message ?? "");
+        console.log("Error>", err);
       }
     },
     [email, password, setUser, history, client, query]
@@ -96,7 +103,7 @@ const Login: React.SFC<any> = (props) => {
       <TextField
         className={classes.input}
         label="Email"
-        placeholder="John.Doe@softgarden.de"
+        placeholder="John.Doe@gmail.com"
         variant="outlined"
         type="email"
         value={email}
@@ -138,6 +145,10 @@ const Login: React.SFC<any> = (props) => {
         color="primary"
       >
         Register
+      </Button>
+
+      <Button className={classes.input} color="primary">
+        Test
       </Button>
     </form>
   );

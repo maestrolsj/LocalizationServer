@@ -58,23 +58,17 @@ const Register: React.SFC<any> = (props) => {
   const [successText, setSuccessText] = useState("");
   const [errorText, setErrorText] = useState("");
   const history = useHistory();
-  const [upsertUser, { loading: upsertUserLoading }] = useMutation<
-    RegisterPage_UpsertUserMutation
-  >(upsertUserMutation);
+  const [
+    upsertUser,
+    { loading: upsertUserLoading },
+  ] = useMutation<RegisterPage_UpsertUserMutation>(upsertUserMutation);
 
   const login = useCallback(
     async (e) => {
       e.preventDefault();
       try {
-        if (
-          email.split("").reverse().slice(0, 14).reverse().join("") !==
-          "@softgarden.de"
-        ) {
-          setErrorText("Must be a softgarden email");
-        } else {
-          await upsertUser({ variables: { email, firstName, lastName } });
-          setSuccessText("Check your email to set your password");
-        }
+        await upsertUser({ variables: { email, firstName, lastName } });
+        setSuccessText("Check your email to set your password");
       } catch (err) {
         if (err?.graphQLErrors[0]?.message) {
           setErrorText(
@@ -128,7 +122,7 @@ const Register: React.SFC<any> = (props) => {
       <TextField
         className={classes.input}
         label="Email"
-        placeholder="John.Doe@softgarden.de"
+        placeholder="John.Doe@gmail.com"
         variant="outlined"
         type="email"
         value={email}
