@@ -80,6 +80,7 @@ export type QueryI18nextArgs = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  deleteProject?: Maybe<Project>;
   upsertTranslation?: Maybe<Translation>;
   upsertKey?: Maybe<Key>;
   deleteKey?: Maybe<Scalars['Boolean']>;
@@ -89,6 +90,11 @@ export type Mutation = {
   upsertScreen?: Maybe<Project>;
   resetPassword?: Maybe<AuthenticationPayload>;
   forgotPassword?: Maybe<Scalars['Boolean']>;
+};
+
+
+export type MutationDeleteProjectArgs = {
+  data: DeleteProjectDataInput;
 };
 
 
@@ -180,6 +186,10 @@ export type UpsertProjectDataInput = {
   key: Scalars['String'];
   name: Scalars['String'];
   description: Scalars['String'];
+};
+
+export type DeleteProjectDataInput = {
+  id: Scalars['ID'];
 };
 
 export type UpsertProjectWhereInput = {
@@ -406,6 +416,7 @@ export type ResolversTypes = ResolversObject<{
   ScreenWhereInput: ScreenWhereInput;
   LocaleWhereInput: LocaleWhereInput;
   UpsertProjectDataInput: UpsertProjectDataInput;
+  DeleteProjectDataInput: DeleteProjectDataInput;
   UpsertProjectWhereInput: UpsertProjectWhereInput;
   UpsertTranslationDataInput: UpsertTranslationDataInput;
   UpsertTranslationWhereInput: UpsertTranslationWhereInput;
@@ -444,6 +455,7 @@ export type ResolversParentTypes = ResolversObject<{
   ScreenWhereInput: ScreenWhereInput;
   LocaleWhereInput: LocaleWhereInput;
   UpsertProjectDataInput: UpsertProjectDataInput;
+  DeleteProjectDataInput: DeleteProjectDataInput;
   UpsertProjectWhereInput: UpsertProjectWhereInput;
   UpsertTranslationDataInput: UpsertTranslationDataInput;
   UpsertTranslationWhereInput: UpsertTranslationWhereInput;
@@ -486,6 +498,7 @@ export type QueryResolvers<ContextType = Context, ParentType extends ResolversPa
 }>;
 
 export type MutationResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
+  deleteProject?: Resolver<Maybe<ResolversTypes['Project']>, ParentType, ContextType, RequireFields<MutationDeleteProjectArgs, 'data'>>;
   upsertTranslation?: Resolver<Maybe<ResolversTypes['Translation']>, ParentType, ContextType, RequireFields<MutationUpsertTranslationArgs, 'data'>>;
   upsertKey?: Resolver<Maybe<ResolversTypes['Key']>, ParentType, ContextType, RequireFields<MutationUpsertKeyArgs, 'data'>>;
   deleteKey?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationDeleteKeyArgs, 'where'>>;

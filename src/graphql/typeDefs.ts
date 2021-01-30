@@ -18,6 +18,7 @@ export default gql`
   }
 
   type Mutation {
+    deleteProject(data: DeleteProjectDataInput!): Project
     upsertTranslation(
       data: UpsertTranslationDataInput!
       where: UpsertTranslationWhereInput
@@ -77,6 +78,10 @@ export default gql`
     key: String!
     name: String!
     description: String!
+  }
+
+  input DeleteProjectDataInput {
+    id: ID!
   }
 
   input UpsertProjectWhereInput {
