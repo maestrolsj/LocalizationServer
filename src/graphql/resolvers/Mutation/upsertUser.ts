@@ -1,12 +1,12 @@
-import { MutationUpsertUserArgs } from "../../../generated/graphql";
+import { ApolloError, UserInputError } from "apollo-server";
+import isNil from "lodash/isNil";
 import keys from "lodash/keys";
 import omitBy from "lodash/omitBy";
-import isNil from "lodash/isNil";
-import { getRepository } from "typeorm";
-import { User } from "../../../db/entity/User";
-import * as definePasswordTokenGenerator from "../../../authentication/definePasswordToken";
-import { ApolloError, UserInputError } from "apollo-server";
 import { sendResetPasswordMail } from "src/mailer";
+import { getRepository } from "typeorm";
+import * as definePasswordTokenGenerator from "../../../authentication/definePasswordToken";
+import { User } from "../../../db/entity/User";
+import { MutationUpsertUserArgs } from "../../../generated/graphql";
 
 export default async function (_: undefined, args: MutationUpsertUserArgs) {
   const userRepository = getRepository(User);

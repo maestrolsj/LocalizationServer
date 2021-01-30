@@ -12,11 +12,17 @@ export default async function (_: undefined, args: MutationDeleteProjectArgs) {
 
   try {
     if (keys(data).length > 0) {
-      const project = {
-        ...projectLocaleRepository.findOne({ id: data.id }),
-      };
-      await projectLocaleRepository.delete({ id: data.id });
-      return await project;
+      const project = await projectLocaleRepository.findOne({
+        where: { id: data.id },
+      });
+      const copiedProject = { ...project };
+
+      await projectLocaleRepository
+        .createQueryBuilder()
+        .delete()
+        .where("id = :id", { id: data.id });
+
+      return copiedProject;
     } else {
       return new ApolloError("projectID is not provided");
     }
