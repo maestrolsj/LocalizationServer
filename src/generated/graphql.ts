@@ -87,7 +87,6 @@ export type Mutation = {
   upsertLocale?: Maybe<Locale>;
   upsertUser?: Maybe<User>;
   upsertProject?: Maybe<Project>;
-  deleteProject?: Maybe<Project>;
   upsertScreen?: Maybe<Project>;
   resetPassword?: Maybe<AuthenticationPayload>;
   forgotPassword?: Maybe<Scalars['Boolean']>;
@@ -131,11 +130,6 @@ export type MutationUpsertUserArgs = {
 export type MutationUpsertProjectArgs = {
   data: UpsertProjectDataInput;
   where?: Maybe<UpsertProjectWhereInput>;
-};
-
-
-export type MutationDeleteProjectArgs = {
-  data: DeleteProjectDataInput;
 };
 
 
@@ -500,27 +494,17 @@ export type QueryResolvers<ContextType = Context, ParentType extends ResolversPa
   key?: Resolver<ResolversTypes['Key'], ParentType, ContextType, RequireFields<QueryKeyArgs, 'where'>>;
   translation?: Resolver<ResolversTypes['Translation'], ParentType, ContextType, RequireFields<QueryTranslationArgs, 'where'>>;
   i18next?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType, RequireFields<QueryI18nextArgs, 'key'>>;
-<<<<<<< HEAD
-}>;
-
-export type MutationResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
-=======
   test?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
 }>;
 
 export type MutationResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
   deleteProject?: Resolver<Maybe<ResolversTypes['Project']>, ParentType, ContextType, RequireFields<MutationDeleteProjectArgs, 'data'>>;
->>>>>>> cf708d49aaa4d46571d1175407fc4a30eb1341ee
   upsertTranslation?: Resolver<Maybe<ResolversTypes['Translation']>, ParentType, ContextType, RequireFields<MutationUpsertTranslationArgs, 'data'>>;
   upsertKey?: Resolver<Maybe<ResolversTypes['Key']>, ParentType, ContextType, RequireFields<MutationUpsertKeyArgs, 'data'>>;
   deleteKey?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationDeleteKeyArgs, 'where'>>;
   upsertLocale?: Resolver<Maybe<ResolversTypes['Locale']>, ParentType, ContextType, RequireFields<MutationUpsertLocaleArgs, 'data'>>;
   upsertUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationUpsertUserArgs, 'data'>>;
   upsertProject?: Resolver<Maybe<ResolversTypes['Project']>, ParentType, ContextType, RequireFields<MutationUpsertProjectArgs, 'data'>>;
-<<<<<<< HEAD
-  deleteProject?: Resolver<Maybe<ResolversTypes['Project']>, ParentType, ContextType, RequireFields<MutationDeleteProjectArgs, 'data'>>;
-=======
->>>>>>> cf708d49aaa4d46571d1175407fc4a30eb1341ee
   upsertScreen?: Resolver<Maybe<ResolversTypes['Project']>, ParentType, ContextType, RequireFields<MutationUpsertScreenArgs, 'data'>>;
   resetPassword?: Resolver<Maybe<ResolversTypes['AuthenticationPayload']>, ParentType, ContextType, RequireFields<MutationResetPasswordArgs, 'password' | 'token'>>;
   forgotPassword?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationForgotPasswordArgs, 'email'>>;

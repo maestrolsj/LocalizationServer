@@ -1,4 +1,4 @@
-import { MutationDeleteProjectArgs } from "src/generated/graphql";
+import { MutationDeleteProjectArgs } from "../../../generated/graphql";
 import { getRepository } from "typeorm";
 import { Project } from "src/db/entity/Project";
 import keys from "lodash/keys";
@@ -9,18 +9,16 @@ import { ApolloError } from "apollo-server";
 export default async function (_: undefined, args: MutationDeleteProjectArgs) {
   const projectLocaleRepository = getRepository(Project);
   const data = omitBy(args.data, isNil);
-
+  console.log(data);
   try {
     if (keys(data).length > 0) {
       const project = await projectLocaleRepository.findOne({
         where: { id: data.id },
       });
+      console.log("founded project", project);
       const copiedProject = { ...project };
 
-      await projectLocaleRepository
-        .createQueryBuilder()
-        .delete()
-        .where("id = :id", { id: data.id });
+      await projectLocaleRepository.delete(data.id);
 
       return copiedProject;
     } else {

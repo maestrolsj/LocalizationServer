@@ -34,9 +34,6 @@ export default gql`
       data: UpsertProjectDataInput!
       where: UpsertProjectWhereInput
     ): Project
-    deleteProject(
-      data: DeleteProjectDataInput!
-    ): Project
     upsertScreen(
       data: UpsertScreenDataInput!
       where: UpsertScreenWhereInput

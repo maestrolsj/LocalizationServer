@@ -647,33 +647,6 @@
             "deprecationReason": null
           },
           {
-            "name": "deleteProject",
-            "description": null,
-            "args": [
-              {
-                "name": "data",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "INPUT_OBJECT",
-                    "name": "DeleteProjectDataInput",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null
-              }
-            ],
-            "type": {
-              "kind": "OBJECT",
-              "name": "Project",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "upsertScreen",
             "description": null,
             "args": [
@@ -1110,31 +1083,6 @@
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "DeleteProjectDataInput",
-        "description": null,
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "id",
-            "description": null,
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "ID",
-                "ofType": null
-              }
-            },
-            "defaultValue": null
           }
         ],
         "interfaces": null,
@@ -2721,13 +2669,9 @@
                   "name": "Boolean",
                   "ofType": null
                 },
-<<<<<<< HEAD
-                "defaultValue": "false"
-=======
                 "defaultValue": "false",
                 "isDeprecated": false,
                 "deprecationReason": null
->>>>>>> cf708d49aaa4d46571d1175407fc4a30eb1341ee
               }
             ],
             "type": {
@@ -2868,13 +2812,9 @@
                   "name": "Boolean",
                   "ofType": null
                 },
-<<<<<<< HEAD
-                "defaultValue": "false"
-=======
                 "defaultValue": "false",
                 "isDeprecated": false,
                 "deprecationReason": null
->>>>>>> cf708d49aaa4d46571d1175407fc4a30eb1341ee
               }
             ],
             "type": {
@@ -3443,30 +3383,6 @@
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
-          }
-        ]
-      },
-      {
-        "name": "specifiedBy",
-        "description": "Exposes a URL that specifies the behaviour of this scalar.",
-        "isRepeatable": false,
-        "locations": [
-          "SCALAR"
-        ],
-        "args": [
-          {
-            "name": "url",
-            "description": "The URL that specifies the behaviour of this scalar.",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "defaultValue": null
           }
         ]
       }
