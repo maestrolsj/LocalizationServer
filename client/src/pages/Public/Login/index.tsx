@@ -1,14 +1,23 @@
-import React, { useContext, useCallback, useState, useEffect } from "react";
-import { TextField, Button, Typography, Theme } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core";
+import { gql, useApolloClient, useQuery } from "@apollo/client";
+import {
+  Button,
+  makeStyles,
+  TextField,
+  Theme,
+  Typography,
+} from "@material-ui/core";
 import clsx from "clsx";
+import React, { useCallback, useContext, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { UserContext } from "../../../context/UserContext";
-import { useApolloClient } from "@apollo/react-hooks";
-import loginQuery from "./gql";
 import { useURLQuery } from "../../../hooks/useURLQuery";
-import gql from "graphql-tag";
-import { Alert } from "@material-ui/lab";
+import loginQuery from "./gql";
+
+const testQuery = gql`
+  query TestQuery {
+    test
+  }
+`;
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -54,6 +63,8 @@ const Login: React.FC<any> = (props) => {
   const history = useHistory();
   const client = useApolloClient();
   const query = useURLQuery();
+
+  const { loading, data } = useQuery(testQuery);
 
   const login = useCallback(
     async (e) => {
@@ -134,6 +145,10 @@ const Login: React.FC<any> = (props) => {
         color="primary"
       >
         Register
+      </Button>
+
+      <Button className={classes.input} color="primary">
+        Test
       </Button>
     </form>
   );
