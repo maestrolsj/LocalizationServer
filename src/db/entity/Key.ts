@@ -20,7 +20,7 @@ export class Key {
   @Column()
   name: string;
 
-  @ManyToOne((type) => Screen, (screen) => screen.keys)
+  @ManyToOne((type) => Screen, (screen) => screen.keys, { onDelete: "CASCADE" })
   screen: Screen;
 
   @OneToMany((type) => Translation, (translation) => translation.key, {

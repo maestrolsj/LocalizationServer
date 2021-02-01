@@ -12,15 +12,14 @@ export default async function (_: undefined, args: MutationDeleteScreenArgs) {
 
   try {
     if (keys(data).length > 0) {
-      const project = await screenLocaleRepository.findOne({
+      const screen = await screenLocaleRepository.findOne({
         where: { id: data.id },
       });
-      console.log("founded project", project);
-      const copiedProject = { ...project };
-
-      await screenLocaleRepository.delete({ id: data.id });
-
-      return copiedProject;
+      console.log("founded screen", screen);
+      const copiedScreen = { ...screen };
+      const result = await screenLocaleRepository.delete({ id: data.id });
+      console.log(result);
+      return null;
     } else {
       return new ApolloError("screenID is not provided");
     }

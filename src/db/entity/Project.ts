@@ -27,7 +27,9 @@ export class Project {
   @OneToMany((type) => Locale, (locale) => locale.project)
   locales: Locale[];
 
-  @OneToMany((type) => Screen, (screen) => screen.project)
+  @OneToMany((type) => Screen, (screen) => screen.project, {
+    onDelete: "CASCADE",
+  })
   screens: Screen[];
 
   @CreateDateColumn()
