@@ -4,7 +4,7 @@ import { Project } from "src/db/entity/Project";
 import keys from "lodash/keys";
 import omitBy from "lodash/omitBy";
 import isNil from "lodash/isNil";
-import { ApolloError } from "apollo-server";
+import { ApolloError } from "apollo-server-express";
 
 export default async function (_: undefined, args: MutationUpsertProjectArgs) {
   const projectLocaleRepository = getRepository(Project);

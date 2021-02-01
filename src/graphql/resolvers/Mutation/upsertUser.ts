@@ -1,4 +1,4 @@
-import { ApolloError, UserInputError } from "apollo-server";
+import { ApolloError } from "apollo-server-express";
 import isNil from "lodash/isNil";
 import keys from "lodash/keys";
 import omitBy from "lodash/omitBy";

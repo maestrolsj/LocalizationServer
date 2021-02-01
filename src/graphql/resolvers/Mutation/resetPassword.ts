@@ -3,7 +3,7 @@ import * as passwordEncryption from "../../../authentication/password";
 import { MutationResetPasswordArgs } from "../../../generated/graphql";
 import { getRepository } from "typeorm";
 import { User } from "../../../db/entity/User";
-import { ApolloError } from "apollo-server";
+import { ApolloError } from "apollo-server-express";
 import * as accessTokenGenerator from "../../../authentication/accessToken";
 
 export default async function (

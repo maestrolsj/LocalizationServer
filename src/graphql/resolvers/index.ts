@@ -10,6 +10,7 @@ import upsertLocale from "./Mutation/upsertLocale";
 import upsertScreen from "./Mutation/upsertScreen";
 import upsertProject from "./Mutation/upsertProject";
 import deleteProject from "./Mutation/deleteProject";
+import deleteScreen from "./Mutation/deleteScreen";
 import upsertUser from "./Mutation/upsertUser";
 import resetPassword from "./Mutation/resetPassword";
 import forgotPassword from "./Mutation/forgotPassword";
@@ -68,6 +69,7 @@ export default {
     upsertTranslation,
     deleteKey,
     deleteProject,
+    deleteScreen,
     forgotPassword,
   },
   Query: {

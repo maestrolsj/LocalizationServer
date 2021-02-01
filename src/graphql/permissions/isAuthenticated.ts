@@ -1,6 +1,6 @@
 import { rule } from "graphql-shield";
 import * as accessTokenGenerator from "../../authentication/accessToken";
-import { AuthenticationError } from "apollo-server";
+import { AuthenticationError } from "apollo-server-express";
 
 export const isAuthenticated = rule()(async (parent, args, ctx, info) => {
   try {

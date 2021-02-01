@@ -1,10 +1,9 @@
+import { AuthenticationError } from "apollo-server-express";
 import { QueryLoginArgs } from "src/generated/graphql";
 import { getRepository } from "typeorm";
-import { User } from "../../../db/entity/User";
 import * as accessTokenGenerator from "../../../authentication/accessToken";
 import * as passwordEncryption from "../../../authentication/password";
-import { AuthenticationError } from "apollo-server";
-import omit from "lodash/omit";
+import { User } from "../../../db/entity/User";
 
 export default async function (_: undefined, args: QueryLoginArgs) {
   const { email, password } = args;

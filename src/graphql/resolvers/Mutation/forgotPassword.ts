@@ -1,9 +1,9 @@
-import { MutationForgotPasswordArgs } from "../../../generated/graphql";
-import { getRepository } from "typeorm";
-import { User } from "../../../db/entity/User";
-import * as definePasswordTokenGenerator from "../../../authentication/definePasswordToken";
-import { ApolloError, UserInputError } from "apollo-server";
+import { ApolloError } from "apollo-server-express";
 import { sendResetPasswordMail } from "src/mailer";
+import { getRepository } from "typeorm";
+import * as definePasswordTokenGenerator from "../../../authentication/definePasswordToken";
+import { User } from "../../../db/entity/User";
+import { MutationForgotPasswordArgs } from "../../../generated/graphql";
 
 export default async function (_: undefined, args: MutationForgotPasswordArgs) {
   try {

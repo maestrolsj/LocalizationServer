@@ -5,7 +5,7 @@ import keys from "lodash/keys";
 import omit from "lodash/omit";
 import omitBy from "lodash/omitBy";
 import isNil from "lodash/isNil";
-import { ApolloError } from "apollo-server";
+import { ApolloError } from "apollo-server-express";
 
 export default async function (_: undefined, args: MutationUpsertLocaleArgs) {
   const screenLocaleRepository = getRepository(Locale);

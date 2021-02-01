@@ -19,12 +19,13 @@ export default gql`
 
   type Mutation {
     deleteProject(data: DeleteProjectDataInput!): Project
+    deleteKey(where: DeleteKeyWhereInput!): Boolean
+    deleteScreen(data: DeleteScreenDataInput!): Boolean
     upsertTranslation(
       data: UpsertTranslationDataInput!
       where: UpsertTranslationWhereInput
     ): Translation
     upsertKey(data: UpsertKeyDataInput!, where: UpsertKeyWhereInput): Key
-    deleteKey(where: DeleteKeyWhereInput!): Boolean
     upsertLocale(
       data: UpsertLocaleDataInput!
       where: UpsertLocaleWhereInput
@@ -81,6 +82,10 @@ export default gql`
   }
 
   input DeleteProjectDataInput {
+    id: ID!
+  }
+
+  input DeleteScreenDataInput {
     id: ID!
   }
 

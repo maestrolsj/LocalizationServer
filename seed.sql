@@ -5058,6 +5058,4 @@ INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","k
 ;
 INSERT INTO public."translation" (id,value,"createdAt","updatedAt","localeId","keyId") VALUES 
 ('94d7cf53-f7ca-4871-85d1-9351ce03a4f5','Verifica tu conexión a internet e inténtalo nuevamente.','2020-06-20 14:00:02.470','2020-06-20 14:00:02.470','a4aaf22b-6090-4bc6-b331-04ea9573f3ac','453a88c4-8e2b-4233-a44e-c180414febb1')
-;INSERT INTO public."user" (id,"firstName","lastName",email,"password","createdAt","updatedAt") VALUES 
-('57ca3cb0-37db-4570-bba9-e861d10dc3d5','Bruno','Borges','bruno.borges@softgarden.de','$2b$12$.0afM4qrddobVF4dsimy3eFQzDi6/RkSWiN3aPYpfZQy.WFDRg4LC','2020-06-10 15:17:06.980','2020-06-10 15:17:06.980')
 ;
