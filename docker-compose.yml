@@ -1,14 +1,5 @@
 version: "3"
 services:
-  translation-client:
-    command: yarn start
-    build: ./newClient
-    ports:
-      - "8443:8443"
-    networks:
-      - our_net
-    expose:
-      - "8443"
   translation-tool-app:
     command: npm run dev
     build: .

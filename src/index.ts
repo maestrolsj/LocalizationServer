@@ -59,7 +59,7 @@ createConnection()
       app.use(cors());
 
       // serving build file of client
-      app.use("/", Express.static(path.join(__dirname, "../client/build")));
+      app.use("/", Express.static(path.join(__dirname, "../newClient/out")));
       apolloServer.applyMiddleware({
         app,
         cors: {
