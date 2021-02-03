@@ -7,5 +7,3 @@ COPY . .
 RUN chmod 777 .
 
 RUN yarn
-
-RUN yarn build
