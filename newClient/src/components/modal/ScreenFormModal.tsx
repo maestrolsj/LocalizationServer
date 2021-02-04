@@ -50,6 +50,17 @@ const upsertScreenMutation = gql`
     }
 `;
 
+const addScreenMutation = gql`
+    mutation ScreenFormModal_upsertScreen($key: String!, $name: String!, $description: String!, $projectId: ID!) {
+        upsertScreen(data: { key: $key, name: $name, description: $description, projectId: $projectId }) {
+            id
+            key
+            name
+            description
+        }
+    }
+`;
+
 const validationSchema = yup.object({
     key: yup.string().min(1, 'Must be 1 characters or more').required('Required'),
     name: yup.string().min(3, 'Must be 3 characters or more').required('Required'),
@@ -76,7 +87,7 @@ const ScreenFormModal: React.FC<IProps> = ({ screenId, projectId, open, closeHan
     const dispatch = useDispatch();
 
     const [upsertScreen, { loading: upsertScreenLoading }] = useMutation<ScreenFormModal_UpsertScreenMutation>(
-        upsertScreenMutation,
+        screenId ? upsertScreenMutation : addScreenMutation,
         { refetchQueries: ['Screen_project'] },
     );
 
