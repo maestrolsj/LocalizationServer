@@ -25,7 +25,7 @@ export default async function (
         },
       }
     );
-    return result.data;
+    return result.data.message.result;
   } catch (error) {
     console.log(error.response);
     return new ApolloError(

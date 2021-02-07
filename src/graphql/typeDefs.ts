@@ -13,7 +13,9 @@ export default gql`
     locale(where: LocaleWhereInput!): Locale!
     key(where: KeyWhereInput!): Key!
     translation(where: TranslationWhereInput!): Translation!
-    externalTranslation(data: ExternalTranslationWhereInput!): PapagoTranslationResponse!
+    externalTranslation(
+      data: ExternalTranslationWhereInput!
+    ): PapagoTranslationResult!
     i18next(key: String!): JSON
     test: String!
   }
@@ -209,20 +211,9 @@ export default gql`
   }
 
   type PapagoTranslationResult {
-  srcLangType: String
-  tarLangType: String
-  translatedText: String
-}
-
-type PapagoTranslationResponseMessage {
-  type: String
-  service: String
-  version: String
-  result: PapagoTranslationResult!
-}
-
-type PapagoTranslationResponse {
-    message: PapagoTranslationResponseMessage
+    srcLangType: String
+    tarLangType: String
+    translatedText: String
   }
 
   type User {
