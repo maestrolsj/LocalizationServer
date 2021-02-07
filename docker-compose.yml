@@ -21,17 +21,20 @@ services:
       - ./.env
     ports:
       - "5432:5432"
-    volumes:
-      - ./translation-tool-app:/home/ubuntu/LocalizationServer/src/db/seed/backup
     environment:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "bluebird2011"
       POSTGRES_DB: "LocalizationServer"
-      PGDATA: "/app/src/db/seed/postgres"
+      PGDATA: "/app/data/postgres"
     networks:
       - our_net
+    volumes:
+      - test_volume:/app/data/postgres
     expose:
       - "5432"
+
+volumes:
+  test_volume:
 
 networks:
   our_net:
