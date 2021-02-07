@@ -49,7 +49,7 @@ createConnection()
           },
         ],
       });
-      // seed(connection);
+      seed(connection);
 
       const app = Express();
 

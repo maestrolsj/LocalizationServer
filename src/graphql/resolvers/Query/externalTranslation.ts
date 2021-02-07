@@ -6,23 +6,9 @@ export default async function (
   _: undefined,
   args: QueryExternalTranslationArgs
 ) {
-  console.log(args.data);
-
-  const client_id = "gJMyUBw9JyKAiajisVCw";
-  const client_secret = "c1IIpF4C1Q";
+  const client_id = process.env.PAPAGO_CLIENT_ID;
+  const client_secret = process.env.PAPAGO_CLIENT_SCRETE;
   const api_url = "https://openapi.naver.com/v1/papago/n2mt";
-  const options = {
-    url: api_url,
-    form: {
-      source: args.data.source,
-      target: args.data.target,
-      text: args.data.text,
-    },
-    headers: {
-      "X-Naver-Client-Id": client_id,
-      "X-Naver-Client-Secret": client_secret,
-    },
-  };
 
   try {
     const result = await axios.post(
