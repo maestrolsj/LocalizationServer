@@ -22,7 +22,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - translation-tool-app:/home/ubuntu/LocalizationServer/src/db/seed/backup
+      - translation-tool-app:/LocalizationServer/src/db/seed/backup
     environment:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "bluebird2011"
