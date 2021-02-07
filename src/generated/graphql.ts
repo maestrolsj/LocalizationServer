@@ -28,6 +28,7 @@ export type Query = {
   locale: Locale;
   key: Key;
   translation: Translation;
+  externalTranslation: PapagoTranslationResponse;
   i18next?: Maybe<Scalars['JSON']>;
   test: Scalars['String'];
 };
@@ -71,6 +72,11 @@ export type QueryKeyArgs = {
 
 export type QueryTranslationArgs = {
   where: TranslationWhereInput;
+};
+
+
+export type QueryExternalTranslationArgs = {
+  data: ExternalTranslationWhereInput;
 };
 
 
@@ -174,6 +180,12 @@ export type DeleteKeyWhereInput = {
 
 export type TranslationWhereInput = {
   id: Scalars['ID'];
+};
+
+export type ExternalTranslationWhereInput = {
+  source: Scalars['String'];
+  target: Scalars['String'];
+  text: Scalars['String'];
 };
 
 export type ScreensWhereInput = {
@@ -321,6 +333,26 @@ export type Translation = {
   updatedAt: Scalars['DateTime'];
 };
 
+export type PapagoTranslationResult = {
+  __typename?: 'PapagoTranslationResult';
+  srcLangType?: Maybe<Scalars['String']>;
+  tarLangType?: Maybe<Scalars['String']>;
+  translatedText?: Maybe<Scalars['String']>;
+};
+
+export type PapagoTranslationResponseMessage = {
+  __typename?: 'PapagoTranslationResponseMessage';
+  type?: Maybe<Scalars['String']>;
+  service?: Maybe<Scalars['String']>;
+  version?: Maybe<Scalars['String']>;
+  result: PapagoTranslationResult;
+};
+
+export type PapagoTranslationResponse = {
+  __typename?: 'PapagoTranslationResponse';
+  message: PapagoTranslationResponseMessage;
+};
+
 export type User = {
   __typename?: 'User';
   id: Scalars['ID'];
@@ -422,6 +454,7 @@ export type ResolversTypes = ResolversObject<{
   KeyWhereInput: KeyWhereInput;
   DeleteKeyWhereInput: DeleteKeyWhereInput;
   TranslationWhereInput: TranslationWhereInput;
+  ExternalTranslationWhereInput: ExternalTranslationWhereInput;
   ScreensWhereInput: ScreensWhereInput;
   ScreenWhereInput: ScreenWhereInput;
   LocaleWhereInput: LocaleWhereInput;
@@ -445,6 +478,9 @@ export type ResolversTypes = ResolversObject<{
   Project: ResolverTypeWrapper<Project>;
   Screen: ResolverTypeWrapper<Screen>;
   Translation: ResolverTypeWrapper<Translation>;
+  PapagoTranslationResult: ResolverTypeWrapper<PapagoTranslationResult>;
+  PapagoTranslationResponseMessage: ResolverTypeWrapper<PapagoTranslationResponseMessage>;
+  PapagoTranslationResponse: ResolverTypeWrapper<PapagoTranslationResponse>;
   User: ResolverTypeWrapper<User>;
 }>;
 
@@ -462,6 +498,7 @@ export type ResolversParentTypes = ResolversObject<{
   KeyWhereInput: KeyWhereInput;
   DeleteKeyWhereInput: DeleteKeyWhereInput;
   TranslationWhereInput: TranslationWhereInput;
+  ExternalTranslationWhereInput: ExternalTranslationWhereInput;
   ScreensWhereInput: ScreensWhereInput;
   ScreenWhereInput: ScreenWhereInput;
   LocaleWhereInput: LocaleWhereInput;
@@ -485,6 +522,9 @@ export type ResolversParentTypes = ResolversObject<{
   Project: Project;
   Screen: Screen;
   Translation: Translation;
+  PapagoTranslationResult: PapagoTranslationResult;
+  PapagoTranslationResponseMessage: PapagoTranslationResponseMessage;
+  PapagoTranslationResponse: PapagoTranslationResponse;
   User: User;
 }>;
 
@@ -505,6 +545,7 @@ export type QueryResolvers<ContextType = Context, ParentType extends ResolversPa
   locale?: Resolver<ResolversTypes['Locale'], ParentType, ContextType, RequireFields<QueryLocaleArgs, 'where'>>;
   key?: Resolver<ResolversTypes['Key'], ParentType, ContextType, RequireFields<QueryKeyArgs, 'where'>>;
   translation?: Resolver<ResolversTypes['Translation'], ParentType, ContextType, RequireFields<QueryTranslationArgs, 'where'>>;
+  externalTranslation?: Resolver<ResolversTypes['PapagoTranslationResponse'], ParentType, ContextType, RequireFields<QueryExternalTranslationArgs, 'data'>>;
   i18next?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType, RequireFields<QueryI18nextArgs, 'key'>>;
   test?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
 }>;
@@ -585,6 +626,26 @@ export type TranslationResolvers<ContextType = Context, ParentType extends Resol
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type PapagoTranslationResultResolvers<ContextType = Context, ParentType extends ResolversParentTypes['PapagoTranslationResult'] = ResolversParentTypes['PapagoTranslationResult']> = ResolversObject<{
+  srcLangType?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  tarLangType?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  translatedText?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type PapagoTranslationResponseMessageResolvers<ContextType = Context, ParentType extends ResolversParentTypes['PapagoTranslationResponseMessage'] = ResolversParentTypes['PapagoTranslationResponseMessage']> = ResolversObject<{
+  type?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  service?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  version?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  result?: Resolver<ResolversTypes['PapagoTranslationResult'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type PapagoTranslationResponseResolvers<ContextType = Context, ParentType extends ResolversParentTypes['PapagoTranslationResponse'] = ResolversParentTypes['PapagoTranslationResponse']> = ResolversObject<{
+  message?: Resolver<ResolversTypes['PapagoTranslationResponseMessage'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type UserResolvers<ContextType = Context, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   firstName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -606,6 +667,9 @@ export type Resolvers<ContextType = Context> = ResolversObject<{
   Project?: ProjectResolvers<ContextType>;
   Screen?: ScreenResolvers<ContextType>;
   Translation?: TranslationResolvers<ContextType>;
+  PapagoTranslationResult?: PapagoTranslationResultResolvers<ContextType>;
+  PapagoTranslationResponseMessage?: PapagoTranslationResponseMessageResolvers<ContextType>;
+  PapagoTranslationResponse?: PapagoTranslationResponseResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
 }>;
 

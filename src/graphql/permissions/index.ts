@@ -8,7 +8,6 @@ const permissions = shield({
     login: isPublic,
     i18next: isPublic,
     project: isPublic,
-    test: isPublic,
   },
   Mutation: {
     "*": isPublic,

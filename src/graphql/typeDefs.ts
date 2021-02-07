@@ -13,6 +13,7 @@ export default gql`
     locale(where: LocaleWhereInput!): Locale!
     key(where: KeyWhereInput!): Key!
     translation(where: TranslationWhereInput!): Translation!
+    externalTranslation(data: ExternalTranslationWhereInput!): PapagoTranslationResponse!
     i18next(key: String!): JSON
     test: String!
   }
@@ -62,6 +63,12 @@ export default gql`
 
   input TranslationWhereInput {
     id: ID!
+  }
+
+  input ExternalTranslationWhereInput {
+    source: String!
+    target: String!
+    text: String!
   }
 
   input ScreensWhereInput {
@@ -199,6 +206,23 @@ export default gql`
     key: Key!
     createdAt: DateTime!
     updatedAt: DateTime!
+  }
+
+  type PapagoTranslationResult {
+  srcLangType: String
+  tarLangType: String
+  translatedText: String
+}
+
+type PapagoTranslationResponseMessage {
+  type: String
+  service: String
+  version: String
+  result: PapagoTranslationResult!
+}
+
+type PapagoTranslationResponse {
+    message: PapagoTranslationResponseMessage
   }
 
   type User {

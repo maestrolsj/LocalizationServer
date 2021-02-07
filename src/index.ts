@@ -49,7 +49,7 @@ createConnection()
           },
         ],
       });
-      seed(connection);
+      // seed(connection);
 
       const app = Express();
 
@@ -59,7 +59,7 @@ createConnection()
       app.use(cors());
 
       // serving build file of client
-      app.use("/", Express.static(path.join(__dirname, "../newClient/out")));
+      app.use("/", Express.static(path.join(__dirname, "../client/out")));
       apolloServer.applyMiddleware({
         app,
         cors: {

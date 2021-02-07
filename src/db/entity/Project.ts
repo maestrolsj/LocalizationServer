@@ -24,7 +24,9 @@ export class Project {
   @Column({ nullable: true })
   description: string;
 
-  @OneToMany((type) => Locale, (locale) => locale.project)
+  @OneToMany((type) => Locale, (locale) => locale.project, {
+    onDelete: "CASCADE",
+  })
   locales: Locale[];
 
   @OneToMany((type) => Screen, (screen) => screen.project, {

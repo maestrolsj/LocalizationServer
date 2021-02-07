@@ -47,7 +47,7 @@ class MyDocument extends Document {
                         rel="stylesheet"
                         href="https://fonts.googleapis.com/css?family=Roboto:400,500,600,700&display=swap"
                     />
-                    <meta name="theme-color" content="#d53b3b" />
+                    <meta name="theme-color" content="#3f51b5" />
                 </Head>
                 <body>
                     <Main />

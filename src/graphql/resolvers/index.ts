@@ -25,6 +25,7 @@ import projects from "./Query/projects";
 import screens from "./Query/screens";
 import login from "./Query/login";
 import translation from "./Query/translation";
+import externalTranslation from "./Query/externalTranslation";
 
 import Project from "./types/Project";
 import Screen from "./types/Screen";
@@ -82,6 +83,7 @@ export default {
     locale,
     key,
     translation,
+    externalTranslation,
     i18next,
   },
 };
