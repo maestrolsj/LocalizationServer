@@ -13,6 +13,9 @@ import context from "./graphql/resolvers/context";
 import typeDefs from "./graphql/typeDefs";
 import { seed } from "./seed";
 import cors from "cors";
+import fs from "fs";
+import http from "http";
+import https from "https";
 
 // Load config
 dotenv.config({ path: "./.env" });
@@ -24,6 +27,15 @@ const schema = applyMiddleware(
   }),
   permissions
 );
+
+const configurations = {
+  production: { ssl: true, port: 4000, hostname: "18.193.202.36" },
+  development: { ssl: true, port: 4000, hostname: "18.193.202.36" },
+};
+
+const environment = process.env.NODE_ENV || "production";
+
+const config = configurations[environment];
 
 createConnection()
   .then(async (connection: Connection) => {
@@ -68,9 +80,25 @@ createConnection()
         },
       });
 
-      const PORT = process.env.PORT;
+      const server = config.ssl
+        ? https.createServer(
+            {
+              key: fs.readFileSync(
+                path.join(__dirname, `../ssl/server.key`)
+              ),
+              cert: fs.readFileSync(
+                path.join(__dirname, `../ssl/server.crt`)
+              ),
+            },
+            app
+          )
+        : http.createServer(app);
 
-      app.listen(PORT, () => console.log(`Server is running at ${PORT}`));
+      server.listen({ port: 4000 }, () =>
+        console.log(
+          `🚀 Server ready at https://localhost:4000${apolloServer.graphqlPath}`
+        )
+      );
     } catch (error) {
       console.log(error);
     }

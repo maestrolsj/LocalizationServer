@@ -15,6 +15,7 @@
     // Import non-ES modules as default imports.
     "esModuleInterop": true,
     "baseUrl": ".",
+    "noImplicitAny": false,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "strictPropertyInitialization": false /* Enable strict checking of property initialization in classes. */,
