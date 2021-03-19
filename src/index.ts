@@ -29,8 +29,8 @@ const schema = applyMiddleware(
 );
 
 const configurations = {
-  production: { ssl: true, port: 4000, hostname: "18.193.202.36" },
-  development: { ssl: true, port: 4000, hostname: "18.193.202.36" },
+  production: { ssl: true, port: 443, hostname: "18.193.202.36" },
+  development: { ssl: true, port: 443, hostname: "18.193.202.36" },
 };
 
 const environment = process.env.NODE_ENV || "production";
@@ -94,9 +94,9 @@ createConnection()
           )
         : http.createServer(app);
 
-      server.listen({ port: 4000 }, () =>
+      server.listen({ port: 443 }, () =>
         console.log(
-          `🚀 Server ready at https://localhost:4000${apolloServer.graphqlPath}`
+          `🚀 Server ready at https://localhost:443${apolloServer.graphqlPath}`
         )
       );
     } catch (error) {
