@@ -28,14 +28,14 @@ const schema = applyMiddleware(
   permissions
 );
 
-const configurations = {
-  production: { ssl: true, port: 443, hostname: "18.193.202.36" },
-  development: { ssl: true, port: 443, hostname: "18.193.202.36" },
-};
+// const configurations = {
+//   production: { ssl: true, port: 443, hostname: "18.193.202.36" },
+//   development: { ssl: true, port: 443, hostname: "18.193.202.36" },
+// };
 
-const environment = process.env.NODE_ENV || "production";
+// const environment = process.env.NODE_ENV || "production";
 
-const config = configurations[environment];
+// const config = configurations[environment];
 
 createConnection()
   .then(async (connection: Connection) => {
@@ -80,21 +80,21 @@ createConnection()
         },
       });
 
-      const server = config.ssl
-        ? https.createServer(
-            {
-              key: fs.readFileSync(
-                path.join(__dirname, `../ssl/server.key`)
-              ),
-              cert: fs.readFileSync(
-                path.join(__dirname, `../ssl/server.crt`)
-              ),
-            },
-            app
-          )
-        : http.createServer(app);
+      // const server = config.ssl
+      //   ? https.createServer(
+      //       {
+      //         key: fs.readFileSync(
+      //           path.join(__dirname, `../ssl/server.key`)
+      //         ),
+      //         cert: fs.readFileSync(
+      //           path.join(__dirname, `../ssl/server.crt`)
+      //         ),
+      //       },
+      //       app
+      //     )
+      //   : http.createServer(app);
 
-      server.listen({ port: 443 }, () =>
+      app.listen({ port: 4000 }, () =>
         console.log(
           `🚀 Server ready at https://localhost:443${apolloServer.graphqlPath}`
         )
