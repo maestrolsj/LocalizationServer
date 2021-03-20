@@ -36,7 +36,7 @@ services:
   nginx:
     image: nginx
     depends_on:
-      - prisma
+      - translation-tool-app
     ports:
       - "443:443"
     volumes:
