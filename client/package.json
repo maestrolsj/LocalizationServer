@@ -10,7 +10,7 @@
         "analyze": "cross-env ANALYZE=true next build",
         "analyze:server": "cross-env BUNDLE_ANALYZE=server next build",
         "analyze:browser": "cross-env BUNDLE_ANALYZE=browser next build",
-        "export": "next build && next export",
+        "yarn": "next build && next export",
         "format": "prettier --write \"{constants, src}/**/*.{ts,tsx}\"",
         "lint": "eslint \"src/**/*.{ts,tsx}\" --fix",
         "prettier": "prettier --list-different 'src/**/*.{ts, tsx}' || (echo '\nPlease fix code formatting by running:\nnpm run prettier:fix\n'; exit 1)",
