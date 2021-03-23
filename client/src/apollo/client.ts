@@ -3,7 +3,7 @@ import { cache } from './cache';
 import { setContext } from '@apollo/client/link/context';
 
 const httpLink = createHttpLink({
-    uri: 'https://18.193.202.36/graphql',
+    uri: 'https://api.whisper-translation.p-e.kr/graphql',
 });
 
 const authLink = setContext((_, { headers }) => {
